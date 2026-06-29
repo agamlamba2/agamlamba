@@ -21,10 +21,6 @@ export default function App() {
         <About />
         <Services />
         <Projects />
-        <Marquee
-          items={['Let\'s Work Together', 'Get In Touch', 'Say Hello', 'Collaborate']}
-          speed={25}
-        />
         <Contact />
       </main>
       <Footer />
