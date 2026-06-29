@@ -1,5 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import colors from '../../assets/styles/variables/colors';
+
+const animateIn = css`
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
 
 export const ContactSection = styled.section`
   background: ${colors.bg};
@@ -23,10 +34,11 @@ export const ContactLeft = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   padding-bottom: 64px;
   width: 466px;
   flex-shrink: 0;
+  ${animateIn}
 
   @media (max-width: 1200px) {
     width: 380px;
@@ -70,6 +82,8 @@ export const ContactActions = styled.div`
   opacity: 0.9;
   width: 673px;
   flex-shrink: 0;
+  ${animateIn}
+  transition-delay: 0.15s;
 
   @media (max-width: 1200px) {
     width: auto;
@@ -82,21 +96,44 @@ export const ContactActions = styled.div`
   }
 `;
 
+export const AccentBar = styled.div`
+  width: 0;
+  align-self: stretch;
+  background: ${colors.primary};
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+`;
+
 export const ContactButton = styled.a`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
-  padding: 136px 40px 40px 48px;
+  height: 200px;
+  padding: 0 40px 40px 48px;
   background: ${colors.bg};
   border-bottom: 1px solid #333;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  ${AccentBar} {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+  }
 
   &:hover {
     padding-left: 64px;
+
+    ${AccentBar} {
+      width: 6px;
+    }
   }
 
   @media (max-width: 900px) {
-    padding: 80px 24px 32px 32px;
+    height: 160px;
+    padding: 0 24px 32px 32px;
 
     &:hover {
       padding-left: 48px;
@@ -104,38 +141,8 @@ export const ContactButton = styled.a`
   }
 
   @media (max-width: 480px) {
-    padding: 48px 20px 24px 24px;
-  }
-`;
-
-export const ContactButtonAccented = styled(ContactButton)`
-  padding-left: 0;
-  display: flex;
-
-  &:hover {
-    padding-left: 0;
-  }
-`;
-
-export const AccentBar = styled.div`
-  width: 6px;
-  align-self: stretch;
-  background: ${colors.primary};
-  flex-shrink: 0;
-`;
-
-export const AccentedContent = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 136px 40px 40px 56px;
-
-  @media (max-width: 900px) {
-    padding: 80px 24px 32px 40px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 48px 20px 24px 28px;
+    height: 120px;
+    padding: 0 20px 24px 24px;
   }
 `;
 
@@ -145,4 +152,9 @@ export const ContactButtonText = styled.span`
   color: #f2f2f2;
   line-height: 26px;
   white-space: nowrap;
+  transition: transform 0.3s ease;
+
+  ${ContactButton}:hover & {
+    transform: translateX(4px);
+  }
 `;
