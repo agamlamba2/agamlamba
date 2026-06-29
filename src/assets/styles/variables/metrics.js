@@ -1,4 +1,4 @@
-export default {
+const metrics = {
   maxWidth: '1200px',
   paddingHorizontal: '24px',
   radius: {
@@ -7,3 +7,5 @@ export default {
     large: '12px',
   },
 };
+
+export default metrics;
