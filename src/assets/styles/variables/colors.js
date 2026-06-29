@@ -1,26 +1,20 @@
 const colors = {
-  bgColor: '#0a0a0a',
-  bgSecondary: '#111111',
-  bgTertiary: '#1a1a1a',
+  bg: '#000000',
+  bgLight: '#0a0a0a',
+  bgCard: '#111111',
+  bgCardHover: '#1a1a1a',
 
-  accent: '#c9a84c',
-  accentHover: '#d4b95d',
+  primary: '#E21949',
+  secondary: '#FFC1CF',
 
-  border: '#222222',
-  borderLight: '#333333',
+  border: '#1a1a1a',
+  borderLight: '#2a2a2a',
 
-  text: {
-    dark: {
-      little: '#666',
-      medium: '#333',
-      very: '#111',
-    },
-    light: {
-      little: '#888888',
-      medium: '#bbbbbb',
-      very: '#f5f5f5',
-    },
-  },
+  white: '#ffffff',
+  offWhite: '#f0f0f0',
+  gray: '#888888',
+  grayLight: '#aaaaaa',
+  grayDark: '#555555',
 };
 
 export default colors;

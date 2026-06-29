@@ -1,21 +1,20 @@
 import React from 'react';
-import { FiExternalLink, FiGithub } from 'react-icons/fi';
+import { FiArrowUpRight } from 'react-icons/fi';
 import {
   ProjectsSection,
-  SectionHeader,
-  SectionLabel,
-  SectionTitle,
-  ProjectsGrid,
+  ProjectsContainer,
+  ProjectsLabel,
+  ProjectsTitle,
+  ProjectsList,
   ProjectCard,
   ProjectImageArea,
+  ProjectNumber,
   ProjectInfo,
   ProjectCategory,
   ProjectName,
   ProjectDescription,
-  ProjectLinks,
   ProjectLink,
-  ProjectTech,
-  TechTag,
+  ProjectDivider,
 } from './styles';
 
 const projects = [
@@ -23,66 +22,56 @@ const projects = [
     category: 'Web Application',
     name: 'E-Commerce Platform',
     description: 'A full-stack e-commerce application with real-time inventory management, secure payments, and an intuitive admin dashboard.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    color: '#1a2a1a',
+    color: '#1a0a0a',
   },
   {
     category: 'Mobile App',
     name: 'Fitness Tracker',
     description: 'A cross-platform mobile application for tracking workouts, nutrition, and health metrics with data visualization.',
-    tech: ['React Native', 'Firebase', 'Redux'],
-    color: '#1a1a2a',
+    color: '#0a0a1a',
   },
   {
     category: 'Dashboard',
     name: 'Analytics Dashboard',
     description: 'An interactive data visualization dashboard providing real-time insights and customizable reporting for business metrics.',
-    tech: ['React', 'D3.js', 'Python', 'PostgreSQL'],
-    color: '#2a1a1a',
+    color: '#0a1a0a',
   },
   {
     category: 'API / Backend',
     name: 'Task Management API',
     description: 'A RESTful API with authentication, role-based access control, and real-time notifications for collaborative task management.',
-    tech: ['Node.js', 'Express', 'JWT', 'Socket.io'],
-    color: '#1a2a2a',
+    color: '#1a0a10',
   },
 ];
 
 export default function Projects() {
   return (
     <ProjectsSection id="projects">
-      <SectionHeader>
-        <SectionLabel>Projects</SectionLabel>
-        <SectionTitle>Selected work</SectionTitle>
-      </SectionHeader>
-      <ProjectsGrid>
-        {projects.map((project, index) => (
-          <ProjectCard key={index}>
-            <ProjectImageArea style={{ background: project.color }}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-            </ProjectImageArea>
-            <ProjectInfo>
-              <ProjectCategory>{project.category}</ProjectCategory>
-              <ProjectName>{project.name}</ProjectName>
-              <ProjectDescription>{project.description}</ProjectDescription>
-              <ProjectTech>
-                {project.tech.map((t, i) => (
-                  <TechTag key={i}>{t}</TechTag>
-                ))}
-              </ProjectTech>
-              <ProjectLinks>
-                <ProjectLink href="#" aria-label="View project">
-                  <FiExternalLink size={18} />
-                </ProjectLink>
-                <ProjectLink href="#" aria-label="View source">
-                  <FiGithub size={18} />
-                </ProjectLink>
-              </ProjectLinks>
-            </ProjectInfo>
-          </ProjectCard>
-        ))}
-      </ProjectsGrid>
+      <ProjectsContainer>
+        <ProjectsLabel>Selected Work</ProjectsLabel>
+        <ProjectsTitle>Recent projects</ProjectsTitle>
+        <ProjectsList>
+          {projects.map((project, index) => (
+            <React.Fragment key={index}>
+              <ProjectDivider />
+              <ProjectCard href="#">
+                <ProjectImageArea style={{ background: project.color }}>
+                  <ProjectNumber>{String(index + 1).padStart(2, '0')}</ProjectNumber>
+                </ProjectImageArea>
+                <ProjectInfo>
+                  <ProjectCategory>{project.category}</ProjectCategory>
+                  <ProjectName>{project.name}</ProjectName>
+                  <ProjectDescription>{project.description}</ProjectDescription>
+                  <ProjectLink>
+                    View Project <FiArrowUpRight size={16} />
+                  </ProjectLink>
+                </ProjectInfo>
+              </ProjectCard>
+            </React.Fragment>
+          ))}
+          <ProjectDivider />
+        </ProjectsList>
+      </ProjectsContainer>
     </ProjectsSection>
   );
 }

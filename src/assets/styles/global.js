@@ -11,26 +11,30 @@ export default createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
   }
 
   html,
   body,
   #root {
     height: 100%;
-    font-family: 'Inter', 'Segoe UI', Verdana, Arial, sans-serif;
-    background: ${colors.bgColor};
-    color: ${colors.text.light.medium};
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: ${colors.bg};
+    color: ${colors.white};
   }
 
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body,
   input,
-  button {
-    font: 16px 'Inter', 'Segoe UI', Verdana, Arial, sans-serif;
+  button,
+  textarea {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
   }
 
   *:focus {
@@ -48,6 +52,8 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+    border: none;
+    background: none;
   }
 
   img {
@@ -56,7 +62,7 @@ export default createGlobalStyle`
   }
 
   ::selection {
-    background: ${colors.accent};
-    color: ${colors.bgColor};
+    background: ${colors.primary};
+    color: ${colors.white};
   }
 `;

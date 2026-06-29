@@ -3,110 +3,108 @@ import colors from '../../assets/styles/variables/colors';
 import metrics from '../../assets/styles/variables/metrics';
 
 export const ContactSection = styled.section`
-  padding: 120px ${metrics.paddingHorizontal};
+  padding: ${metrics.sectionPadding} 0;
+
+  @media (max-width: 768px) {
+    padding: ${metrics.sectionPaddingMobile} 0;
+  }
+`;
+
+export const ContactContainer = styled.div`
   max-width: ${metrics.maxWidth};
   margin: 0 auto;
-`;
+  padding: 0 ${metrics.paddingHorizontal};
 
-export const SectionHeader = styled.div`
-  margin-bottom: 60px;
-  text-align: center;
-`;
-
-export const SectionLabel = styled.p`
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: ${colors.accent};
-  margin-bottom: 16px;
-`;
-
-export const SectionTitle = styled.h2`
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 600;
-  color: ${colors.text.light.very};
-  line-height: 1.2;
-`;
-
-export const ContactContent = styled.div`
-  text-align: center;
-`;
-
-export const ContactText = styled.p`
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: ${colors.text.light.little};
-  max-width: 550px;
-  margin: 0 auto 48px;
-`;
-
-export const ContactGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  max-width: 600px;
-  margin: 0 auto 48px;
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 768px) {
+    padding: 0 ${metrics.paddingHorizontalMobile};
   }
 `;
 
-export const ContactCard = styled.a`
-  display: block;
-  padding: 32px;
-  background: ${colors.bgSecondary};
-  border: 1px solid ${colors.border};
-  border-radius: ${metrics.radius.large};
-  text-align: center;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: ${colors.accent};
-    transform: translateY(-2px);
-  }
-`;
-
-export const ContactCardIcon = styled.div`
-  color: ${colors.accent};
-  margin-bottom: 16px;
-`;
-
-export const ContactCardTitle = styled.h3`
-  font-size: 0.8rem;
+export const ContactLabel = styled.p`
+  font-size: 0.875rem;
   font-weight: 500;
+  color: ${colors.primary};
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: ${colors.text.light.little};
-  margin-bottom: 8px;
+  margin-bottom: 48px;
 `;
 
-export const ContactCardValue = styled.p`
-  font-size: 0.95rem;
-  color: ${colors.text.light.very};
+export const ContactTitle = styled.h2`
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 800;
+  color: ${colors.white};
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 32px;
 `;
 
-export const SocialLinks = styled.div`
-  display: flex;
-  justify-content: center;
+export const ContactTitleAccent = styled.span`
+  color: ${colors.primary};
+`;
+
+export const ContactDescription = styled.p`
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: ${colors.gray};
+  max-width: 500px;
+  margin-bottom: 48px;
+`;
+
+export const ContactCTA = styled.div`
+  margin-bottom: 48px;
+`;
+
+export const ContactEmail = styled.a`
+  display: inline-flex;
+  align-items: center;
   gap: 16px;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  color: ${colors.white};
+  padding: 20px 32px;
+  border: 1px solid ${colors.borderLight};
+  border-radius: 60px;
+  transition: all 0.3s ease;
+  letter-spacing: -0.5px;
+
+  &:hover {
+    border-color: ${colors.primary};
+    background: ${colors.primary};
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 24px;
+  }
 `;
 
-export const SocialLink = styled.a`
-  width: 48px;
-  height: 48px;
+export const ContactEmailArrow = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${colors.border};
-  border-radius: 50%;
-  color: ${colors.text.light.little};
-  transition: all 0.3s ease;
+`;
+
+export const ContactDivider = styled.div`
+  height: 1px;
+  background: ${colors.borderLight};
+  margin-bottom: 40px;
+`;
+
+export const ContactSocials = styled.div`
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+`;
+
+export const ContactSocialLink = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ${colors.gray};
+  transition: color 0.3s ease;
 
   &:hover {
-    border-color: ${colors.accent};
-    color: ${colors.accent};
+    color: ${colors.primary};
   }
 `;

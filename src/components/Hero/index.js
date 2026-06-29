@@ -1,36 +1,36 @@
 import React from 'react';
-import { FiArrowDown } from 'react-icons/fi';
 import {
   HeroSection,
   HeroContent,
-  Greeting,
+  HeroLabel,
   HeroTitle,
-  HeroSubtitle,
+  HeroTitleLine,
+  HeroTitleAccent,
+  HeroBottom,
   HeroDescription,
-  ScrollIndicator,
+  ScrollLine,
 } from './styles';
 
 export default function Hero() {
-  const handleScroll = () => {
-    const el = document.getElementById('about');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <HeroSection id="hero">
       <HeroContent>
-        <Greeting>Hello, I'm</Greeting>
-        <HeroTitle>Agam Lamba</HeroTitle>
-        <HeroSubtitle>Software Developer</HeroSubtitle>
-        <HeroDescription>
-          I design and build digital experiences that are thoughtful,
-          elegant, and performant. Passionate about creating software
-          that makes a difference.
-        </HeroDescription>
+        <HeroLabel>Software Developer & Designer</HeroLabel>
+        <HeroTitle>
+          <HeroTitleLine>I build</HeroTitleLine>
+          <HeroTitleLine>
+            <HeroTitleAccent>digital</HeroTitleAccent> experiences
+          </HeroTitleLine>
+          <HeroTitleLine>that matter.</HeroTitleLine>
+        </HeroTitle>
       </HeroContent>
-      <ScrollIndicator onClick={handleScroll}>
-        <FiArrowDown size={20} />
-      </ScrollIndicator>
+      <HeroBottom>
+        <HeroDescription>
+          Crafting clean, performant, and user-focused applications
+          from concept to deployment.
+        </HeroDescription>
+        <ScrollLine />
+      </HeroBottom>
     </HeroSection>
   );
 }
