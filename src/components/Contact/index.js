@@ -1,56 +1,42 @@
 import React from 'react';
 import {
   ContactSection,
-  ContactContainer,
-  ContactGrid,
   ContactLeft,
   ContactTitle,
   ContactTitleAccent,
-  ContactRight,
-  ContactLinksList,
-  ContactLinkItem,
-  ContactLinkText,
-  ContactDivider,
-  VerticalAccent,
+  ContactActions,
+  ContactButton,
+  ContactButtonAccented,
+  AccentBar,
+  AccentedContent,
+  ContactButtonText,
 } from './styles';
 
 export default function Contact() {
   return (
     <ContactSection id="contact">
-      <ContactContainer>
-        <ContactGrid>
-          <ContactLeft>
-            <ContactTitle>
-              Let's make<br />
-              something<br />
-              together,<br />
-              <ContactTitleAccent>say hi.</ContactTitleAccent>
-            </ContactTitle>
-          </ContactLeft>
-          <VerticalAccent />
-          <ContactRight>
-            <ContactLinksList>
-              <ContactDivider />
-              <ContactLinkItem href="https://github.com/agamlamba2" target="_blank" rel="noopener noreferrer">
-                <ContactLinkText>GitHub</ContactLinkText>
-              </ContactLinkItem>
-              <ContactDivider />
-              <ContactLinkItem href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                <ContactLinkText>LinkedIn</ContactLinkText>
-              </ContactLinkItem>
-              <ContactDivider />
-              <ContactLinkItem href="mailto:agamlamba2@gmail.com">
-                <ContactLinkText>Email me</ContactLinkText>
-              </ContactLinkItem>
-              <ContactDivider />
-              <ContactLinkItem href="#" target="_blank" rel="noopener noreferrer">
-                <ContactLinkText>Download CV</ContactLinkText>
-              </ContactLinkItem>
-              <ContactDivider />
-            </ContactLinksList>
-          </ContactRight>
-        </ContactGrid>
-      </ContactContainer>
+      <ContactLeft>
+        <ContactTitle>
+          Let's make something together, <ContactTitleAccent>say hi.</ContactTitleAccent>
+        </ContactTitle>
+      </ContactLeft>
+      <ContactActions>
+        <ContactButton href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+          <ContactButtonText>Linkedin</ContactButtonText>
+        </ContactButton>
+        <ContactButtonAccented href="mailto:agamlamba2@gmail.com">
+          <AccentBar />
+          <AccentedContent>
+            <ContactButtonText>Email me</ContactButtonText>
+          </AccentedContent>
+        </ContactButtonAccented>
+        <ContactButton href="mailto:agamlamba2@gmail.com">
+          <ContactButtonText>Email me</ContactButtonText>
+        </ContactButton>
+        <ContactButton href="#" target="_blank" rel="noopener noreferrer">
+          <ContactButtonText>Download CV</ContactButtonText>
+        </ContactButton>
+      </ContactActions>
     </ContactSection>
   );
 }

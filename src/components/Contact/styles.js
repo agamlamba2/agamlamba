@@ -1,108 +1,148 @@
 import styled from 'styled-components';
 import colors from '../../assets/styles/variables/colors';
-import metrics from '../../assets/styles/variables/metrics';
 
 export const ContactSection = styled.section`
-  padding: ${metrics.sectionPadding} 0;
+  background: ${colors.bg};
+  display: flex;
+  gap: 208px;
+  align-items: flex-end;
+  padding: 0 48px;
 
-  @media (max-width: 768px) {
-    padding: ${metrics.sectionPaddingMobile} 0;
+  @media (max-width: 1200px) {
+    gap: 80px;
   }
-`;
-
-export const ContactContainer = styled.div`
-  max-width: ${metrics.maxWidth};
-  margin: 0 auto;
-  padding: 0 ${metrics.paddingHorizontal};
-
-  @media (max-width: 768px) {
-    padding: 0 ${metrics.paddingHorizontalMobile};
-  }
-`;
-
-export const ContactGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 4px 1fr;
-  gap: 0;
-  align-items: center;
-  min-height: 500px;
 
   @media (max-width: 900px) {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 60px;
-    min-height: auto;
+    padding: 0 20px;
   }
 `;
 
 export const ContactLeft = styled.div`
-  padding-right: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 64px;
+  width: 466px;
+  flex-shrink: 0;
+
+  @media (max-width: 1200px) {
+    width: 380px;
+  }
 
   @media (max-width: 900px) {
-    padding-right: 0;
+    width: 100%;
+    padding-bottom: 0;
+    padding-top: 80px;
   }
 `;
 
 export const ContactTitle = styled.h2`
-  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-size: 86px;
   font-weight: 800;
   color: ${colors.white};
-  line-height: 1.1;
-  letter-spacing: -2px;
+  line-height: 86px;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    font-size: 64px;
+    line-height: 64px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 48px;
+    line-height: 52px;
+  }
 `;
 
 export const ContactTitleAccent = styled.span`
   color: ${colors.primary};
-  font-style: italic;
 `;
 
-export const VerticalAccent = styled.div`
-  width: 4px;
-  height: 100%;
-  min-height: 400px;
-  background: ${colors.primary};
-  justify-self: center;
+export const ContactActions = styled.div`
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  opacity: 0.9;
+  width: 673px;
+  flex-shrink: 0;
+
+  @media (max-width: 1200px) {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
 
   @media (max-width: 900px) {
-    display: none;
+    width: 100%;
   }
 `;
 
-export const ContactRight = styled.div`
-  padding-left: 80px;
+export const ContactButton = styled.a`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 136px 40px 40px 48px;
+  background: ${colors.bg};
+  border-bottom: 1px solid #333;
+  transition: all 0.3s ease;
+
+  &:hover {
+    padding-left: 64px;
+  }
 
   @media (max-width: 900px) {
+    padding: 80px 24px 32px 32px;
+
+    &:hover {
+      padding-left: 48px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 48px 20px 24px 24px;
+  }
+`;
+
+export const ContactButtonAccented = styled(ContactButton)`
+  padding-left: 0;
+  display: flex;
+
+  &:hover {
     padding-left: 0;
   }
 `;
 
-export const ContactLinksList = styled.div`
-  display: flex;
-  flex-direction: column;
+export const AccentBar = styled.div`
+  width: 6px;
+  align-self: stretch;
+  background: ${colors.primary};
+  flex-shrink: 0;
 `;
 
-export const ContactDivider = styled.div`
-  height: 1px;
-  background: ${colors.borderLight};
-`;
-
-export const ContactLinkItem = styled.a`
+export const AccentedContent = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
-  padding: 32px 0;
-  transition: all 0.3s ease;
+  padding: 136px 40px 40px 56px;
 
-  &:hover {
-    padding-left: 16px;
+  @media (max-width: 900px) {
+    padding: 80px 24px 32px 40px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 48px 20px 24px 28px;
   }
 `;
 
-export const ContactLinkText = styled.span`
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: ${colors.white};
-  transition: color 0.3s ease;
-
-  ${ContactLinkItem}:hover & {
-    color: ${colors.primary};
-  }
+export const ContactButtonText = styled.span`
+  font-size: 20px;
+  font-weight: 600;
+  color: #f2f2f2;
+  line-height: 26px;
+  white-space: nowrap;
 `;
