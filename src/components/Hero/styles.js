@@ -2,50 +2,53 @@ import styled, { keyframes } from 'styled-components';
 import colors from '../../assets/styles/variables/colors';
 import metrics from '../../assets/styles/variables/metrics';
 
-const fadeInUp = keyframes`
-  from { opacity: 0; transform: translateY(40px); }
+const slideIn = keyframes`
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const lineGrow = keyframes`
-  from { height: 0; }
-  to { height: 80px; }
-`;
-
 export const HeroSection = styled.section`
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 160px ${metrics.paddingHorizontal} 60px;
-  max-width: ${metrics.maxWidth};
-  margin: 0 auto;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    padding: 140px ${metrics.paddingHorizontalMobile} 40px;
-  }
+  overflow: hidden;
 `;
 
 export const HeroContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  max-width: ${metrics.maxWidth};
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 ${metrics.paddingHorizontal};
+
+  @media (max-width: 768px) {
+    padding: 0 ${metrics.paddingHorizontalMobile};
+  }
 `;
 
-export const HeroLabel = styled.p`
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: ${colors.gray};
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 32px;
-  animation: ${fadeInUp} 0.8s ease forwards;
+export const HeroGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: end;
+  padding: 160px 0 60px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 120px 0 40px;
+    gap: 24px;
+  }
 `;
 
-export const HeroTitle = styled.h1`
-  font-size: clamp(3rem, 9vw, 7rem);
+export const HeroLeft = styled.div`
+  animation: ${slideIn} 0.8s ease forwards;
+`;
+
+export const HeroHeading = styled.h1`
+  font-size: clamp(3.5rem, 8vw, 7rem);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -3px;
@@ -56,50 +59,78 @@ export const HeroTitle = styled.h1`
   }
 `;
 
-export const HeroTitleLine = styled.span`
-  display: block;
+export const HeroRight = styled.div`
+  padding-bottom: 16px;
+  animation: ${slideIn} 0.8s ease 0.2s forwards;
   opacity: 0;
-  animation: ${fadeInUp} 0.8s ease forwards;
-
-  &:nth-child(1) { animation-delay: 0.1s; }
-  &:nth-child(2) { animation-delay: 0.25s; }
-  &:nth-child(3) { animation-delay: 0.4s; }
 `;
 
-export const HeroTitleAccent = styled.span`
-  color: ${colors.primary};
-`;
-
-export const HeroBottom = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 40px;
-  padding-top: 60px;
-  opacity: 0;
-  animation: ${fadeInUp} 0.8s ease 0.6s forwards;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-export const HeroDescription = styled.p`
-  font-size: 1rem;
+export const HeroParagraph = styled.p`
+  font-size: 1.05rem;
   line-height: 1.7;
   color: ${colors.gray};
-  max-width: 360px;
-  font-weight: 400;
+  max-width: 420px;
 `;
 
-export const ScrollLine = styled.div`
-  width: 1px;
-  height: 0;
-  background: ${colors.primary};
-  animation: ${lineGrow} 1s ease 1s forwards;
+export const HeroSlider = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  border-radius: ${metrics.radius.large};
+  overflow: hidden;
+  margin-top: auto;
+  animation: ${slideIn} 0.8s ease 0.4s forwards;
+  opacity: 0;
 
   @media (max-width: 768px) {
-    display: none;
+    aspect-ratio: 16 / 9;
   }
+`;
+
+export const SlideImage = styled.div`
+  position: absolute;
+  inset: 0;
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  transition: opacity 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 3rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.06);
+    letter-spacing: -1px;
+    text-transform: uppercase;
+  }
+`;
+
+export const SliderDots = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+`;
+
+export const SliderDot = styled.button`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: ${({ $active }) => ($active ? colors.white : 'rgba(255,255,255,0.3)')};
+  transition: background 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: ${colors.white};
+  }
+`;
+
+export const HeroFilling = styled.div`
+  height: 4px;
+  background: ${colors.primary};
+  transition: width 1.5s ease;
 `;

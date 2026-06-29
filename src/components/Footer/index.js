@@ -1,48 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FooterSection,
   FooterContainer,
-  FooterContent,
-  FooterLeft,
-  FooterLogo,
-  FooterTagline,
-  FooterRight,
   FooterLinks,
   FooterLink,
-  FooterBottom,
-  FooterCopyright,
+  FooterFilling,
 } from './styles';
 
 export default function Footer() {
-  const handleClick = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [fillingWidth, setFillingWidth] = useState(0);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setFillingWidth(100);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    const el = document.getElementById('footer');
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <FooterSection>
+    <FooterSection id="footer">
       <FooterContainer>
-        <FooterContent>
-          <FooterLeft>
-            <FooterLogo>Agam Lamba</FooterLogo>
-            <FooterTagline>Software Developer & Designer</FooterTagline>
-          </FooterLeft>
-          <FooterRight>
-            <FooterLinks>
-              <FooterLink onClick={() => handleClick('hero')}>Home</FooterLink>
-              <FooterLink onClick={() => handleClick('about')}>About</FooterLink>
-              <FooterLink onClick={() => handleClick('services')}>Services</FooterLink>
-              <FooterLink onClick={() => handleClick('projects')}>Work</FooterLink>
-              <FooterLink onClick={() => handleClick('contact')}>Contact</FooterLink>
-            </FooterLinks>
-          </FooterRight>
-        </FooterContent>
-        <FooterBottom>
-          <FooterCopyright>
-            &copy; {new Date().getFullYear()} Agam Lamba. All rights reserved.
-          </FooterCopyright>
-        </FooterBottom>
+        <FooterLinks>
+          <FooterLink href="https://webflow.com" target="_blank" rel="noopener noreferrer">
+            Powered by Webflow
+          </FooterLink>
+          <FooterLink href="/licensing">Licensing</FooterLink>
+          <FooterLink href="/style-guide">Style Guide</FooterLink>
+          <FooterLink href="/changelog">Changelog</FooterLink>
+        </FooterLinks>
       </FooterContainer>
+      <FooterFilling style={{ width: `${fillingWidth}%` }} />
     </FooterSection>
   );
 }
