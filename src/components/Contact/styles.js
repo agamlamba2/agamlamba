@@ -18,6 +18,7 @@ export const ContactSection = styled.section`
   gap: 208px;
   align-items: flex-end;
   padding: 0 48px;
+  border: 1px solid #333;
 
   @media (max-width: 1200px) {
     gap: 80px;
