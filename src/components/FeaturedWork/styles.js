@@ -64,6 +64,20 @@ export const Cover = styled.div`
   border-radius: 24px;
   overflow: hidden;
 
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  ${Project}:hover &::after {
+    opacity: 1;
+  }
+
   @media (max-width: 1024px) {
     height: 440px;
   }
@@ -80,11 +94,6 @@ export const CoverMedia = styled.div`
   background: ${({ $bg }) => $bg};
   background-size: cover;
   background-position: center;
-  transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
-
-  ${Project}:hover & {
-    transform: scale(1.05);
-  }
 `;
 
 export const Meta = styled.div`
