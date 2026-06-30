@@ -52,18 +52,19 @@ const ROW_STEP = 90; // row-distance-from-uBank -> vertical slide (px)
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
 export default function Companies() {
-  const sectionRef = useRef(null);
+  const gridRef = useRef(null);
   const cellRefs = useRef([]);
   const tickingRef = useRef(false);
 
   useEffect(() => {
     const update = () => {
-      const section = sectionRef.current;
-      if (section) {
-        const rect = section.getBoundingClientRect();
+      const grid = gridRef.current;
+      if (grid) {
+        const rect = grid.getBoundingClientRect();
         const vh = window.innerHeight;
-        // 0 when the section first enters the viewport, 1 once it's settled in.
-        const r = Math.max(0, Math.min((vh - rect.top) / (vh * 0.8), 1));
+        // Driven off the grid itself so the slide plays out while the logos
+        // are on screen: 0 as the grid enters from the bottom, 1 near the top.
+        const r = Math.max(0, Math.min((vh - rect.top) / (vh * 0.9), 1));
         const e = easeOutCubic(r);
         const cols = window.innerWidth <= 768 ? 2 : 4;
         const ubankCol = UBANK_INDEX % cols;
@@ -95,10 +96,10 @@ export default function Companies() {
   }, []);
 
   return (
-    <CompaniesSection id="companies" ref={sectionRef}>
+    <CompaniesSection id="companies">
       <CompaniesContainer>
         <CompaniesLabel>Companies I&rsquo;ve worked with</CompaniesLabel>
-        <LogoGrid>
+        <LogoGrid ref={gridRef}>
           {logos.map((logo, index) => (
             <LogoCell
               key={index}
