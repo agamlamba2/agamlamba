@@ -1,12 +1,10 @@
 import React from 'react';
-import logo from '../../assets/images/AL Logo.svg';
+import logo from '../../assets/images/AL Full Logo Transparent.svg';
 import {
   Nav,
   NavInner,
   NavBrand,
   NavLogoIcon,
-  NavLogoText,
-  NavLogoAccent,
   NavMenu,
   NavLink,
 } from './styles';
@@ -16,8 +14,7 @@ export default function Navbar() {
     <Nav>
       <NavInner>
         <NavBrand href="#hero">
-          <NavLogoIcon src={logo} alt="AL" />
-          <NavLogoText>Agam <NavLogoAccent>Lamba</NavLogoAccent></NavLogoText>
+          <NavLogoIcon src={logo} alt="Agam Lamba" />
         </NavBrand>
         <NavMenu>
           <NavLink href="/projects">Projects</NavLink>

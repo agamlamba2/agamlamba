@@ -20,7 +20,7 @@ export const NavInner = styled.div`
   display: flex;
   align-items: stretch;
   gap: 208px;
-  height: 112px;
+  height: 96px;
 
   @media (max-width: 1200px) {
     gap: 80px;
@@ -58,17 +58,6 @@ export const NavLogoIcon = styled.img`
   @media (max-width: 768px) {
     height: 32px;
   }
-`;
-
-export const NavLogoText = styled.span`
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: ${colors.white};
-  letter-spacing: -0.3px;
-`;
-
-export const NavLogoAccent = styled.span`
-  color: ${colors.primary};
 `;
 
 export const NavMenu = styled.div`
