@@ -19,12 +19,32 @@ export const CompaniesContainer = styled.div`
   border-top: 1px solid #4f4f4f;
   border-bottom: 1px solid #4f4f4f;
   padding: 48px 24px;
+
+  @media (max-width: 768px) {
+    padding: 24px 12px;
+  }
+`;
+
+export const CompaniesLabel = styled.p`
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 40px;
+  color: #8f8f8f;
+  text-align: center;
+  padding-bottom: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+`;
+
+export const LogoGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
-    padding: 24px 12px;
   }
 `;
 

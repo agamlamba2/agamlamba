@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   CompaniesSection,
   CompaniesContainer,
+  CompaniesLabel,
+  LogoGrid,
   LogoCell,
   LogoImg,
 } from './styles';
@@ -63,11 +65,14 @@ export default function Companies() {
   return (
     <CompaniesSection id="companies">
       <CompaniesContainer ref={ref}>
-        {logos.map((logo, index) => (
-          <LogoCell key={index} $visible={visible} $delay={(index % 4) * 0.08 + Math.floor(index / 4) * 0.05}>
-            <LogoImg src={logo.src} alt={logo.alt} $height={logo.height} />
-          </LogoCell>
-        ))}
+        <CompaniesLabel>Companies I&rsquo;ve worked with</CompaniesLabel>
+        <LogoGrid>
+          {logos.map((logo, index) => (
+            <LogoCell key={index} $visible={visible} $delay={(index % 4) * 0.08 + Math.floor(index / 4) * 0.05}>
+              <LogoImg src={logo.src} alt={logo.alt} $height={logo.height} />
+            </LogoCell>
+          ))}
+        </LogoGrid>
       </CompaniesContainer>
     </CompaniesSection>
   );
