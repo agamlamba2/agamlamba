@@ -17,7 +17,7 @@ export default function Navbar() {
           <NavLogoIcon src={logo} alt="Agam Lamba" />
         </NavBrand>
         <NavMenu>
-          <NavLink href="/projects">Projects</NavLink>
+          <NavLink href="#projects">Projects</NavLink>
           <NavLink href="/work-with-me">Work with me</NavLink>
           <NavLink href="/my-approach">My approach</NavLink>
           <NavLink href="#contact">Success stories</NavLink>
