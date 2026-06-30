@@ -104,6 +104,18 @@ export const AccentBar = styled.div`
   transition: width 0.3s ease;
 `;
 
+// Red "filling" that wipes across each row, driven by scroll progress.
+export const Filling = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: ${colors.primary};
+  pointer-events: none;
+  z-index: 0;
+`;
+
 export const ContactButton = styled.a`
   display: flex;
   align-items: flex-end;
@@ -121,6 +133,7 @@ export const ContactButton = styled.a`
     left: 0;
     top: 0;
     bottom: 0;
+    z-index: 1;
   }
 
   &:hover {
@@ -147,6 +160,8 @@ export const ContactButton = styled.a`
 `;
 
 export const ContactButtonText = styled.span`
+  position: relative;
+  z-index: 1;
   font-size: 20px;
   font-weight: 600;
   color: #f2f2f2;
