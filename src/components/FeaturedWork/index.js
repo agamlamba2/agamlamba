@@ -14,37 +14,41 @@ import {
   Desc,
 } from './styles';
 
-// Cover images aren't available yet — each card uses its brand background
-// for now. Drop a `cover` image into the data below to swap it in.
+import coverTaste from '../../assets/images/img_project_cover_taste.webp';
+import coverUta from '../../assets/images/img_project_cover_uta.webp';
+import coverSimplicity from '../../assets/images/img_project_cover_simplicity.webp';
+import coverHomein from '../../assets/images/img_project_cover_homein.webp';
+import coverWestpac from '../../assets/images/img_project_cover_westpac.webp';
+
 const projects = [
   {
     title: 'Taste.com.au',
     desc: 'Product Design: Web Redesign & Research',
-    bg: '#eaebec',
+    cover: coverTaste,
     url: '/project',
   },
   {
     title: 'Universal Task Assistant',
     desc: 'Product Design: App & Branding',
-    bg: 'radial-gradient(circle at 70% 30%, #1c1c1c, #000000)',
+    cover: coverUta,
     url: '/project',
   },
   {
     title: 'Simplicity Accelerator',
     desc: 'Product Design: Responsive Web Design & Platform Redesign',
-    bg: 'linear-gradient(180deg, #003149 0%, #003d5b 100%)',
+    cover: coverSimplicity,
     url: '/project',
   },
   {
     title: 'Home-in (CommBank)',
     desc: 'Multi-channel Design Strategy',
-    bg: 'linear-gradient(57.95deg, #017f76 23.585%, #00385b 87.143%)',
+    cover: coverHomein,
     url: '/project',
   },
   {
     title: 'Westpac Mobile Banking',
     desc: 'Product Design: App, Website, and Branding',
-    bg: 'linear-gradient(120deg, #990000 0%, #5e0000 100%)',
+    cover: coverWestpac,
     url: '/project',
   },
 ];
