@@ -6,7 +6,7 @@ export const Nav = styled.nav`
   position: sticky;
   bottom: 0;
   z-index: 100;
-  padding: 0 48px;
+  padding: 0 0 0 48px;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -19,8 +19,12 @@ export const Nav = styled.nav`
 export const NavInner = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 208px;
   padding: 32px 0;
+
+  @media (max-width: 1200px) {
+    gap: 80px;
+  }
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -34,6 +38,16 @@ export const NavBrand = styled.a`
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 466px;
+  flex-shrink: 0;
+
+  @media (max-width: 1200px) {
+    width: 380px;
+  }
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 export const NavLogoIcon = styled.img`
@@ -58,13 +72,16 @@ export const NavLogoAccent = styled.span`
 
 export const NavMenu = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex: 1;
+  justify-content: flex-start;
   gap: 80px;
   flex-wrap: wrap;
+  padding-left: 48px;
 
   @media (max-width: 768px) {
     justify-content: flex-start;
     gap: 20px;
+    padding-left: 0;
   }
 `;
 

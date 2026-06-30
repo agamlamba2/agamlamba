@@ -19,7 +19,7 @@ export const ContactSection = styled.section`
   display: flex;
   gap: 208px;
   align-items: flex-end;
-  padding: 0 48px;
+  padding: 0 0 0 48px;
   border-top: 1px solid ${borderColor};
   border-bottom: 1px solid ${borderColor};
 
