@@ -4,20 +4,18 @@ import colors from '../../assets/styles/variables/colors';
 export const CompaniesSection = styled.section`
   background: ${colors.bg};
   width: 100%;
-  padding: 160px 96px;
+  padding: 112px 96px;
 
   @media (max-width: 1200px) {
-    padding: 120px 48px;
+    padding: 72px 48px;
   }
 
   @media (max-width: 768px) {
-    padding: 80px 20px;
+    padding: 32px 20px;
   }
 `;
 
 export const CompaniesContainer = styled.div`
-  border-top: 1px solid #4f4f4f;
-  border-bottom: 1px solid #4f4f4f;
   padding: 48px 24px;
 
   @media (max-width: 768px) {
