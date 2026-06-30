@@ -17,7 +17,6 @@ export const NavInner = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 32px 0;
-  border-bottom: 1px solid #4f4f4f;
 
   @media (max-width: 768px) {
     flex-direction: column;
