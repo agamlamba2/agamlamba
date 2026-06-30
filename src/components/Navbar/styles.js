@@ -7,7 +7,7 @@ export const Nav = styled.nav`
   z-index: 100;
   margin-top: -96px;
   padding: 0 0 0 48px;
-  background: rgba(0, 0, 0, 0.64);
+  background: rgba(0, 0, 0, 0.48);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
