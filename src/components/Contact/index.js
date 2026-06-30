@@ -44,11 +44,11 @@ export default function Contact() {
         </ContactTitle>
       </ContactLeft>
       <ContactActions ref={actionsRef} className={actionsVisible ? 'visible' : ''}>
-        <ContactButton href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+        <ContactButton href="https://linkedin.com/in/agamlamba" target="_blank" rel="noopener noreferrer">
           <AccentBar />
           <ContactButtonText>Linkedin</ContactButtonText>
         </ContactButton>
-        <ContactButton href="#" target="_blank" rel="noopener noreferrer">
+        <ContactButton href="https://calendly.com/agamlamba2/30min" target="_blank" rel="noopener noreferrer">
           <AccentBar />
           <ContactButtonText>Book a meeting</ContactButtonText>
         </ContactButton>
@@ -56,7 +56,11 @@ export default function Contact() {
           <AccentBar />
           <ContactButtonText>Email me</ContactButtonText>
         </ContactButton>
-        <ContactButton href="#" target="_blank" rel="noopener noreferrer">
+        <ContactButton
+          href="https://www.dropbox.com/scl/fi/b92qa01p9q5m0mhhhizwy/Agam-Lamba-CV-v12-2026-compressed.pdf?rlkey=myfhl8lalme49w53od7z31fct&st=2mmmdgo6&e=1&dl=0"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <AccentBar />
           <ContactButtonText>Download CV</ContactButtonText>
         </ContactButton>
