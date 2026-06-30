@@ -73,15 +73,19 @@ export const NavLogoAccent = styled.span`
 export const NavMenu = styled.div`
   display: flex;
   flex: 1;
+  align-self: stretch;
+  align-items: center;
   justify-content: flex-start;
   gap: 80px;
   flex-wrap: wrap;
   padding-left: 48px;
+  border-left: 1px solid #4f4f4f;
 
   @media (max-width: 768px) {
     justify-content: flex-start;
     gap: 20px;
     padding-left: 0;
+    border-left: none;
   }
 `;
 
