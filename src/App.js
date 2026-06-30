@@ -5,6 +5,7 @@ import FontStyles from './assets/styles/fonts';
 import GlobalStyles from './assets/styles/global';
 import Home from './pages/Home';
 import Project from './pages/Project';
+import ProjectDetail from './pages/ProjectDetail';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/project" element={<Project />} />
+        <Route path="/:slug" element={<ProjectDetail />} />
       </Routes>
     </>
   );

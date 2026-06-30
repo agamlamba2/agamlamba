@@ -14,44 +14,7 @@ import {
   Desc,
 } from './styles';
 
-import coverTaste from '../../assets/images/img_project_cover_taste.webp';
-import coverUta from '../../assets/images/img_project_cover_uta.webp';
-import coverSimplicity from '../../assets/images/img_project_cover_simplicity.webp';
-import coverHomein from '../../assets/images/img_project_cover_homein.webp';
-import coverWestpac from '../../assets/images/img_project_cover_westpac.webp';
-
-const projects = [
-  {
-    title: 'Taste.com.au',
-    desc: 'Product Design: Web Redesign & Research',
-    cover: coverTaste,
-    url: '/project',
-  },
-  {
-    title: 'Universal Task Assistant',
-    desc: 'Product Design: App & Branding',
-    cover: coverUta,
-    url: '/project',
-  },
-  {
-    title: 'Simplicity Accelerator',
-    desc: 'Product Design: Responsive Web Design & Platform Redesign',
-    cover: coverSimplicity,
-    url: '/project',
-  },
-  {
-    title: 'Home-in (CommBank)',
-    desc: 'Multi-channel Design Strategy',
-    cover: coverHomein,
-    url: '/project',
-  },
-  {
-    title: 'Westpac Mobile Banking',
-    desc: 'Product Design: App, Website, and Branding',
-    cover: coverWestpac,
-    url: '/project',
-  },
-];
+import { projects } from '../../data/projects';
 
 function ProjectCard({ project }) {
   const ref = useRef(null);
@@ -74,7 +37,7 @@ function ProjectCard({ project }) {
   const bg = project.cover ? `url(${project.cover})` : project.bg;
 
   return (
-    <Project ref={ref} to={project.url} className={visible ? 'visible' : ''}>
+    <Project ref={ref} to={`/${project.slug}`} className={visible ? 'visible' : ''}>
       <Cover>
         <CoverMedia $bg={bg} />
       </Cover>
