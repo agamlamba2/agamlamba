@@ -53,12 +53,10 @@ export const LogoCell = styled.div`
   align-items: center;
   justify-content: center;
   padding: 16px;
-  opacity: ${({ $visible }) => ($visible ? 0.75 : 0)};
-  transition: opacity 0.6s ease;
-  transition-delay: ${({ $delay }) => $delay}s;
+  opacity: 0.75;
   will-change: transform;
 
-  /* transform is set inline per-frame for the scroll parallax drift */
+  /* transform is set inline per-frame for the scroll slide-in (no fade) */
 
   &:hover {
     opacity: 1;

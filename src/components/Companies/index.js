@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   CompaniesSection,
   CompaniesContainer,
@@ -44,30 +44,17 @@ const logos = [
   { src: logoLesMills, alt: 'Les Mills', height: 20 },
 ];
 
-// Per-column drift amplitude (px), alternating direction/speed — gives the
-// gentle milliesdesign-style collage motion as the section scrolls.
-const COL_FACTORS = [46, -30, 36, -50];
+// uBank is the anchor (index 2). Every other logo starts offset from its grid
+// spot and slides in toward it as the section scrolls into view — no fades.
+const UBANK_INDEX = 2;
+const COL_STEP = 130; // horizontal-distance-from-uBank -> vertical slide (px)
+const ROW_STEP = 90; // row-distance-from-uBank -> vertical slide (px)
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
 export default function Companies() {
   const sectionRef = useRef(null);
-  const containerRef = useRef(null);
   const cellRefs = useRef([]);
   const tickingRef = useRef(false);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    if (containerRef.current) observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -75,12 +62,20 @@ export default function Companies() {
       if (section) {
         const rect = section.getBoundingClientRect();
         const vh = window.innerHeight;
-        const p = (vh / 2 - (rect.top + rect.height / 2)) / vh;
+        // 0 when the section first enters the viewport, 1 once it's settled in.
+        const r = Math.max(0, Math.min((vh - rect.top) / (vh * 0.8), 1));
+        const e = easeOutCubic(r);
         const cols = window.innerWidth <= 768 ? 2 : 4;
+        const ubankCol = UBANK_INDEX % cols;
+        const ubankRow = Math.floor(UBANK_INDEX / cols);
         cellRefs.current.forEach((el, i) => {
           if (!el) return;
-          const factor = COL_FACTORS[(i % cols) % COL_FACTORS.length];
-          el.style.transform = `translate3d(0, ${(p * factor).toFixed(2)}px, 0)`;
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const startY =
+            Math.abs(col - ubankCol) * COL_STEP + (row - ubankRow) * ROW_STEP;
+          const y = startY * (1 - e);
+          el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
         });
       }
       tickingRef.current = false;
@@ -101,7 +96,7 @@ export default function Companies() {
 
   return (
     <CompaniesSection id="companies" ref={sectionRef}>
-      <CompaniesContainer ref={containerRef}>
+      <CompaniesContainer>
         <CompaniesLabel>Companies I&rsquo;ve worked with</CompaniesLabel>
         <LogoGrid>
           {logos.map((logo, index) => (
@@ -110,8 +105,6 @@ export default function Companies() {
               ref={(el) => {
                 cellRefs.current[index] = el;
               }}
-              $visible={visible}
-              $delay={(index % 4) * 0.08 + Math.floor(index / 4) * 0.05}
             >
               <LogoImg src={logo.src} alt={logo.alt} $height={logo.height} />
             </LogoCell>
