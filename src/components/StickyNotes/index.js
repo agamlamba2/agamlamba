@@ -1,19 +1,10 @@
 import React, { useState, useRef, useCallback } from 'react';
-import {
-  NotesLayer,
-  Note,
-  NoteTitle,
-  NoteForm,
-  NoteInput,
-  NoteTextarea,
-  NoteButton,
-  NoteStatus,
-} from './styles';
+import { NotesLayer, Note } from './styles';
 
-const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/agamlamba2@gmail.com';
+const DEFAULT_NOTE_3 = 'Leave me a message';
 
-// Notes 1 & 2 are fixed copy; note 3 is a "leave me a message" form.
-// Positions (fractions of the viewport) are chosen to clear the hero text
+// Notes 1 & 2 are fixed copy; note 3 is editable by the visitor.
+// Positions (fractions of the viewport) clear the hero text by default
 // and reset on every page load (state is not persisted).
 const notes = [
   {
@@ -34,7 +25,7 @@ const notes = [
   },
   {
     id: 3,
-    form: true,
+    editable: true,
     color: '#9CE3FF',
     rotate: -3,
     x: 0.66,
@@ -52,7 +43,6 @@ export default function StickyNotes() {
       return acc;
     }, {})
   );
-  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
 
   const onPointerDown = useCallback((e, id) => {
     const layer = layerRef.current;
@@ -82,7 +72,7 @@ export default function StickyNotes() {
     if (!d) return;
     if (!d.started) {
       const dist = Math.hypot(e.clientX - d.startX, e.clientY - d.startY);
-      if (dist < 5) return; // small move = click
+      if (dist < 5) return; // small move = click (lets editable notes focus)
       d.started = true;
       d.el.setPointerCapture(d.pointerId);
       d.el.dataset.dragging = 'true';
@@ -103,28 +93,6 @@ export default function StickyNotes() {
     dragRef.current = null;
   }, []);
 
-  const stop = useCallback((e) => e.stopPropagation(), []);
-
-  const onSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    setStatus('sending');
-    try {
-      const res = await fetch(FORMSUBMIT_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          email: formData.get('email'),
-          message: formData.get('message'),
-          _subject: 'New message from your portfolio',
-        }),
-      });
-      setStatus(res.ok ? 'sent' : 'error');
-    } catch (err) {
-      setStatus('error');
-    }
-  }, []);
-
   return (
     <NotesLayer ref={layerRef}>
       {notes.map((note) => {
@@ -139,39 +107,16 @@ export default function StickyNotes() {
           onPointerCancel: onPointerUp,
         };
 
-        if (note.form) {
+        if (note.editable) {
           return (
-            <Note key={note.id} {...common}>
-              <NoteTitle>Leave me a message</NoteTitle>
-              {status === 'sent' ? (
-                <NoteStatus>Thanks! I'll be in touch ✌️</NoteStatus>
-              ) : (
-                <NoteForm onSubmit={onSubmit}>
-                  <NoteInput
-                    type="email"
-                    name="email"
-                    placeholder="Your email"
-                    required
-                    onPointerDown={stop}
-                  />
-                  <NoteTextarea
-                    name="message"
-                    placeholder="Your message…"
-                    required
-                    onPointerDown={stop}
-                  />
-                  <NoteButton
-                    type="submit"
-                    onPointerDown={stop}
-                    disabled={status === 'sending'}
-                  >
-                    {status === 'sending' ? 'Sending…' : 'Send'}
-                  </NoteButton>
-                  {status === 'error' && (
-                    <NoteStatus>Something went wrong — try again.</NoteStatus>
-                  )}
-                </NoteForm>
-              )}
+            <Note
+              key={note.id}
+              {...common}
+              contentEditable
+              suppressContentEditableWarning
+              spellCheck={false}
+            >
+              {DEFAULT_NOTE_3}
             </Note>
           );
         }
