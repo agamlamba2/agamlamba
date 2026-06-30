@@ -58,7 +58,6 @@ export default function Companies() {
 
   useEffect(() => {
     const clamp = (v) => Math.max(0, Math.min(v, 1));
-    const N = logos.length;
 
     const update = () => {
       const grid = gridRef.current;
@@ -67,13 +66,12 @@ export default function Companies() {
         const vh = window.innerHeight;
         const r = clamp((vh - rect.top) / (vh * 0.9));
         const cols = window.innerWidth <= 768 ? 2 : 4;
-        const rows = Math.ceil(N / cols);
         imgRefs.current.forEach((el, i) => {
           if (!el) return;
           const row = Math.floor(i / cols);
           const col = i % cols;
-          // bottom row reveals first, moving upward to the top row
-          const order = (rows - 1 - row) * cols + col;
+          // top row reveals first, moving down to the bottom row
+          const order = row * cols + col;
           const local = clamp((r - order * STAGGER) / WINDOW);
           const y = (1 - easeOutCubic(local)) * SLIDE;
           el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
