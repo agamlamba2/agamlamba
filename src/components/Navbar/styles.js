@@ -3,15 +3,16 @@ import colors from '../../assets/styles/variables/colors';
 import metrics from '../../assets/styles/variables/metrics';
 
 export const Nav = styled.nav`
-  position: sticky;
-  bottom: 0;
+  position: relative;
   z-index: 100;
+  margin-top: -96px;
   padding: 0 0 0 48px;
   background: rgba(0, 0, 0, 0.64);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
   @media (max-width: 768px) {
+    margin-top: -72px;
     padding: 0 ${metrics.paddingHorizontalMobile};
   }
 `;
