@@ -44,8 +44,15 @@ const logos = [
   { src: logoLesMills, alt: 'Les Mills', height: 20 },
 ];
 
+// Per-column drift amplitude (px), alternating direction/speed — gives the
+// gentle milliesdesign-style collage motion as the section scrolls.
+const COL_FACTORS = [46, -30, 36, -50];
+
 export default function Companies() {
-  const ref = useRef(null);
+  const sectionRef = useRef(null);
+  const containerRef = useRef(null);
+  const cellRefs = useRef([]);
+  const tickingRef = useRef(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -58,17 +65,54 @@ export default function Companies() {
       },
       { threshold: 0.2 }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const update = () => {
+      const section = sectionRef.current;
+      if (section) {
+        const rect = section.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const p = (vh / 2 - (rect.top + rect.height / 2)) / vh;
+        const cols = window.innerWidth <= 768 ? 2 : 4;
+        cellRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const factor = COL_FACTORS[(i % cols) % COL_FACTORS.length];
+          el.style.transform = `translate3d(0, ${(p * factor).toFixed(2)}px, 0)`;
+        });
+      }
+      tickingRef.current = false;
+    };
+    const onScroll = () => {
+      if (tickingRef.current) return;
+      tickingRef.current = true;
+      window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
   return (
-    <CompaniesSection id="companies">
-      <CompaniesContainer ref={ref}>
+    <CompaniesSection id="companies" ref={sectionRef}>
+      <CompaniesContainer ref={containerRef}>
         <CompaniesLabel>Companies I&rsquo;ve worked with</CompaniesLabel>
         <LogoGrid>
           {logos.map((logo, index) => (
-            <LogoCell key={index} $visible={visible} $delay={(index % 4) * 0.08 + Math.floor(index / 4) * 0.05}>
+            <LogoCell
+              key={index}
+              ref={(el) => {
+                cellRefs.current[index] = el;
+              }}
+              $visible={visible}
+              $delay={(index % 4) * 0.08 + Math.floor(index / 4) * 0.05}
+            >
               <LogoImg src={logo.src} alt={logo.alt} $height={logo.height} />
             </LogoCell>
           ))}
