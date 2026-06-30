@@ -5,7 +5,7 @@ import metrics from '../../assets/styles/variables/metrics';
 export const Nav = styled.nav`
   position: relative;
   z-index: 100;
-  margin-top: -96px;
+  margin-top: ${({ $overlay }) => ($overlay ? '-96px' : '0')};
   padding: 0 0 0 48px;
   background: rgba(0, 0, 0, 0.48);
   backdrop-filter: blur(20px);
@@ -14,7 +14,7 @@ export const Nav = styled.nav`
   border-bottom: 1px solid #4f4f4f;
 
   @media (max-width: 768px) {
-    margin-top: -72px;
+    margin-top: ${({ $overlay }) => ($overlay ? '-72px' : '0')};
     padding: 0 ${metrics.paddingHorizontalMobile};
   }
 `;

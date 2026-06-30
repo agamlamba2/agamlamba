@@ -1,25 +1,20 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 import FontStyles from './assets/styles/fonts';
 import GlobalStyles from './assets/styles/global';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import StickyNotes from './components/StickyNotes';
-import Companies from './components/Companies';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
+import Home from './pages/Home';
+import Project from './pages/Project';
 
 export default function App() {
   return (
     <>
       <FontStyles />
       <GlobalStyles />
-      <Hero />
-      <StickyNotes />
-      <Navbar />
-      <Companies />
-      <Projects />
-      <Contact />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/project" element={<Project />} />
+      </Routes>
     </>
   );
 }

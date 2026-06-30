@@ -17,8 +17,8 @@ export const NotesLayer = styled.div`
 
 export const Note = styled.div`
   position: absolute;
-  width: 200px;
-  padding: 20px;
+  width: 240px;
+  padding: 24px 22px 22px;
   background: ${({ $color }) => $color};
   color: #1a1a1a;
   border-radius: 2px;
@@ -26,13 +26,22 @@ export const Note = styled.div`
   transform: rotate(${({ $rotate }) => $rotate}deg);
   cursor: grab;
   pointer-events: auto;
-  user-select: none;
   touch-action: none;
   font-family: 'Bradley Hand', 'Segoe Print', 'Comic Sans MS', cursive;
-  font-size: 1.25rem;
-  line-height: 1.35;
+  font-size: 1.05rem;
+  line-height: 1.4;
   font-weight: 600;
   transition: box-shadow 0.2s ease;
+  outline: none;
+  caret-color: #1a1a1a;
+
+  &[contenteditable='true'] {
+    cursor: text;
+  }
+
+  &[contenteditable='true']:focus {
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  }
 
   &::before {
     content: '';
