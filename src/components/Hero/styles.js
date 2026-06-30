@@ -12,6 +12,8 @@ export const HeroSection = styled.section`
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  border-top: 1px solid #4f4f4f;
+  border-bottom: 1px solid #4f4f4f;
 `;
 
 export const SlideImage = styled.div`
@@ -27,13 +29,7 @@ export const SlideImage = styled.div`
 export const HeroOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0) 35%,
-    rgba(0, 0, 0, 0.15) 70%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
+  background: rgba(0, 0, 0, 0.4);
 `;
 
 export const HeroContent = styled.div`
@@ -53,11 +49,12 @@ export const HeroContent = styled.div`
 `;
 
 export const HeroHeading = styled.h1`
-  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-size: clamp(3.5rem, 8vw, 115px);
   font-weight: 800;
-  line-height: 1.02;
+  line-height: 1;
   letter-spacing: -3px;
   color: ${colors.white};
+  text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.48);
   animation: ${slideIn} 0.8s ease forwards;
 
   @media (max-width: 480px) {
@@ -67,17 +64,19 @@ export const HeroHeading = styled.h1`
 
 export const HeroParagraph = styled.p`
   align-self: flex-end;
-  max-width: 460px;
-  font-size: 1.4rem;
-  line-height: 1.5;
-  font-weight: 500;
+  max-width: 480px;
+  font-size: 26px;
+  line-height: 40px;
+  font-weight: 600;
   color: ${colors.white};
   text-align: left;
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.64);
   animation: ${slideIn} 0.8s ease 0.2s forwards;
   opacity: 0;
 
   @media (max-width: 768px) {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
     max-width: 320px;
   }
 `;

@@ -7,7 +7,7 @@ export const Nav = styled.nav`
   bottom: 0;
   z-index: 100;
   padding: 0 0 0 48px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.64);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
@@ -20,6 +20,7 @@ export const NavInner = styled.div`
   display: flex;
   align-items: stretch;
   gap: 208px;
+  height: 112px;
 
   @media (max-width: 1200px) {
     gap: 80px;
@@ -29,6 +30,7 @@ export const NavInner = styled.div`
     flex-direction: column;
     gap: 20px;
     align-items: flex-start;
+    height: auto;
     padding: 24px 0;
   }
 `;
@@ -39,7 +41,6 @@ export const NavBrand = styled.a`
   gap: 12px;
   width: 466px;
   flex-shrink: 0;
-  padding: 32px 0;
 
   @media (max-width: 1200px) {
     width: 380px;
@@ -47,7 +48,6 @@ export const NavBrand = styled.a`
 
   @media (max-width: 768px) {
     width: auto;
-    padding: 0;
   }
 `;
 
@@ -76,7 +76,7 @@ export const NavMenu = styled.div`
   flex: 1;
   align-items: center;
   justify-content: flex-start;
-  gap: 80px;
+  gap: 76px;
   flex-wrap: wrap;
   padding-left: 48px;
   border-left: 1px solid #4f4f4f;
@@ -90,11 +90,10 @@ export const NavMenu = styled.div`
 `;
 
 export const NavLink = styled.a`
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: ${colors.gray};
+  font-size: 16px;
+  font-weight: 600;
+  color: #828282;
   transition: color 0.3s ease;
-  letter-spacing: 0.2px;
 
   &:hover {
     color: ${colors.white};
