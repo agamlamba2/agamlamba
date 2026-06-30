@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import StickyNotes from '../components/StickyNotes';
 import Companies from '../components/Companies';
-import Projects from '../components/Projects';
+import FeaturedWork from '../components/FeaturedWork';
 import Contact from '../components/Contact';
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       <StickyNotes />
       <Navbar />
       <Companies />
-      <Projects />
+      <FeaturedWork />
       <Contact />
     </>
   );
