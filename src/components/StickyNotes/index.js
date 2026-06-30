@@ -1,42 +1,50 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { NotesLayer, Note } from './styles';
+import {
+  NotesLayer,
+  Note,
+  NoteTitle,
+  NoteForm,
+  NoteInput,
+  NoteTextarea,
+  NoteButton,
+  NoteStatus,
+} from './styles';
 
-const DEFAULT_NOTE_3 = 'Double-click to edit this note ✏️';
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/agamlamba2@gmail.com';
 
-// Notes 1 & 2 are fixed copy; note 3 is editable by the visitor.
+// Notes 1 & 2 are fixed copy; note 3 is a "leave me a message" form.
+// Positions (fractions of the viewport) are chosen to clear the hero text
+// and reset on every page load (state is not persisted).
 const notes = [
   {
     id: 1,
     text: "I'm currently a Lead Designer for BFS & Design Systems at Ubank. Australia's first digital bank company.",
     color: '#FEFF9C',
     rotate: -4,
-    x: 0.05,
-    y: 0.12,
+    x: 0.63,
+    y: 0.07,
   },
   {
     id: 2,
     text: "I've been in the design industry for over 13 years, with a background in product design and a Bachelor's Degree in Design Computing from USyd",
     color: '#FF9CEE',
     rotate: 4,
-    x: 0.74,
-    y: 0.1,
+    x: 0.04,
+    y: 0.42,
   },
   {
     id: 3,
-    editable: true,
+    form: true,
     color: '#9CE3FF',
     rotate: -3,
-    x: 0.08,
-    y: 0.58,
+    x: 0.66,
+    y: 0.4,
   },
 ];
 
 export default function StickyNotes() {
   const layerRef = useRef(null);
   const dragRef = useRef(null);
-  const note3Initial = useRef(
-    (typeof window !== 'undefined' && window.localStorage.getItem('sticky-note-3')) || DEFAULT_NOTE_3
-  );
 
   const [positions, setPositions] = useState(() =>
     notes.reduce((acc, n) => {
@@ -44,6 +52,7 @@ export default function StickyNotes() {
       return acc;
     }, {})
   );
+  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
 
   const onPointerDown = useCallback((e, id) => {
     const layer = layerRef.current;
@@ -73,7 +82,7 @@ export default function StickyNotes() {
     if (!d) return;
     if (!d.started) {
       const dist = Math.hypot(e.clientX - d.startX, e.clientY - d.startY);
-      if (dist < 5) return; // small move = click (lets editable notes focus)
+      if (dist < 5) return; // small move = click
       d.started = true;
       d.el.setPointerCapture(d.pointerId);
       d.el.dataset.dragging = 'true';
@@ -94,8 +103,26 @@ export default function StickyNotes() {
     dragRef.current = null;
   }, []);
 
-  const onNoteInput = useCallback((e) => {
-    window.localStorage.setItem('sticky-note-3', e.currentTarget.textContent);
+  const stop = useCallback((e) => e.stopPropagation(), []);
+
+  const onSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setStatus('sending');
+    try {
+      const res = await fetch(FORMSUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          email: formData.get('email'),
+          message: formData.get('message'),
+          _subject: 'New message from your portfolio',
+        }),
+      });
+      setStatus(res.ok ? 'sent' : 'error');
+    } catch (err) {
+      setStatus('error');
+    }
   }, []);
 
   return (
@@ -112,17 +139,39 @@ export default function StickyNotes() {
           onPointerCancel: onPointerUp,
         };
 
-        if (note.editable) {
+        if (note.form) {
           return (
-            <Note
-              key={note.id}
-              {...common}
-              contentEditable
-              suppressContentEditableWarning
-              spellCheck={false}
-              onInput={onNoteInput}
-            >
-              {note3Initial.current}
+            <Note key={note.id} {...common}>
+              <NoteTitle>Leave me a message</NoteTitle>
+              {status === 'sent' ? (
+                <NoteStatus>Thanks! I'll be in touch ✌️</NoteStatus>
+              ) : (
+                <NoteForm onSubmit={onSubmit}>
+                  <NoteInput
+                    type="email"
+                    name="email"
+                    placeholder="Your email"
+                    required
+                    onPointerDown={stop}
+                  />
+                  <NoteTextarea
+                    name="message"
+                    placeholder="Your message…"
+                    required
+                    onPointerDown={stop}
+                  />
+                  <NoteButton
+                    type="submit"
+                    onPointerDown={stop}
+                    disabled={status === 'sending'}
+                  >
+                    {status === 'sending' ? 'Sending…' : 'Send'}
+                  </NoteButton>
+                  {status === 'error' && (
+                    <NoteStatus>Something went wrong — try again.</NoteStatus>
+                  )}
+                </NoteForm>
+              )}
             </Note>
           );
         }
