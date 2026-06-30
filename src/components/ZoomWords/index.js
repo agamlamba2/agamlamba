@@ -26,9 +26,11 @@ export default function ZoomWords() {
         const center = (i + 0.5) / N;
         const half = 0.5 / N;
         const t = clamp((progress - center) / half, -1, 1);
-        const dist = Math.abs(t);
-        el.style.opacity = String(1 - dist);
-        el.style.transform = `scale(${1 + dist * 1.2})`;
+        el.style.opacity = String(1 - Math.abs(t));
+        // Fade in while shrinking from large -> 1, then keep shrinking
+        // slightly past 1 as it fades out (never grows back up).
+        const scale = t <= 0 ? 1 + -t * 1.2 : 1 - t * 0.18;
+        el.style.transform = `scale(${scale})`;
       });
       tickingRef.current = false;
     };
