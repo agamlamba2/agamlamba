@@ -4,7 +4,6 @@ import { Routes, Route } from 'react-router-dom';
 import FontStyles from './assets/styles/fonts';
 import GlobalStyles from './assets/styles/global';
 import Home from './pages/Home';
-import Project from './pages/Project';
 import ProjectDetail from './pages/ProjectDetail';
 import InfoPage from './pages/InfoPage';
 
@@ -15,7 +14,15 @@ export default function App() {
       <GlobalStyles />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/project" element={<Project />} />
+        <Route
+          path="/project"
+          element={
+            <InfoPage
+              title="Projects"
+              intro="A selection of product design work across fintech, health, media, and beyond."
+            />
+          }
+        />
         <Route
           path="/work-with-me"
           element={
