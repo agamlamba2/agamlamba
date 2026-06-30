@@ -18,9 +18,8 @@ export const Nav = styled.nav`
 
 export const NavInner = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 208px;
-  padding: 32px 0;
 
   @media (max-width: 1200px) {
     gap: 80px;
@@ -40,6 +39,7 @@ export const NavBrand = styled.a`
   gap: 12px;
   width: 466px;
   flex-shrink: 0;
+  padding: 32px 0;
 
   @media (max-width: 1200px) {
     width: 380px;
@@ -47,6 +47,7 @@ export const NavBrand = styled.a`
 
   @media (max-width: 768px) {
     width: auto;
+    padding: 0;
   }
 `;
 
@@ -73,7 +74,6 @@ export const NavLogoAccent = styled.span`
 export const NavMenu = styled.div`
   display: flex;
   flex: 1;
-  align-self: stretch;
   align-items: center;
   justify-content: flex-start;
   gap: 80px;
