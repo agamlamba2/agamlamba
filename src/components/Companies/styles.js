@@ -31,6 +31,7 @@ export const CompaniesLabel = styled.p`
   line-height: 40px;
   color: #8f8f8f;
   text-align: center;
+  padding-top: 24px;
   padding-bottom: 24px;
 
   @media (max-width: 768px) {
