@@ -52,11 +52,11 @@ export const NavBrand = styled.a`
 `;
 
 export const NavLogoIcon = styled.img`
-  height: 36px;
+  height: 32px;
   width: auto;
 
   @media (max-width: 768px) {
-    height: 32px;
+    height: 28px;
   }
 `;
 
