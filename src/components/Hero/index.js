@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   HeroSection,
-  HeroContent,
-  HeroGrid,
-  HeroLeft,
-  HeroHeading,
-  HeroRight,
-  HeroParagraph,
-  HeroSlider,
   SlideImage,
+  HeroOverlay,
+  HeroContent,
+  HeroHeading,
+  HeroParagraph,
   SliderDots,
   SliderDot,
 } from './styles';
 
-const slides = [
-  { alt: 'Agam', color: '#1a1a2a' },
-  { alt: 'Team', color: '#2a1a1a' },
-  { alt: 'Expo', color: '#1a2a1a' },
-  { alt: 'Tools', color: '#1a1a1a' },
-];
+import imgMe from '../../assets/images/img_me.webp';
+import imgTeam from '../../assets/images/img_team.webp';
+import imgExpo from '../../assets/images/img_expo.webp';
+import imgHackathon from '../../assets/images/img_hackathon.webp';
+import imgMentor from '../../assets/images/img_mentor.webp';
+import imgTools from '../../assets/images/img_tools.webp';
+import imgUbank from '../../assets/images/img_ubank.webp';
+import imgX15 from '../../assets/images/img_x15.webp';
+
+const slides = [imgMe, imgTeam, imgExpo, imgHackathon, imgMentor, imgTools, imgUbank, imgX15];
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
@@ -28,47 +29,34 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 2500);
+    const timer = setInterval(nextSlide, 3000);
     return () => clearInterval(timer);
   }, [nextSlide]);
 
   return (
     <HeroSection id="hero">
+      {slides.map((src, index) => (
+        <SlideImage key={index} $src={src} $active={index === current} />
+      ))}
+      <HeroOverlay />
       <HeroContent>
-        <HeroGrid>
-          <HeroLeft>
-            <HeroHeading>
-              Hi&nbsp;👋🏼,<br />I'm Agam.
-            </HeroHeading>
-          </HeroLeft>
-          <HeroRight>
-            <HeroParagraph>
-              A creative soul living on the intersection of great customer
-              experience and delivering challenging strategic visions.
-            </HeroParagraph>
-          </HeroRight>
-        </HeroGrid>
-        <HeroSlider>
-          {slides.map((slide, index) => (
-            <SlideImage
-              key={index}
-              $active={index === current}
-              style={{ background: slide.color }}
-            >
-              <span>{slide.alt}</span>
-            </SlideImage>
-          ))}
-          <SliderDots>
-            {slides.map((_, index) => (
-              <SliderDot
-                key={index}
-                $active={index === current}
-                onClick={() => setCurrent(index)}
-              />
-            ))}
-          </SliderDots>
-        </HeroSlider>
+        <HeroHeading>
+          Hi&nbsp;👋🏼,<br />I'm Agam.
+        </HeroHeading>
+        <HeroParagraph>
+          A creative soul living on the intersection of great customer
+          experience and delivering challenging strategic visions.
+        </HeroParagraph>
       </HeroContent>
+      <SliderDots>
+        {slides.map((_, index) => (
+          <SliderDot
+            key={index}
+            $active={index === current}
+            onClick={() => setCurrent(index)}
+          />
+        ))}
+      </SliderDots>
     </HeroSection>
   );
 }

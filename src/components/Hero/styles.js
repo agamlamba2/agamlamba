@@ -9,118 +9,99 @@ const slideIn = keyframes`
 
 export const HeroSection = styled.section`
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  height: 100vh;
+  width: 100%;
   overflow: hidden;
 `;
 
+export const SlideImage = styled.div`
+  position: absolute;
+  inset: 0;
+  background-image: url(${({ $src }) => $src});
+  background-size: cover;
+  background-position: center;
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  transition: opacity 1s ease;
+`;
+
+export const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0.15) 70%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+`;
+
 export const HeroContent = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  height: 100%;
   max-width: ${metrics.maxWidth};
   margin: 0 auto;
-  width: 100%;
-  padding: 0 ${metrics.paddingHorizontal};
+  padding: 48px ${metrics.paddingHorizontal} 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @media (max-width: 768px) {
-    padding: 0 ${metrics.paddingHorizontalMobile};
+    padding: 40px ${metrics.paddingHorizontalMobile} 120px;
   }
-`;
-
-export const HeroGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: end;
-  padding: 160px 0 60px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    padding: 120px 0 40px;
-    gap: 24px;
-  }
-`;
-
-export const HeroLeft = styled.div`
-  animation: ${slideIn} 0.8s ease forwards;
 `;
 
 export const HeroHeading = styled.h1`
   font-size: clamp(3.5rem, 8vw, 7rem);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.02;
   letter-spacing: -3px;
   color: ${colors.white};
+  animation: ${slideIn} 0.8s ease forwards;
 
   @media (max-width: 480px) {
     letter-spacing: -1.5px;
   }
 `;
 
-export const HeroRight = styled.div`
-  padding-bottom: 16px;
-  animation: ${slideIn} 0.8s ease 0.2s forwards;
-  opacity: 0;
-`;
-
 export const HeroParagraph = styled.p`
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: ${colors.gray};
-  max-width: 420px;
-`;
-
-export const HeroSlider = styled.div`
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  border-radius: ${metrics.radius.large};
-  overflow: hidden;
-  margin-top: auto;
-  animation: ${slideIn} 0.8s ease 0.4s forwards;
+  align-self: flex-end;
+  max-width: 460px;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: ${colors.white};
+  text-align: left;
+  animation: ${slideIn} 0.8s ease 0.2s forwards;
   opacity: 0;
 
   @media (max-width: 768px) {
-    aspect-ratio: 16 / 9;
-  }
-`;
-
-export const SlideImage = styled.div`
-  position: absolute;
-  inset: 0;
-  opacity: ${({ $active }) => ($active ? 1 : 0)};
-  transition: opacity 0.6s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  span {
-    font-size: 3rem;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.06);
-    letter-spacing: -1px;
-    text-transform: uppercase;
+    font-size: 1.15rem;
+    max-width: 320px;
   }
 `;
 
 export const SliderDots = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: 120px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 8px;
-  z-index: 10;
+  z-index: 3;
+
+  @media (max-width: 768px) {
+    bottom: 100px;
+  }
 `;
 
 export const SliderDot = styled.button`
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   border: none;
-  background: ${({ $active }) => ($active ? colors.white : 'rgba(255,255,255,0.3)')};
+  background: ${({ $active }) => ($active ? colors.white : 'rgba(255,255,255,0.4)')};
   transition: background 0.3s ease;
   cursor: pointer;
 
