@@ -6,6 +6,9 @@ import {
   ContactTitleAccent,
   ContactActions,
   ContactButton,
+  ContactButtonIndented,
+  IndentBar,
+  IndentedButton,
   AccentBar,
   ContactButtonText,
 } from './styles';
@@ -48,10 +51,12 @@ export default function Contact() {
           <AccentBar />
           <ContactButtonText>Linkedin</ContactButtonText>
         </ContactButton>
-        <ContactButton href="mailto:agamlamba2@gmail.com">
-          <AccentBar />
-          <ContactButtonText>Email me</ContactButtonText>
-        </ContactButton>
+        <ContactButtonIndented>
+          <IndentBar />
+          <IndentedButton href="mailto:agamlamba2@gmail.com">
+            <ContactButtonText>Email me</ContactButtonText>
+          </IndentedButton>
+        </ContactButtonIndented>
         <ContactButton href="mailto:agamlamba2@gmail.com">
           <AccentBar />
           <ContactButtonText>Email me</ContactButtonText>
