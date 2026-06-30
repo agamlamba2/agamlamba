@@ -84,7 +84,7 @@ export const NavMenu = styled.div`
 export const NavLink = styled.a`
   font-size: 16px;
   font-weight: 600;
-  color: #828282;
+  color: ${({ $active }) => ($active ? colors.white : '#828282')};
   transition: color 0.3s ease;
 
   &:hover {
