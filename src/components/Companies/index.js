@@ -44,38 +44,38 @@ const logos = [
   { src: logoLesMills, alt: 'Les Mills', height: 20 },
 ];
 
-// uBank is the anchor (index 2). Every other logo starts offset from its grid
-// spot and slides in toward it as the section scrolls into view — no fades.
-const UBANK_INDEX = 2;
-const COL_STEP = 130; // horizontal-distance-from-uBank -> vertical slide (px)
-const ROW_STEP = 90; // row-distance-from-uBank -> vertical slide (px)
+// Each logo slides up into its frame, revealed one at a time bottom-row-first
+// with a slight stagger as the section scrolls in — no fades.
+const SLIDE = 110; // how far each logo starts below its frame (px)
+const STAGGER = 0.045; // scroll-progress gap between consecutive logos
+const WINDOW = 0.28; // scroll-progress span of each logo's slide
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
 export default function Companies() {
   const gridRef = useRef(null);
-  const cellRefs = useRef([]);
+  const imgRefs = useRef([]);
   const tickingRef = useRef(false);
 
   useEffect(() => {
+    const clamp = (v) => Math.max(0, Math.min(v, 1));
+    const N = logos.length;
+
     const update = () => {
       const grid = gridRef.current;
       if (grid) {
         const rect = grid.getBoundingClientRect();
         const vh = window.innerHeight;
-        // Driven off the grid itself so the slide plays out while the logos
-        // are on screen: 0 as the grid enters from the bottom, 1 near the top.
-        const r = Math.max(0, Math.min((vh - rect.top) / (vh * 0.9), 1));
-        const e = easeOutCubic(r);
+        const r = clamp((vh - rect.top) / (vh * 0.9));
         const cols = window.innerWidth <= 768 ? 2 : 4;
-        const ubankCol = UBANK_INDEX % cols;
-        const ubankRow = Math.floor(UBANK_INDEX / cols);
-        cellRefs.current.forEach((el, i) => {
+        const rows = Math.ceil(N / cols);
+        imgRefs.current.forEach((el, i) => {
           if (!el) return;
-          const col = i % cols;
           const row = Math.floor(i / cols);
-          const startY =
-            Math.abs(col - ubankCol) * COL_STEP + (row - ubankRow) * ROW_STEP;
-          const y = startY * (1 - e);
+          const col = i % cols;
+          // bottom row reveals first, moving upward to the top row
+          const order = (rows - 1 - row) * cols + col;
+          const local = clamp((r - order * STAGGER) / WINDOW);
+          const y = (1 - easeOutCubic(local)) * SLIDE;
           el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
         });
       }
@@ -101,13 +101,15 @@ export default function Companies() {
         <CompaniesLabel>Companies I&rsquo;ve worked with</CompaniesLabel>
         <LogoGrid ref={gridRef}>
           {logos.map((logo, index) => (
-            <LogoCell
-              key={index}
-              ref={(el) => {
-                cellRefs.current[index] = el;
-              }}
-            >
-              <LogoImg src={logo.src} alt={logo.alt} $height={logo.height} />
+            <LogoCell key={index}>
+              <LogoImg
+                src={logo.src}
+                alt={logo.alt}
+                $height={logo.height}
+                ref={(el) => {
+                  imgRefs.current[index] = el;
+                }}
+              />
             </LogoCell>
           ))}
         </LogoGrid>

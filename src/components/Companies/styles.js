@@ -54,9 +54,7 @@ export const LogoCell = styled.div`
   justify-content: center;
   padding: 16px;
   opacity: 0.75;
-  will-change: transform;
-
-  /* transform is set inline per-frame for the scroll slide-in (no fade) */
+  overflow: hidden; /* clips each logo so it slides up into the frame */
 
   &:hover {
     opacity: 1;
@@ -72,6 +70,9 @@ export const LogoImg = styled.img`
   width: auto;
   max-width: 100%;
   object-fit: contain;
+  will-change: transform;
+
+  /* transform is set inline per-frame for the staggered slide-up */
 
   @media (max-width: 768px) {
     height: ${({ $height }) => Math.round($height * 0.85)}px;
