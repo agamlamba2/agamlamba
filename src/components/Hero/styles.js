@@ -128,9 +128,3 @@ export const SliderDot = styled.button`
     background: ${colors.white};
   }
 `;
-
-export const HeroFilling = styled.div`
-  height: 4px;
-  background: ${colors.primary};
-  transition: width 1.5s ease;
-`;

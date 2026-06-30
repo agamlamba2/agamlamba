@@ -11,7 +11,6 @@ import {
   SlideImage,
   SliderDots,
   SliderDot,
-  HeroFilling,
 } from './styles';
 
 const slides = [
@@ -23,7 +22,6 @@ const slides = [
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
-  const [fillingWidth, setFillingWidth] = useState(0);
 
   const nextSlide = useCallback(() => {
     setCurrent(prev => (prev + 1) % slides.length);
@@ -33,10 +31,6 @@ export default function Hero() {
     const timer = setInterval(nextSlide, 2500);
     return () => clearInterval(timer);
   }, [nextSlide]);
-
-  useEffect(() => {
-    setTimeout(() => setFillingWidth(100), 300);
-  }, []);
 
   return (
     <HeroSection id="hero">
@@ -75,7 +69,6 @@ export default function Hero() {
           </SliderDots>
         </HeroSlider>
       </HeroContent>
-      <HeroFilling style={{ width: `${fillingWidth}%` }} />
     </HeroSection>
   );
 }
