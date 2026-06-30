@@ -3,9 +3,13 @@ import colors from '../../assets/styles/variables/colors';
 import metrics from '../../assets/styles/variables/metrics';
 
 export const Nav = styled.nav`
-  position: relative;
+  position: sticky;
+  bottom: 0;
   z-index: 100;
   padding: 0 48px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
   @media (max-width: 768px) {
     padding: 0 ${metrics.paddingHorizontalMobile};
@@ -16,13 +20,13 @@ export const NavInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 32px 0;
+  padding: 24px 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
     align-items: flex-start;
-    padding: 24px 0;
+    padding: 20px 0;
   }
 `;
 

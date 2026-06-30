@@ -6,9 +6,6 @@ import {
   ContactTitleAccent,
   ContactActions,
   ContactButton,
-  ContactButtonIndented,
-  IndentBar,
-  IndentedButton,
   AccentBar,
   ContactButtonText,
 } from './styles';
@@ -47,16 +44,14 @@ export default function Contact() {
         </ContactTitle>
       </ContactLeft>
       <ContactActions ref={actionsRef} className={actionsVisible ? 'visible' : ''}>
-        <ContactButton $first href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+        <ContactButton href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
           <AccentBar />
           <ContactButtonText>Linkedin</ContactButtonText>
         </ContactButton>
-        <ContactButtonIndented>
-          <IndentBar />
-          <IndentedButton href="mailto:agamlamba2@gmail.com">
-            <ContactButtonText>Email me</ContactButtonText>
-          </IndentedButton>
-        </ContactButtonIndented>
+        <ContactButton href="#" target="_blank" rel="noopener noreferrer">
+          <AccentBar />
+          <ContactButtonText>Book a meeting</ContactButtonText>
+        </ContactButton>
         <ContactButton href="mailto:agamlamba2@gmail.com">
           <AccentBar />
           <ContactButtonText>Email me</ContactButtonText>
