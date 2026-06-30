@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ContactSection,
   ContactLeft,
@@ -7,7 +7,6 @@ import {
   ContactActions,
   ContactButton,
   AccentBar,
-  Filling,
   ContactButtonText,
 } from './styles';
 
@@ -23,11 +22,8 @@ const buttons = [
 ];
 
 export default function Contact() {
-  const sectionRef = useRef(null);
   const leftRef = useRef(null);
   const actionsRef = useRef(null);
-  const fillRefs = useRef([]);
-  const tickingRef = useRef(false);
   const [leftVisible, setLeftVisible] = useState(false);
   const [actionsVisible, setActionsVisible] = useState(false);
 
@@ -47,56 +43,20 @@ export default function Contact() {
     return () => observer.disconnect();
   }, []);
 
-  // Scroll-driven red "filling" wipe per row, staggered, reverses on scroll up.
-  const update = useCallback(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const rect = section.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const clamp = (v) => Math.max(0, Math.min(v, 1));
-    const progress = clamp((vh - rect.top) / (vh * 0.85));
-    fillRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const w = clamp((progress - i * 0.07) * 1.7) * 100;
-      el.style.width = `${w}%`;
-    });
-    tickingRef.current = false;
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (tickingRef.current) return;
-      tickingRef.current = true;
-      window.requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, [update]);
-
   return (
-    <ContactSection id="contact" ref={sectionRef}>
+    <ContactSection id="contact">
       <ContactLeft ref={leftRef} className={leftVisible ? 'visible' : ''}>
         <ContactTitle>
           Let's make something together, <ContactTitleAccent>say hi.</ContactTitleAccent>
         </ContactTitle>
       </ContactLeft>
       <ContactActions ref={actionsRef} className={actionsVisible ? 'visible' : ''}>
-        {buttons.map((btn, i) => (
+        {buttons.map((btn) => (
           <ContactButton
             key={btn.label}
             href={btn.href}
             {...(btn.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
-            <Filling
-              ref={(el) => {
-                fillRefs.current[i] = el;
-              }}
-            />
             <AccentBar />
             <ContactButtonText>{btn.label}</ContactButtonText>
           </ContactButton>
