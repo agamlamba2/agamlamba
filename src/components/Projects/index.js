@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ProjectsSection,
   ProjectsHeader,
@@ -23,12 +24,12 @@ import imgMentor from '../../assets/images/img_mentor.webp';
 import imgTeam from '../../assets/images/img_team.webp';
 
 const projects = [
-  { name: 'uBank', category: 'Fintech · Product Design', image: imgUbank, url: '#' },
-  { name: 'x15ventures', category: 'Venture Studio · Strategy', image: imgX15, url: '#' },
-  { name: 'Expo Experience', category: 'Event · Brand', image: imgExpo, url: '#' },
-  { name: 'Hackathon', category: 'Innovation · Prototyping', image: imgHackathon, url: '#' },
-  { name: 'Mentorship', category: 'Education · Community', image: imgMentor, url: '#' },
-  { name: 'Team Lab', category: 'Leadership · Culture', image: imgTeam, url: '#' },
+  { name: 'uBank', category: 'Fintech · Product Design', image: imgUbank, url: '/project' },
+  { name: 'x15ventures', category: 'Venture Studio · Strategy', image: imgX15, url: '/project' },
+  { name: 'Expo Experience', category: 'Event · Brand', image: imgExpo, url: '/project' },
+  { name: 'Hackathon', category: 'Innovation · Prototyping', image: imgHackathon, url: '/project' },
+  { name: 'Mentorship', category: 'Education · Community', image: imgMentor, url: '/project' },
+  { name: 'Team Lab', category: 'Leadership · Culture', image: imgTeam, url: '/project' },
 ];
 
 export default function Projects() {
@@ -46,7 +47,8 @@ export default function Projects() {
           {projects.map((project, index) => (
             <ProjectItem
               key={index}
-              href={project.url}
+              as={Link}
+              to={project.url}
               $dimmed={active !== index}
               onMouseEnter={() => setActive(index)}
               onFocus={() => setActive(index)}
