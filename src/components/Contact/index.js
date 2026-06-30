@@ -50,11 +50,13 @@ export default function Contact() {
           Let's make something together, <ContactTitleAccent>say hi.</ContactTitleAccent>
         </ContactTitle>
       </ContactLeft>
-      <ContactActions ref={actionsRef} className={actionsVisible ? 'visible' : ''}>
-        {buttons.map((btn) => (
+      <ContactActions ref={actionsRef}>
+        {buttons.map((btn, i) => (
           <ContactButton
             key={btn.label}
             href={btn.href}
+            className={actionsVisible ? 'visible' : ''}
+            style={{ '--reveal-delay': `${i * 0.12}s` }}
             {...(btn.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             <AccentBar />

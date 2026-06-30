@@ -86,8 +86,6 @@ export const ContactActions = styled.div`
   opacity: 0.9;
   flex: 1;
   min-width: 0;
-  ${animateIn}
-  transition-delay: 0.15s;
 
   @media (max-width: 900px) {
     width: 100%;
@@ -112,9 +110,20 @@ export const ContactButton = styled.a`
   padding: 0 40px 40px 48px;
   background: ${colors.bg};
   border-bottom: 1px solid ${borderColor};
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+
+  /* Sequential fade/slide-in on scroll; reveal delay staggered per row
+     (set inline) while hover padding stays instant. */
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.6s ease var(--reveal-delay, 0s),
+    transform 0.6s ease var(--reveal-delay, 0s), padding-left 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
   ${AccentBar} {
     position: absolute;
