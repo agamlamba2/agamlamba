@@ -38,7 +38,7 @@ export const SlideImage = styled.div`
 export const HeroOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.1);
 `;
 
 export const HeroContent = styled.div`
