@@ -10,6 +10,7 @@ export const Nav = styled.nav`
   background: rgba(0, 0, 0, 0.48);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid #4f4f4f;
   border-bottom: 1px solid #4f4f4f;
 
   @media (max-width: 768px) {
