@@ -68,7 +68,7 @@ export const Cover = styled.div`
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.34);
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
