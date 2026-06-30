@@ -20,13 +20,13 @@ export const NavInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 0;
+  padding: 32px 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 20px;
     align-items: flex-start;
-    padding: 20px 0;
+    padding: 24px 0;
   }
 `;
 
@@ -59,7 +59,7 @@ export const NavLogoAccent = styled.span`
 export const NavMenu = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 48px;
+  gap: 80px;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
