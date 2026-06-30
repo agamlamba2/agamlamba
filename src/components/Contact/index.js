@@ -44,7 +44,7 @@ export default function Contact() {
         </ContactTitle>
       </ContactLeft>
       <ContactActions ref={actionsRef} className={actionsVisible ? 'visible' : ''}>
-        <ContactButton href="https://linkedin.com/in/agamlamba" target="_blank" rel="noopener noreferrer">
+        <ContactButton href="https://www.linkedin.com/in/agamlamba/" target="_blank" rel="noopener noreferrer">
           <AccentBar />
           <ContactButtonText>Linkedin</ContactButtonText>
         </ContactButton>
