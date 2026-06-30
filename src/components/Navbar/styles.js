@@ -5,46 +5,58 @@ import metrics from '../../assets/styles/variables/metrics';
 export const Nav = styled.nav`
   position: relative;
   z-index: 100;
-  padding: 0 ${metrics.paddingHorizontal};
+  padding: 0 48px;
 
   @media (max-width: 768px) {
     padding: 0 ${metrics.paddingHorizontalMobile};
   }
 `;
 
-export const NavGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+export const NavInner = styled.div`
+  display: flex;
   align-items: center;
-  max-width: ${metrics.maxWidth};
-  margin: 0 auto;
+  justify-content: space-between;
   padding: 32px 0;
-  border-top: 1px solid ${colors.borderLight};
+  border-bottom: 1px solid #4f4f4f;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 24px;
+    align-items: flex-start;
     padding: 24px 0;
   }
 `;
 
 export const NavBrand = styled.a`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;
 
-export const NavLogo = styled.img`
-  height: 24px;
+export const NavLogoIcon = styled.img`
+  height: 28px;
   width: auto;
 
   @media (max-width: 768px) {
-    height: 20px;
+    height: 24px;
   }
+`;
+
+export const NavLogoText = styled.span`
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: ${colors.white};
+  letter-spacing: -0.3px;
+`;
+
+export const NavLogoAccent = styled.span`
+  color: ${colors.primary};
 `;
 
 export const NavMenu = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 32px;
+  gap: 48px;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
@@ -54,7 +66,7 @@ export const NavMenu = styled.div`
 `;
 
 export const NavLink = styled.a`
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: ${colors.gray};
   transition: color 0.3s ease;

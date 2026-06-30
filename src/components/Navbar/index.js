@@ -2,9 +2,11 @@ import React from 'react';
 import logo from '../../assets/images/AL Logo.svg';
 import {
   Nav,
-  NavGrid,
+  NavInner,
   NavBrand,
-  NavLogo,
+  NavLogoIcon,
+  NavLogoText,
+  NavLogoAccent,
   NavMenu,
   NavLink,
 } from './styles';
@@ -12,17 +14,18 @@ import {
 export default function Navbar() {
   return (
     <Nav>
-      <NavGrid>
+      <NavInner>
         <NavBrand href="#hero">
-          <NavLogo src={logo} alt="Agam Lamba" />
+          <NavLogoIcon src={logo} alt="AL" />
+          <NavLogoText>Agam <NavLogoAccent>Lamba</NavLogoAccent></NavLogoText>
         </NavBrand>
         <NavMenu>
           <NavLink href="/projects">Projects</NavLink>
           <NavLink href="/work-with-me">Work with me</NavLink>
+          <NavLink href="/my-approach">My approach</NavLink>
           <NavLink href="#contact">Success stories</NavLink>
-          <NavLink href="/contact">Contact</NavLink>
         </NavMenu>
-      </NavGrid>
+      </NavInner>
     </Nav>
   );
 }

@@ -47,7 +47,7 @@ export default function Contact() {
         </ContactTitle>
       </ContactLeft>
       <ContactActions ref={actionsRef} className={actionsVisible ? 'visible' : ''}>
-        <ContactButton href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+        <ContactButton $first href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
           <AccentBar />
           <ContactButtonText>Linkedin</ContactButtonText>
         </ContactButton>

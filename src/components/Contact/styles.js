@@ -83,16 +83,10 @@ export const ContactActions = styled.div`
   align-items: flex-start;
   justify-content: center;
   opacity: 0.9;
-  width: 673px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
   ${animateIn}
   transition-delay: 0.15s;
-
-  @media (max-width: 1200px) {
-    width: auto;
-    flex: 1;
-    min-width: 0;
-  }
 
   @media (max-width: 900px) {
     width: 100%;
@@ -117,6 +111,7 @@ export const ContactButton = styled.a`
   padding: 0 40px 40px 48px;
   background: ${colors.bg};
   border-bottom: 1px solid ${borderColor};
+  ${({ $first }) => $first && `border-top: 1px solid ${borderColor};`}
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
