@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 import colors from '../../assets/styles/variables/colors';
-import metrics from '../../assets/styles/variables/metrics';
 
 const slideIn = keyframes`
   from { opacity: 0; transform: translateY(30px); }
@@ -12,8 +11,18 @@ export const HeroSection = styled.section`
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  background: ${colors.bg};
   border-top: 1px solid #4f4f4f;
   border-bottom: 1px solid #4f4f4f;
+`;
+
+export const SlidesWrapper = styled.div`
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform;
+  background: ${colors.bg};
 `;
 
 export const SlideImage = styled.div`
@@ -36,15 +45,14 @@ export const HeroContent = styled.div`
   position: relative;
   z-index: 2;
   height: 100%;
-  max-width: ${metrics.maxWidth};
-  margin: 0 auto;
-  padding: 48px ${metrics.paddingHorizontal} 140px;
+  width: 100%;
+  padding: 48px 48px 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   @media (max-width: 768px) {
-    padding: 40px ${metrics.paddingHorizontalMobile} 120px;
+    padding: 40px 20px 130px;
   }
 `;
 
@@ -62,9 +70,37 @@ export const HeroHeading = styled.h1`
   }
 `;
 
+export const HeroBottom = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 208px;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    gap: 80px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 0;
+  }
+`;
+
+export const HeroBottomSpacer = styled.div`
+  width: 466px;
+  flex-shrink: 0;
+
+  @media (max-width: 1200px) {
+    width: 380px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 export const HeroParagraph = styled.p`
-  align-self: flex-end;
-  max-width: 480px;
+  flex: 1;
+  min-width: 0;
   font-size: 26px;
   line-height: 40px;
   font-weight: 600;
@@ -77,34 +113,5 @@ export const HeroParagraph = styled.p`
   @media (max-width: 768px) {
     font-size: 1.25rem;
     line-height: 1.5;
-    max-width: 320px;
-  }
-`;
-
-export const SliderDots = styled.div`
-  position: absolute;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 3;
-
-  @media (max-width: 768px) {
-    bottom: 100px;
-  }
-`;
-
-export const SliderDot = styled.button`
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: none;
-  background: ${({ $active }) => ($active ? colors.white : 'rgba(255,255,255,0.4)')};
-  transition: background 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    background: ${colors.white};
   }
 `;
