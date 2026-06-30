@@ -21,8 +21,10 @@ export default function ZoomWords() {
 
       wordRefs.current.forEach((el, i) => {
         if (!el) return;
-        const center = N > 1 ? i / (N - 1) : 0.5;
-        const half = N > 1 ? 1 / (N - 1) : 1;
+        // Each word owns its own 1/N segment, fading 0 -> 1 -> 0 within it,
+        // so it is fully gone before the next word appears (no overlap).
+        const center = (i + 0.5) / N;
+        const half = 0.5 / N;
         const t = clamp((progress - center) / half, -1, 1);
         const dist = Math.abs(t);
         el.style.opacity = String(1 - dist);
