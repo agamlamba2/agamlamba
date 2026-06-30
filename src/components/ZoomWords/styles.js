@@ -30,10 +30,11 @@ export const Word = styled.div`
 
   span {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: clamp(3rem, 12vw, 180px);
+    font-size: clamp(1.75rem, 7vw, 104px);
     font-weight: 800;
-    letter-spacing: -3px;
-    line-height: 1;
+    letter-spacing: -2px;
+    line-height: 1.05;
     color: ${colors.white};
+    white-space: nowrap;
   }
 `;

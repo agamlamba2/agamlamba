@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Section, Pin, Word } from './styles';
 
-const words = ['Ideate', 'Innovate', 'Accelerate'];
+const words = ['Design Leader', 'Product Strategist', 'Tech Entrepreneur'];
 
 export default function ZoomWords() {
   const sectionRef = useRef(null);
