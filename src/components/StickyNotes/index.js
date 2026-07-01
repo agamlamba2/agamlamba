@@ -9,7 +9,7 @@ const DEFAULT_NOTE_3 = 'Leave me a message';
 const notes = [
   {
     id: 1,
-    text: "I'm currently a Lead Designer for BFS & Design Systems at Ubank. Australia's first digital bank company.",
+    text: "I'm currently a Lead Designer for EDB & Design Systems at Ubank. Australia's first digital bank company.",
     color: '#FEFF9C',
     rotate: -4,
     x: 0.63,
