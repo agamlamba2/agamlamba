@@ -48,10 +48,10 @@ export const TextItem = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-size: clamp(2.25rem, 4.5vw, 68px);
   font-weight: 800;
-  letter-spacing: -3px;
-  line-height: 1;
+  letter-spacing: -2px;
+  line-height: 1.02;
   color: ${colors.white};
 `;
 
@@ -139,6 +139,8 @@ export const Rail = styled.div`
   display: flex;
   flex-direction: column;
   gap: 14px;
+  opacity: ${({ $shown }) => ($shown ? 1 : 0)};
+  transition: opacity 0.6s ease;
 
   @media (max-width: 900px) {
     right: 16px;
