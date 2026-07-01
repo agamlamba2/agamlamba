@@ -26,15 +26,6 @@ const SectionHead = styled.div`
   text-align: center;
 `;
 
-const SectionKicker = styled.p`
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: ${colors.primary};
-  margin-bottom: 16px;
-`;
-
 const SectionTitle = styled.h2`
   font-size: clamp(2.25rem, 5vw, 56px);
   font-weight: 800;
@@ -255,7 +246,6 @@ export default function SuccessStories() {
 
       <Section>
         <SectionHead>
-          <SectionKicker>Testimonials</SectionKicker>
           <SectionTitle>Kind words from the people I&rsquo;ve built with</SectionTitle>
         </SectionHead>
         <Columns>
