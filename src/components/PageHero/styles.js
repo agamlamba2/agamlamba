@@ -8,8 +8,8 @@ const slideIn = keyframes`
 
 export const HeroSection = styled.section`
   position: relative;
-  height: calc(62vh + 96px);
-  min-height: 556px;
+  height: calc(62vh + 56px);
+  min-height: 516px;
   width: 100%;
   background: ${colors.bg};
   border-top: 1px solid #4f4f4f;
