@@ -11,7 +11,10 @@ export const HeroSection = styled.section`
   height: calc(62vh + 64px);
   min-height: 524px;
   width: 100%;
-  background: ${colors.bg};
+  background:
+    radial-gradient(90% 130% at 8% 6%, rgba(226, 25, 73, 0.22), rgba(0, 0, 0, 0) 52%),
+    radial-gradient(80% 120% at 100% 100%, rgba(226, 25, 73, 0.12), rgba(0, 0, 0, 0) 50%),
+    ${colors.bg};
   border-top: 1px solid #4f4f4f;
   border-bottom: 1px solid #4f4f4f;
   overflow: hidden;
