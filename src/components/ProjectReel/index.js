@@ -25,8 +25,28 @@ import ph6 from '../../assets/reel-placeholders/p6.svg';
 const placeholders = [ph1, ph2, ph3, ph4, ph5, ph6];
 
 const clamp = (v, min = 0, max = 1) => Math.max(min, Math.min(v, max));
-const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+// Gentle overshoot so the sheet settles with a soft bounce rather than a hard stop.
+const easeOutBack = (t) => {
+  const c1 = 1.15;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+};
+
+// Pagination: at most 8 full-size pills; extras shrink (medium, then small) like
+// an Instagram image carousel, and the window slides to keep the active one in view.
+const MAX_FULL = 8;
+const dotSize = (i, active, count) => {
+  if (count <= MAX_FULL) return 'full';
+  const half = Math.floor(MAX_FULL / 2);
+  const start = clamp(active - half, 0, count - MAX_FULL);
+  const end = start + MAX_FULL - 1;
+  if (i >= start && i <= end) return 'full';
+  const dist = i < start ? start - i : i - end;
+  if (dist === 1) return 'medium';
+  if (dist === 2) return 'small';
+  return 'hidden';
+};
 
 // Intro: auto-reel then skew into the tilted sheet (time-based, no scrolling).
 const REEL_MS = 1400; // sweep every project up through the frame
@@ -127,7 +147,7 @@ export default function ProjectReel() {
           render((N - 1) * (1 - local), 0);
           setRail(false);
         } else if (t < REEL_MS + SKEW_MS) {
-          render(0, easeOut((t - REEL_MS) / SKEW_MS));
+          render(0, easeOutBack((t - REEL_MS) / SKEW_MS));
           setRail(false);
         } else {
           render(0, 1);
@@ -208,7 +228,7 @@ export default function ProjectReel() {
           {projects.map((project, i) => (
             <TextItem key={project.slug} $active={introDone && i === active}>
               <Title>{project.title}</Title>
-              <Desc>{project.overview || project.desc}</Desc>
+              <Desc>{project.desc}</Desc>
               <CaseLink to={`/${project.slug}`}>
                 Open case study <FiArrowRight />
               </CaseLink>
@@ -233,6 +253,7 @@ export default function ProjectReel() {
             <Dot
               key={project.slug}
               $active={i === active}
+              $size={dotSize(i, active, N)}
               onClick={() => jumpTo(i)}
               aria-label={project.title}
             />

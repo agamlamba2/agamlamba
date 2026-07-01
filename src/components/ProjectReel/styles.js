@@ -41,13 +41,13 @@ export const TextItem = styled.div`
   transition: opacity 0.5s ease;
   pointer-events: ${({ $active }) => ($active ? 'auto' : 'none')};
 
-  /* Each line slides in from the left, staggered — like the footer buttons. */
+  /* Each line eases in from the left with a gentle overshoot, staggered. */
   h2,
   p,
   a {
     opacity: 0;
-    transform: translateX(-44px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateX(-56px);
+    transition: opacity 0.7s ease, transform 0.85s cubic-bezier(0.22, 1.2, 0.36, 1);
   }
 
   ${({ $active }) =>
@@ -56,17 +56,17 @@ export const TextItem = styled.div`
       h2 {
         opacity: 1;
         transform: translateX(0);
-        transition-delay: 0.08s;
+        transition-delay: 0.1s;
       }
       p {
         opacity: 1;
         transform: translateX(0);
-        transition-delay: 0.22s;
+        transition-delay: 0.26s;
       }
       a {
         opacity: 1;
         transform: translateX(0);
-        transition-delay: 0.36s;
+        transition-delay: 0.42s;
       }
     `}
 
@@ -77,19 +77,20 @@ export const TextItem = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: clamp(2.25rem, 4.5vw, 68px);
-  font-weight: 800;
-  letter-spacing: -2px;
-  line-height: 1.02;
+  font-size: clamp(2.25rem, 4vw, 60px);
+  font-weight: 600;
+  letter-spacing: -1px;
+  line-height: 1.13;
   color: ${colors.white};
 `;
 
 export const Desc = styled.p`
   margin-top: 24px;
-  max-width: 440px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  max-width: 540px;
+  font-size: clamp(1.1rem, 1.7vw, 26px);
+  line-height: 1.54;
+  font-weight: 500;
+  color: #bdbdbd;
 
   @media (max-width: 900px) {
     margin-left: auto;
@@ -100,17 +101,17 @@ export const Desc = styled.p`
 export const CaseLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 32px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  gap: 12px;
+  margin-top: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
   color: ${colors.white};
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     transition: transform 0.3s ease;
   }
 
@@ -124,8 +125,8 @@ export const Stage = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 6%;
-  left: 50%;
+  right: 12%;
+  left: 40%;
   perspective: 1600px;
   pointer-events: none;
 
@@ -158,7 +159,7 @@ export const Card = styled.div`
   }
 `;
 
-/* ---- Right dotted progress rail ---- */
+/* ---- Right pagination rail (vertical pills) ---- */
 export const Rail = styled.div`
   position: absolute;
   right: 40px;
@@ -167,27 +168,35 @@ export const Rail = styled.div`
   z-index: 4;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  gap: 24px;
   opacity: 0;
   transition: opacity 0.6s ease;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 
   @media (max-width: 900px) {
     right: 16px;
+    gap: 16px;
   }
 `;
 
+const dashHeight = ({ $size }) =>
+  $size === 'full' ? 32 : $size === 'medium' ? 20 : $size === 'small' ? 12 : 0;
+
 export const Dot = styled.button`
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: ${(p) => dashHeight(p)}px;
   padding: 0;
   border: none;
-  border-radius: 50%;
+  border-radius: 99px;
   cursor: pointer;
-  background: ${({ $active }) => ($active ? colors.white : 'rgba(255,255,255,0.3)')};
-  transform: scale(${({ $active }) => ($active ? 1.3 : 1)});
-  transition: background 0.3s ease, transform 0.3s ease;
+  background: ${({ $active }) => ($active ? colors.white : '#4f4f4f')};
+  opacity: ${({ $size }) => ($size === 'hidden' ? 0 : 1)};
+  pointer-events: ${({ $size }) => ($size === 'hidden' ? 'none' : 'auto')};
+  transition: height 0.35s cubic-bezier(0.22, 1.2, 0.36, 1), background 0.3s ease,
+    opacity 0.3s ease;
 
   &:hover {
-    background: ${colors.white};
+    background: ${({ $active }) => ($active ? colors.white : '#6f6f6f')};
   }
 `;
