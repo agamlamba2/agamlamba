@@ -94,6 +94,22 @@ export const CoverMedia = styled.div`
   background: ${({ $bg }) => $bg};
   background-size: cover;
   background-position: center;
+  transform: scale(1.001);
+  transition: transform 0.6s ease, filter 0.5s ease;
+  will-change: transform, filter;
+
+  /* Soft "paper in the wind" ripple — the filter is animated in the SVG def. */
+  ${Project}:hover & {
+    transform: scale(1.06);
+    filter: url(#paperWind);
+  }
+
+  @media (hover: none) {
+    ${Project}:hover & {
+      filter: none;
+      transform: scale(1.001);
+    }
+  }
 `;
 
 export const Meta = styled.div`
