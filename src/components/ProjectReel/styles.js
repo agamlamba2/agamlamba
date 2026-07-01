@@ -184,6 +184,9 @@ const dashHeight = ({ $size }) =>
   $size === 'full' ? 32 : $size === 'medium' ? 20 : $size === 'small' ? 12 : 0;
 
 export const Dot = styled.button`
+  /* Hidden pills are removed from layout so they don't reserve gap space and
+     push the visible cluster off-centre. */
+  display: ${({ $size }) => ($size === 'hidden' ? 'none' : 'block')};
   width: 12px;
   height: ${(p) => dashHeight(p)}px;
   padding: 0;
@@ -191,10 +194,7 @@ export const Dot = styled.button`
   border-radius: 99px;
   cursor: pointer;
   background: ${({ $active }) => ($active ? colors.white : '#4f4f4f')};
-  opacity: ${({ $size }) => ($size === 'hidden' ? 0 : 1)};
-  pointer-events: ${({ $size }) => ($size === 'hidden' ? 'none' : 'auto')};
-  transition: height 0.35s cubic-bezier(0.22, 1.2, 0.36, 1), background 0.3s ease,
-    opacity 0.3s ease;
+  transition: height 0.35s cubic-bezier(0.22, 1.2, 0.36, 1), background 0.3s ease;
 
   &:hover {
     background: ${({ $active }) => ($active ? colors.white : '#6f6f6f')};
