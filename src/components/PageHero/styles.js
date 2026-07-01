@@ -17,15 +17,35 @@ export const HeroSection = styled.section`
   overflow: hidden;
 `;
 
-// Aurora-borealis glow that follows the cursor (position driven by --x/--y set
-// in JS). A soft continuous hue/blur drift makes it flow like northern lights.
-const auroraDrift = keyframes`
+// Northern-lights curtains in red/crimson shades — self-animating, with a
+// mouse-following bloom (position driven by --x/--y set in JS) that brightens
+// the aurora where the cursor is.
+
+// Vertical curtains sway, stretch and shimmer as they flow down from the top.
+const auroraFlow = keyframes`
   0%,
   100% {
-    filter: blur(64px) hue-rotate(0deg) saturate(1.1);
+    transform: translateX(-2%) skewX(-5deg) scaleY(1);
+    filter: blur(52px) saturate(1.2) hue-rotate(0deg);
+    opacity: 0.9;
   }
   50% {
-    filter: blur(78px) hue-rotate(26deg) saturate(1.25);
+    transform: translateX(3%) skewX(5deg) scaleY(1.1);
+    filter: blur(64px) saturate(1.35) hue-rotate(-12deg);
+    opacity: 1;
+  }
+`;
+
+// The cursor bloom breathes gently.
+const auroraPulse = keyframes`
+  0%,
+  100% {
+    filter: blur(56px) saturate(1.2);
+    opacity: 0.85;
+  }
+  50% {
+    filter: blur(66px) saturate(1.35);
+    opacity: 1;
   }
 `;
 
@@ -36,29 +56,48 @@ export const Aurora = styled.div`
   overflow: hidden;
   pointer-events: none;
 
+  /* Self-animating curtains hanging from the top edge. */
   &::before {
+    content: '';
+    position: absolute;
+    inset: -12% -6% 0 -6%;
+    background:
+      radial-gradient(24% 88% at 20% -6%, rgba(226, 25, 73, 0.55), transparent 66%),
+      radial-gradient(19% 72% at 38% -8%, rgba(255, 70, 110, 0.5), transparent 70%),
+      radial-gradient(22% 92% at 55% -6%, rgba(190, 18, 80, 0.5), transparent 66%),
+      radial-gradient(17% 70% at 72% -8%, rgba(255, 120, 70, 0.4), transparent 72%),
+      radial-gradient(21% 84% at 88% -6%, rgba(168, 28, 120, 0.48), transparent 68%);
+    filter: blur(52px) saturate(1.2);
+    transform-origin: top center;
+    will-change: transform, filter, opacity;
+    animation: ${auroraFlow} 18s ease-in-out infinite;
+  }
+
+  /* Cursor bloom — a taller-than-wide light column that adds glow where the
+     mouse is (screen blend brightens the curtains beneath it). */
+  &::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 1100px;
-    height: 900px;
-    transform: translate3d(calc(var(--x, 50%) - 550px), calc(var(--y, 50%) - 450px), 0);
+    width: 780px;
+    height: 860px;
+    transform: translate3d(calc(var(--x, 50%) - 390px), calc(var(--y, 50%) - 430px), 0);
     background:
-      radial-gradient(38% 44% at 40% 38%, rgba(45, 255, 150, 0.55), transparent 72%),
-      radial-gradient(40% 46% at 62% 50%, rgba(34, 211, 238, 0.5), transparent 72%),
-      radial-gradient(44% 48% at 38% 64%, rgba(139, 92, 246, 0.5), transparent 74%),
-      radial-gradient(36% 42% at 60% 40%, rgba(236, 72, 153, 0.45), transparent 72%);
-    filter: blur(64px) saturate(1.1);
-    will-change: transform, filter;
-    animation: ${auroraDrift} 16s ease-in-out infinite;
+      radial-gradient(38% 50% at 50% 44%, rgba(255, 72, 120, 0.55), transparent 70%),
+      radial-gradient(28% 60% at 50% 40%, rgba(226, 25, 73, 0.5), transparent 72%),
+      radial-gradient(24% 40% at 52% 56%, rgba(255, 140, 80, 0.34), transparent 72%);
+    mix-blend-mode: screen;
+    filter: blur(56px) saturate(1.2);
+    will-change: transform, filter, opacity;
+    animation: ${auroraPulse} 7s ease-in-out infinite;
   }
 
   @media (max-width: 768px) {
-    &::before {
-      width: 760px;
-      height: 640px;
-      transform: translate3d(calc(var(--x, 50%) - 380px), calc(var(--y, 50%) - 320px), 0);
+    &::after {
+      width: 560px;
+      height: 620px;
+      transform: translate3d(calc(var(--x, 50%) - 280px), calc(var(--y, 50%) - 310px), 0);
     }
   }
 `;
