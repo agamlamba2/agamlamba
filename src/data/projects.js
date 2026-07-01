@@ -16,12 +16,6 @@ import coverTravelAssist from '../assets/project-covers/img_project_cover_travel
 import coverWorksmart from '../assets/project-covers/img_project_cover_worksmart.webp';
 import coverYudu from '../assets/project-covers/img_project_cover_yudu.webp';
 
-// Temporary placeholder art for projects whose real cover hasn't been uploaded yet.
-import phInvocare from '../assets/reel-placeholders/p1.svg';
-import phHandsAcrossTime from '../assets/reel-placeholders/p2.svg';
-import phPawmates from '../assets/reel-placeholders/p3.svg';
-import phQuietGrowth from '../assets/reel-placeholders/p4.svg';
-
 // Homepage "Featured work" covers (separate art from the detail-page covers).
 import featuredTaste from '../assets/images/img_featured_project_cover_taste.webp';
 import featuredUta from '../assets/images/img_featured_project_cover_uta.webp';
@@ -146,16 +140,6 @@ export const projects = [
     sections: [],
   },
   {
-    slug: 'invocare',
-    title: 'InvoCare Design System',
-    desc: 'Design System',
-    cover: phInvocare,
-    coverPlaceholder: true,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
     slug: 'questemoney',
     title: 'QuesteMoney',
     desc: 'Product Design',
@@ -169,26 +153,6 @@ export const projects = [
     title: 'Travel Assist',
     desc: 'Product Design',
     cover: coverTravelAssist,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'hands-across-time',
-    title: 'Hands Across Time',
-    desc: 'Product Design',
-    cover: phHandsAcrossTime,
-    coverPlaceholder: true,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'pawmates',
-    title: 'Pawmates',
-    desc: 'Product Design',
-    cover: phPawmates,
-    coverPlaceholder: true,
     meta: [],
     overview: '',
     sections: [],
@@ -243,16 +207,6 @@ export const projects = [
     title: 'Yudu',
     desc: 'Product Design',
     cover: coverYudu,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'quietgrowth',
-    title: 'QuietGrowth',
-    desc: 'Product Design',
-    cover: phQuietGrowth,
-    coverPlaceholder: true,
     meta: [],
     overview: '',
     sections: [],
