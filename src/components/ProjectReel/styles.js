@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import colors from '../../assets/styles/variables/colors';
 
@@ -40,6 +40,35 @@ export const TextItem = styled.div`
   opacity: ${({ $active }) => ($active ? 1 : 0)};
   transition: opacity 0.5s ease;
   pointer-events: ${({ $active }) => ($active ? 'auto' : 'none')};
+
+  /* Each line slides in from the left, staggered — like the footer buttons. */
+  h2,
+  p,
+  a {
+    opacity: 0;
+    transform: translateX(-44px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  ${({ $active }) =>
+    $active &&
+    css`
+      h2 {
+        opacity: 1;
+        transform: translateX(0);
+        transition-delay: 0.08s;
+      }
+      p {
+        opacity: 1;
+        transform: translateX(0);
+        transition-delay: 0.22s;
+      }
+      a {
+        opacity: 1;
+        transform: translateX(0);
+        transition-delay: 0.36s;
+      }
+    `}
 
   @media (max-width: 900px) {
     left: 20px;
