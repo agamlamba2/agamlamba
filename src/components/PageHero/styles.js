@@ -36,19 +36,6 @@ const auroraFlow = keyframes`
   }
 `;
 
-// The cursor bloom breathes gently.
-const auroraPulse = keyframes`
-  0%,
-  100% {
-    filter: blur(110px) saturate(1.15);
-    opacity: 0.55;
-  }
-  50% {
-    filter: blur(128px) saturate(1.25);
-    opacity: 0.72;
-  }
-`;
-
 export const Aurora = styled.div`
   position: absolute;
   inset: 0;
@@ -73,32 +60,6 @@ export const Aurora = styled.div`
     animation: ${auroraFlow} 18s ease-in-out infinite;
   }
 
-  /* Cursor bloom — a taller-than-wide light column that adds glow where the
-     mouse is (screen blend brightens the curtains beneath it). */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1500px;
-    height: 1200px;
-    transform: translate3d(calc(var(--x, 50%) - 750px), calc(var(--y, 50%) - 600px), 0);
-    background:
-      radial-gradient(50% 55% at 50% 46%, rgba(255, 80, 125, 0.16), transparent 78%),
-      radial-gradient(62% 66% at 50% 42%, rgba(226, 25, 73, 0.14), transparent 80%);
-    mix-blend-mode: screen;
-    filter: blur(110px) saturate(1.15);
-    will-change: transform, filter, opacity;
-    animation: ${auroraPulse} 8s ease-in-out infinite;
-  }
-
-  @media (max-width: 768px) {
-    &::after {
-      width: 1000px;
-      height: 900px;
-      transform: translate3d(calc(var(--x, 50%) - 500px), calc(var(--y, 50%) - 450px), 0);
-    }
-  }
 `;
 
 export const HeroContent = styled.div`
