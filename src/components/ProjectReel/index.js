@@ -16,32 +16,41 @@ import {
 import { projects } from '../../data/projects';
 
 const clamp = (v, min = 0, max = 1) => Math.max(min, Math.min(v, max));
-const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-const REEL_MS = 1500; // fast auto-reel through every project
-const SKEW_MS = 650; // settle: flatten -> floating skewed sheet
+
+// Scroll phases (as a fraction of the pinned section's scroll range):
+//  0.00 -> REEL_END : auto-reel — every project sweeps up through the frame,
+//                     oldest (last) to latest (first), flat.
+//  REEL_END -> SKEW_END : the stack skews and drifts right into a floating sheet.
+//  SKEW_END -> 1.00 : carousel — scroll pages between projects, sheet stays floating.
+const REEL_END = 0.3;
+const SKEW_END = 0.42;
+
+const SPACING = 52; // vh between adjacent cards in the reel
+const SKEW_ROT_Z = -4; // deg tilt of the settled sheet
+const SKEW_Y = -3; // deg vertical shear of the settled sheet
+const SKEW_TX = 4; // vw the sheet drifts right as it settles
 
 export default function ProjectReel() {
   const sectionRef = useRef(null);
   const cardRefs = useRef([]);
+  const railRef = useRef(null);
   const tickingRef = useRef(false);
-  const introRef = useRef({ started: false, done: false, raf: 0 });
   const [active, setActive] = useState(0);
-  const [settled, setSettled] = useState(false);
   const N = projects.length;
 
-  // Position every card for a given focus (activeFloat) and skew amount (0..1).
+  // Position every card for a focus point (activeFloat) and a skew amount (0..1).
   const render = useCallback((activeFloat, skew) => {
     cardRefs.current.forEach((el, i) => {
       if (!el) return;
       const offset = i - activeFloat; // 0 = centred, <0 above, >0 below
-      const y = offset * 76; // vh — cards travel up through the centre frame
-      const rotateX = offset * -10;
-      const scale = clamp(1 - Math.abs(offset) * 0.12, 0.72, 1);
-      const opacity = clamp(1.15 - Math.abs(offset) * 0.62);
-      const rotZ = skew * -3; // slight tilt -> floating sheet
-      const skewY = skew * -2.6;
-      const tx = skew * 3; // drifts right as it becomes a sheet
+      const y = offset * SPACING; // vh — cards travel up through the frame
+      const rotateX = offset * -8;
+      const scale = clamp(1 - Math.abs(offset) * 0.1, 0.7, 1);
+      const opacity = clamp(1.2 - Math.abs(offset) * 0.55);
+      const rotZ = skew * SKEW_ROT_Z;
+      const skewY = skew * SKEW_Y;
+      const tx = skew * SKEW_TX;
       el.style.transform =
         `translate(-50%, -50%) translateX(${tx.toFixed(2)}vw) translateY(${y.toFixed(2)}vh) ` +
         `perspective(1600px) rotateX(${rotateX.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) ` +
@@ -51,91 +60,74 @@ export default function ProjectReel() {
     });
   }, []);
 
-  // Scroll-driven carousel (only after the intro has settled).
-  const updateScroll = useCallback(() => {
+  const update = useCallback(() => {
     const section = sectionRef.current;
-    if (section && introRef.current.done) {
+    if (section) {
       const rect = section.getBoundingClientRect();
       const total = section.offsetHeight - window.innerHeight;
-      const progress = clamp(-rect.top / total);
-      const activeFloat = progress * (N - 1);
-      setActive((prev) => {
-        const next = Math.round(activeFloat);
-        return prev === next ? prev : next;
-      });
-      render(activeFloat, 1);
+      const p = clamp(-rect.top / total);
+
+      let activeFloat;
+      let skew;
+      if (p < REEL_END) {
+        // reel sweeps from the last project up to the first, flat
+        const local = p / REEL_END;
+        activeFloat = (N - 1) * (1 - local);
+        skew = 0;
+      } else if (p < SKEW_END) {
+        // settle the first project into the floating sheet
+        const s = easeOut((p - REEL_END) / (SKEW_END - REEL_END));
+        activeFloat = 0;
+        skew = s;
+      } else {
+        // carousel through the projects, sheet stays floating
+        const c = (p - SKEW_END) / (1 - SKEW_END);
+        activeFloat = clamp(c, 0, 1) * (N - 1);
+        skew = 1;
+      }
+
+      render(activeFloat, skew);
+
+      const next = clamp(Math.round(activeFloat), 0, N - 1);
+      setActive((prev) => (prev === next ? prev : next));
+
+      if (railRef.current) {
+        railRef.current.style.opacity = p >= REEL_END ? '1' : '0';
+      }
     }
     tickingRef.current = false;
   }, [N, render]);
 
-  // Intro: auto-reel through all projects, then skew into the floating sheet.
-  const playIntro = useCallback(() => {
-    const intro = introRef.current;
-    if (intro.started) return;
-    intro.started = true;
-    const start = performance.now();
-    const step = (now) => {
-      const t = now - start;
-      if (t < REEL_MS) {
-        // reel sweeps from the last project up to the first (flat)
-        const p = easeInOut(t / REEL_MS);
-        render((N - 1) * (1 - p), 0);
-        intro.raf = requestAnimationFrame(step);
-      } else if (t < REEL_MS + SKEW_MS) {
-        const s = easeOut((t - REEL_MS) / SKEW_MS);
-        render(0, s);
-        if (!settled) setSettled(true);
-        intro.raf = requestAnimationFrame(step);
-      } else {
-        render(0, 1);
-        intro.done = true;
-        setSettled(true);
-      }
-    };
-    intro.raf = requestAnimationFrame(step);
-  }, [N, render, settled]);
-
   useEffect(() => {
-    render(N - 1, 0); // start on the reel's first frame
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) playIntro();
-      },
-      { threshold: 0.4 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-
+    update();
     const onScroll = () => {
       if (tickingRef.current) return;
       tickingRef.current = true;
-      window.requestAnimationFrame(updateScroll);
+      window.requestAnimationFrame(update);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
-    const intro = introRef.current;
     return () => {
-      observer.disconnect();
-      cancelAnimationFrame(intro.raf);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [N, render, playIntro, updateScroll]);
+  }, [update]);
 
+  // Jump the scroll so a given project sits centred in the carousel phase.
   const jumpTo = (i) => {
     const section = sectionRef.current;
     if (!section) return;
     const total = section.offsetHeight - window.innerHeight;
-    const top = section.offsetTop + (i / (N - 1)) * total;
-    window.scrollTo({ top, behavior: 'smooth' });
+    const p = SKEW_END + (i / (N - 1)) * (1 - SKEW_END);
+    window.scrollTo({ top: section.offsetTop + p * total, behavior: 'smooth' });
   };
 
   return (
-    <Section ref={sectionRef} style={{ height: `${N * 100}vh` }} aria-label="Project reel">
+    <Section ref={sectionRef} style={{ height: `${(N + 1) * 100}vh` }} aria-label="Project reel">
       <Pin>
         <TextCol>
           {projects.map((project, i) => (
-            <TextItem key={project.slug} $active={settled && i === active}>
+            <TextItem key={project.slug} $active={i === active}>
               <Title>{project.title}</Title>
               <Desc>{project.overview || project.desc}</Desc>
               <CaseLink to={`/${project.slug}`}>
@@ -157,7 +149,7 @@ export default function ProjectReel() {
           ))}
         </Stage>
 
-        <Rail $shown={settled}>
+        <Rail ref={railRef}>
           {projects.map((project, i) => (
             <Dot
               key={project.slug}

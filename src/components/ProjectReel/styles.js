@@ -139,7 +139,7 @@ export const Rail = styled.div`
   display: flex;
   flex-direction: column;
   gap: 14px;
-  opacity: ${({ $shown }) => ($shown ? 1 : 0)};
+  opacity: 0;
   transition: opacity 0.6s ease;
 
   @media (max-width: 900px) {
