@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowUpRight } from 'react-icons/fi';
 import {
   Section,
   Pin,
@@ -54,7 +54,7 @@ const SKEW_MS = 650; // settle the first project into the floating sheet
 
 // Carousel: after the tilt, scroll pages between projects.
 const HOLD = 0.2; // scroll fraction held on project 0 right after the tilt
-const SMOOTH = 0.09; // how fast the carousel eases toward the scroll (lower = more glide)
+const SMOOTH = 0.16; // per-frame (60fps) glide toward the scroll target; frame-rate corrected
 
 // Tight vertical fan — cards overlap closely and curve like a spread deck.
 const SPACING = 13; // vh between adjacent cards (small = close together / overlapping)
@@ -73,6 +73,7 @@ export default function ProjectReel() {
   const curRef = useRef(0); // carousel focus currently rendered (eases toward target)
   const rafRef = useRef(0);
   const runningRef = useRef(false);
+  const lastRef = useRef(0); // timestamp of previous frame (for frame-rate-independent easing)
   const introRef = useRef({ started: false, done: false, t0: 0 });
   const [active, setActive] = useState(0);
   const [introDone, setIntroDone] = useState(false);
@@ -105,10 +106,11 @@ export default function ProjectReel() {
     if (railRef.current) railRef.current.style.opacity = shown ? '1' : '0';
   };
 
-  // Read where the section sits and (re)arm / trigger the auto-reel intro.
+  // Read where the section sits, update the scroll target and (re)arm / trigger
+  // the auto-reel intro. Returns whether the section is anywhere near the viewport.
   const readScroll = useCallback(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section) return false;
     const rect = section.getBoundingClientRect();
     const vh = window.innerHeight;
     const total = section.offsetHeight - vh;
@@ -132,10 +134,24 @@ export default function ProjectReel() {
       intro.t0 = 0;
       setIntroDone(false);
     }
+
+    return rect.bottom > -vh * 0.5 && rect.top < vh * 1.5;
   }, [N, render]);
 
+  // One continuous rAF loop while the section is in view — decoupling the render
+  // from scroll-event cadence is what makes the slide feel smooth.
   const frame = useCallback(
     (now) => {
+      const dt = lastRef.current ? now - lastRef.current : 16.7;
+      lastRef.current = now;
+
+      const inView = readScroll();
+      if (!inView) {
+        runningRef.current = false;
+        lastRef.current = 0;
+        return; // out of view: stop the loop until scroll wakes it again
+      }
+
       const intro = introRef.current;
 
       // --- Auto-reel intro (time-based, ignores scroll) ---
@@ -143,8 +159,7 @@ export default function ProjectReel() {
         if (!intro.t0) intro.t0 = now;
         const t = now - intro.t0;
         if (t < REEL_MS) {
-          const local = easeInOut(t / REEL_MS);
-          render((N - 1) * (1 - local), 0);
+          render((N - 1) * (1 - easeInOut(t / REEL_MS)), 0);
           setRail(false);
         } else if (t < REEL_MS + SKEW_MS) {
           render(0, easeOutBack((t - REEL_MS) / SKEW_MS));
@@ -161,56 +176,50 @@ export default function ProjectReel() {
         return;
       }
 
-      // --- Carousel (scroll-driven, smoothed) — only after the tilt ---
+      // --- Carousel: ease the focus toward the scroll target every frame ---
       if (intro.done) {
-        const p = targetRef.current;
-        const carouselT = clamp((p - HOLD) / (1 - HOLD));
-        const targetAF = carouselT * (N - 1);
+        const targetAF = clamp((targetRef.current - HOLD) / (1 - HOLD)) * (N - 1);
         const diff = targetAF - curRef.current;
-        if (Math.abs(diff) < 0.0006) {
-          curRef.current = targetAF;
+        if (Math.abs(diff) > 0.0004) {
+          // frame-rate-independent lerp: same glide at 30, 60 or 120fps
+          const k = 1 - Math.pow(1 - SMOOTH, dt / (1000 / 60));
+          curRef.current += diff * k;
+          if (Math.abs(targetAF - curRef.current) < 0.0004) curRef.current = targetAF;
           render(curRef.current, 1);
           const next = clamp(Math.round(curRef.current), 0, N - 1);
           setActive((prev) => (prev === next ? prev : next));
-          runningRef.current = false;
-          return;
         }
-        curRef.current += diff * SMOOTH;
-        render(curRef.current, 1);
-        const next = clamp(Math.round(curRef.current), 0, N - 1);
-        setActive((prev) => (prev === next ? prev : next));
         rafRef.current = requestAnimationFrame(frame);
         return;
       }
 
       // --- Idle poster (intro not yet triggered) ---
       render(N - 1, 0);
-      runningRef.current = false;
+      rafRef.current = requestAnimationFrame(frame);
     },
-    [N, render]
+    [N, render, readScroll]
   );
 
   const kick = useCallback(() => {
     if (runningRef.current) return;
     runningRef.current = true;
+    lastRef.current = 0;
     rafRef.current = requestAnimationFrame(frame);
   }, [frame]);
 
   useEffect(() => {
-    readScroll();
     render(N - 1, 0);
-    const onScroll = () => {
-      readScroll();
-      kick();
-    };
+    kick();
+    const onScroll = () => kick();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => {
       cancelAnimationFrame(rafRef.current);
+      runningRef.current = false;
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [readScroll, render, kick, N]);
+  }, [render, kick, N]);
 
   // Jump the scroll so a given project sits centred in the carousel phase.
   const jumpTo = (i) => {
@@ -230,7 +239,7 @@ export default function ProjectReel() {
               <Title>{project.title}</Title>
               <Desc>{project.desc}</Desc>
               <CaseLink to={`/${project.slug}`}>
-                Open case study <FiArrowRight />
+                Open case study <FiArrowUpRight />
               </CaseLink>
             </TextItem>
           ))}

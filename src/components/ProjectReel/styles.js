@@ -110,13 +110,13 @@ export const CaseLink = styled(Link)`
   color: ${colors.white};
 
   svg {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     transition: transform 0.3s ease;
   }
 
   &:hover svg {
-    transform: translateX(6px);
+    transform: translate(5px, -5px);
   }
 `;
 
