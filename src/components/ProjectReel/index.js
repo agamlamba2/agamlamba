@@ -17,14 +17,15 @@ import { projects } from '../../data/projects';
 
 const clamp = (v, min = 0, max = 1) => Math.max(min, Math.min(v, max));
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 
-// Scroll phases (as a fraction of the pinned section's scroll range):
-//  0.00 -> REEL_END : auto-reel — every project sweeps up through the frame,
-//                     oldest (last) to latest (first), flat.
-//  REEL_END -> SKEW_END : the stack skews and drifts right into a floating sheet.
-//  SKEW_END -> 1.00 : carousel — scroll pages between projects, sheet stays floating.
-const REEL_END = 0.3;
-const SKEW_END = 0.42;
+// Intro: auto-reel then skew into the tilted sheet (time-based, no scrolling).
+const REEL_MS = 1400; // sweep every project up through the frame
+const SKEW_MS = 650; // settle the first project into the floating sheet
+
+// Carousel: after the tilt, scroll pages between projects.
+const HOLD = 0.2; // scroll fraction held on project 0 right after the tilt
+const SMOOTH = 0.09; // how fast the carousel eases toward the scroll (lower = more glide)
 
 const SPACING = 52; // vh between adjacent cards in the reel
 const SKEW_ROT_Z = -4; // deg tilt of the settled sheet
@@ -35,8 +36,13 @@ export default function ProjectReel() {
   const sectionRef = useRef(null);
   const cardRefs = useRef([]);
   const railRef = useRef(null);
-  const tickingRef = useRef(false);
+  const targetRef = useRef(0); // scroll progress we want to reach (0..1)
+  const curRef = useRef(0); // carousel focus currently rendered (eases toward target)
+  const rafRef = useRef(0);
+  const runningRef = useRef(false);
+  const introRef = useRef({ started: false, done: false, t0: 0 });
   const [active, setActive] = useState(0);
+  const [introDone, setIntroDone] = useState(false);
   const N = projects.length;
 
   // Position every card for a focus point (activeFloat) and a skew amount (0..1).
@@ -60,65 +66,123 @@ export default function ProjectReel() {
     });
   }, []);
 
-  const update = useCallback(() => {
+  const setRail = (shown) => {
+    if (railRef.current) railRef.current.style.opacity = shown ? '1' : '0';
+  };
+
+  // Read where the section sits and (re)arm / trigger the auto-reel intro.
+  const readScroll = useCallback(() => {
     const section = sectionRef.current;
-    if (section) {
-      const rect = section.getBoundingClientRect();
-      const total = section.offsetHeight - window.innerHeight;
-      const p = clamp(-rect.top / total);
+    if (!section) return;
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = section.offsetHeight - vh;
+    targetRef.current = clamp(-rect.top / total);
 
-      let activeFloat;
-      let skew;
-      if (p < REEL_END) {
-        // reel sweeps from the last project up to the first, flat
-        const local = p / REEL_END;
-        activeFloat = (N - 1) * (1 - local);
-        skew = 0;
-      } else if (p < SKEW_END) {
-        // settle the first project into the floating sheet
-        const s = easeOut((p - REEL_END) / (SKEW_END - REEL_END));
-        activeFloat = 0;
-        skew = s;
-      } else {
-        // carousel through the projects, sheet stays floating
-        const c = (p - SKEW_END) / (1 - SKEW_END);
-        activeFloat = clamp(c, 0, 1) * (N - 1);
-        skew = 1;
-      }
-
-      render(activeFloat, skew);
-
-      const next = clamp(Math.round(activeFloat), 0, N - 1);
-      setActive((prev) => (prev === next ? prev : next));
-
-      if (railRef.current) {
-        railRef.current.style.opacity = p >= REEL_END ? '1' : '0';
-      }
+    const intro = introRef.current;
+    // Re-arm once the section has fully left below the fold, so it replays on re-entry.
+    if (intro.done && rect.top >= vh) {
+      intro.started = false;
+      intro.done = false;
+      curRef.current = 0;
+      setIntroDone(false);
+      setActive(0);
+      setRail(false);
+      render(N - 1, 0);
     }
-    tickingRef.current = false;
+    // Trigger the intro as the section scrolls up into the fold.
+    if (!intro.started && rect.top <= vh * 0.55 && rect.bottom > vh * 0.4) {
+      intro.started = true;
+      intro.done = false;
+      intro.t0 = 0;
+      setIntroDone(false);
+    }
   }, [N, render]);
 
+  const frame = useCallback(
+    (now) => {
+      const intro = introRef.current;
+
+      // --- Auto-reel intro (time-based, ignores scroll) ---
+      if (intro.started && !intro.done) {
+        if (!intro.t0) intro.t0 = now;
+        const t = now - intro.t0;
+        if (t < REEL_MS) {
+          const local = easeInOut(t / REEL_MS);
+          render((N - 1) * (1 - local), 0);
+          setRail(false);
+        } else if (t < REEL_MS + SKEW_MS) {
+          render(0, easeOut((t - REEL_MS) / SKEW_MS));
+          setRail(false);
+        } else {
+          render(0, 1);
+          intro.done = true;
+          curRef.current = 0;
+          setIntroDone(true);
+          setActive(0);
+          setRail(true);
+        }
+        rafRef.current = requestAnimationFrame(frame);
+        return;
+      }
+
+      // --- Carousel (scroll-driven, smoothed) — only after the tilt ---
+      if (intro.done) {
+        const p = targetRef.current;
+        const carouselT = clamp((p - HOLD) / (1 - HOLD));
+        const targetAF = carouselT * (N - 1);
+        const diff = targetAF - curRef.current;
+        if (Math.abs(diff) < 0.0006) {
+          curRef.current = targetAF;
+          render(curRef.current, 1);
+          const next = clamp(Math.round(curRef.current), 0, N - 1);
+          setActive((prev) => (prev === next ? prev : next));
+          runningRef.current = false;
+          return;
+        }
+        curRef.current += diff * SMOOTH;
+        render(curRef.current, 1);
+        const next = clamp(Math.round(curRef.current), 0, N - 1);
+        setActive((prev) => (prev === next ? prev : next));
+        rafRef.current = requestAnimationFrame(frame);
+        return;
+      }
+
+      // --- Idle poster (intro not yet triggered) ---
+      render(N - 1, 0);
+      runningRef.current = false;
+    },
+    [N, render]
+  );
+
+  const kick = useCallback(() => {
+    if (runningRef.current) return;
+    runningRef.current = true;
+    rafRef.current = requestAnimationFrame(frame);
+  }, [frame]);
+
   useEffect(() => {
-    update();
+    readScroll();
+    render(N - 1, 0);
     const onScroll = () => {
-      if (tickingRef.current) return;
-      tickingRef.current = true;
-      window.requestAnimationFrame(update);
+      readScroll();
+      kick();
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => {
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [update]);
+  }, [readScroll, render, kick, N]);
 
   // Jump the scroll so a given project sits centred in the carousel phase.
   const jumpTo = (i) => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || !introRef.current.done) return;
     const total = section.offsetHeight - window.innerHeight;
-    const p = SKEW_END + (i / (N - 1)) * (1 - SKEW_END);
+    const p = HOLD + (i / (N - 1)) * (1 - HOLD);
     window.scrollTo({ top: section.offsetTop + p * total, behavior: 'smooth' });
   };
 
@@ -127,7 +191,7 @@ export default function ProjectReel() {
       <Pin>
         <TextCol>
           {projects.map((project, i) => (
-            <TextItem key={project.slug} $active={i === active}>
+            <TextItem key={project.slug} $active={introDone && i === active}>
               <Title>{project.title}</Title>
               <Desc>{project.overview || project.desc}</Desc>
               <CaseLink to={`/${project.slug}`}>
