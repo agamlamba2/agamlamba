@@ -14,6 +14,15 @@ import {
   Dot,
 } from './styles';
 import { projects } from '../../data/projects';
+import ph1 from '../../assets/reel-placeholders/p1.svg';
+import ph2 from '../../assets/reel-placeholders/p2.svg';
+import ph3 from '../../assets/reel-placeholders/p3.svg';
+import ph4 from '../../assets/reel-placeholders/p4.svg';
+import ph5 from '../../assets/reel-placeholders/p5.svg';
+import ph6 from '../../assets/reel-placeholders/p6.svg';
+
+// Placeholder card art (not the real project screenshots) — one per project.
+const placeholders = [ph1, ph2, ph3, ph4, ph5, ph6];
 
 const clamp = (v, min = 0, max = 1) => Math.max(min, Math.min(v, max));
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
@@ -27,8 +36,12 @@ const SKEW_MS = 650; // settle the first project into the floating sheet
 const HOLD = 0.2; // scroll fraction held on project 0 right after the tilt
 const SMOOTH = 0.09; // how fast the carousel eases toward the scroll (lower = more glide)
 
-const SPACING = 52; // vh between adjacent cards in the reel
-const SKEW_ROT_Z = -4; // deg tilt of the settled sheet
+// Tight vertical fan — cards overlap closely and curve like a spread deck.
+const SPACING = 13; // vh between adjacent cards (small = close together / overlapping)
+const ARC = 0.9; // vw of horizontal curve per offset² (bows the stack into a C)
+const ARC_MAX = 16; // vw cap on the curve so far cards don't fly off
+const FAN = 4; // deg each card rotates away from centre (the fan)
+const SKEW_ROT_Z = -4; // deg extra tilt of the settled sheet
 const SKEW_Y = -3; // deg vertical shear of the settled sheet
 const SKEW_TX = 4; // vw the sheet drifts right as it settles
 
@@ -50,19 +63,21 @@ export default function ProjectReel() {
     cardRefs.current.forEach((el, i) => {
       if (!el) return;
       const offset = i - activeFloat; // 0 = centred, <0 above, >0 below
-      const y = offset * SPACING; // vh — cards travel up through the frame
-      const rotateX = offset * -8;
-      const scale = clamp(1 - Math.abs(offset) * 0.1, 0.7, 1);
-      const opacity = clamp(1.2 - Math.abs(offset) * 0.55);
-      const rotZ = skew * SKEW_ROT_Z;
+      const abs = Math.abs(offset);
+      const y = offset * SPACING; // vh — cards stack up/down, close together
+      const arc = -Math.min(offset * offset * ARC, ARC_MAX); // vw — bows the stack into a C
+      const rotateX = offset * -4;
+      const rotZ = offset * FAN + skew * SKEW_ROT_Z; // fan spread + settle tilt
+      const scale = clamp(1 - abs * 0.08, 0.74, 1);
+      const opacity = clamp(1.3 - abs * 0.24);
       const skewY = skew * SKEW_Y;
-      const tx = skew * SKEW_TX;
+      const tx = arc + skew * SKEW_TX;
       el.style.transform =
         `translate(-50%, -50%) translateX(${tx.toFixed(2)}vw) translateY(${y.toFixed(2)}vh) ` +
         `perspective(1600px) rotateX(${rotateX.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) ` +
         `skewY(${skewY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
       el.style.opacity = opacity.toFixed(3);
-      el.style.zIndex = String(100 - Math.round(Math.abs(offset) * 10));
+      el.style.zIndex = String(100 - Math.round(abs * 10));
     });
   }, []);
 
@@ -205,7 +220,7 @@ export default function ProjectReel() {
           {projects.map((project, i) => (
             <Card
               key={project.slug}
-              $src={project.cover}
+              $src={placeholders[i % placeholders.length]}
               ref={(el) => {
                 cardRefs.current[i] = el;
               }}
