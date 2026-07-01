@@ -6,42 +6,7 @@ import PageHero from '../components/PageHero';
 import Contact from '../components/Contact';
 import colors from '../assets/styles/variables/colors';
 import quoteIcon from '../assets/quotation.svg';
-
-/* ---------------------------------------------------------------------------
- * Testimonials. Con Colovos is real (from the Figma). The rest are placeholders
- * — replace them with the real quotes. Add an `avatar` (imported from
- * src/assets/avatars/) to any entry to show a photo instead of the initials.
- * ------------------------------------------------------------------------- */
-const testimonials = [
-  {
-    name: 'Con Colovos',
-    role: 'Program Director, Service Delivery Infrastructure',
-    company: 'Westpac Group',
-    quote:
-      'I have been with Westpac as a Program Director Technology for nearly six years, in that time I have worked on some significant technology programs which has posed challenges and complexity. One of the more significant programs I have been working on for the past 12 months has been the identification and implementation of an automated booking system for approximately 750 meeting rooms within the Westpac Group. I always like to push the envelope and try something different and new to obtain the best outcome. This is where Agam and his team come in. We were looking for a system that could be developed internally, not require much upkeep, provide seamless integration to the backend mobile applications within Westpac and provide a WOW factor to our users. Agam was working on a new QR Code system for multiple uses within the Bank and approached me and asked if I would be interested in looking at what he was working on and see if it could help. I sat down reviewed what Agam had developed and I was in awe. It was the perfect solution and no one else was doing it in any large corporate, kudos to Agam. Agam and his team diligently worked on the solution using QR Codes for the meeting rooms and it is commencing rollout the 18 February 2019 enterprise wide to all of WBC. Not only is it an extraordinary piece of work, but Agam has been the quiet achiever working with his team in the background doing what they had to do with minimal fuss and never missed a deadline, or created any risks or issues that could jeopardise the outcome. It also ended up creating a saving of over 500% in operational expenditure to the bank by the imagination, insight and hard work of one of the brightest young technologists I have ever had the pleasure of working with. Agam is a rising star in the new world of mobile applications and AI.',
-  },
-  {
-    name: 'Priya S.',
-    role: 'Design Lead',
-    company: 'Fintech',
-    quote:
-      'Working with Agam changed how our team thinks about research. He made the customer real for everyone in the room, not just the designers.',
-  },
-  {
-    name: 'Marcus T.',
-    role: 'Engineering Manager',
-    company: 'Digital Bank',
-    quote:
-      'He pairs strong craft with genuine strategic thinking — the kind of designer who quietly makes everyone around him better.',
-  },
-  {
-    name: 'Elena K.',
-    role: 'Product Director',
-    company: 'SaaS',
-    quote:
-      'Agam took our design system from zero to adopted across every team. Pragmatic, fast, and relentlessly focused on outcomes.',
-  },
-];
+import { testimonials } from '../data/testimonials';
 
 const Section = styled.section`
   background: ${colors.bg};
@@ -78,24 +43,38 @@ const SectionTitle = styled.h2`
   color: ${colors.white};
 `;
 
-const Masonry = styled.div`
-  column-count: 2;
-  column-gap: 24px;
+/* Two independent columns (not a uniform grid) — even entries left, odd right. */
+const Columns = styled.div`
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 1136px;
+  margin: 0 auto;
 
   @media (max-width: 900px) {
-    column-count: 1;
+    flex-direction: column;
+  }
+`;
+
+const Column = styled.div`
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (max-width: 900px) {
+    width: 100%;
   }
 `;
 
 const Card = styled.figure`
-  break-inside: avoid;
-  margin: 0 0 24px;
+  margin: 0;
   position: relative;
   background: ${colors.bg};
   border: 1px solid ${colors.borderLight};
   border-radius: 16px;
-  padding: 32px;
-  padding-bottom: 56px;
+  padding: 32px 32px 56px;
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.3s ease;
@@ -192,6 +171,7 @@ const QuoteText = styled.blockquote`
   font-weight: 400;
   line-height: 20px;
   color: ${colors.white};
+  white-space: pre-line;
 `;
 
 const QuoteClose = styled.img`
@@ -216,7 +196,7 @@ function useReveal() {
           obs.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -262,6 +242,9 @@ export default function SuccessStories() {
     window.scrollTo(0, 0);
   }, []);
 
+  const left = testimonials.filter((_, i) => i % 2 === 0);
+  const right = testimonials.filter((_, i) => i % 2 === 1);
+
   return (
     <>
       <PageHero
@@ -275,11 +258,18 @@ export default function SuccessStories() {
           <SectionKicker>Testimonials</SectionKicker>
           <SectionTitle>Kind words from the people I&rsquo;ve built with</SectionTitle>
         </SectionHead>
-        <Masonry>
-          {testimonials.map((t) => (
-            <TestimonialCard key={t.name} item={t} />
-          ))}
-        </Masonry>
+        <Columns>
+          <Column>
+            {left.map((t) => (
+              <TestimonialCard key={t.name} item={t} />
+            ))}
+          </Column>
+          <Column>
+            {right.map((t) => (
+              <TestimonialCard key={t.name} item={t} />
+            ))}
+          </Column>
+        </Columns>
       </Section>
 
       <Contact />
