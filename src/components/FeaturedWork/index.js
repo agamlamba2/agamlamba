@@ -34,7 +34,8 @@ function ProjectCard({ project }) {
     return () => observer.disconnect();
   }, []);
 
-  const bg = project.cover ? `url(${project.cover})` : project.bg;
+  const cover = project.featuredCover || project.cover;
+  const bg = cover ? `url(${cover})` : project.bg;
 
   return (
     <Project ref={ref} to={`/${project.slug}`} className={visible ? 'visible' : ''}>

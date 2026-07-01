@@ -1,8 +1,15 @@
-import coverTaste from '../assets/images/img_project_cover_taste.webp';
-import coverUta from '../assets/images/img_project_cover_uta.webp';
-import coverSimplicity from '../assets/images/img_project_cover_simplicity.webp';
-import coverHomein from '../assets/images/img_project_cover_homein.webp';
-import coverWestpac from '../assets/images/img_project_cover_westpac.webp';
+import coverTaste from '../assets/project-covers/img_project_cover_taste.webp';
+import coverUta from '../assets/project-covers/img_project_cover_uta.webp';
+import coverSimplicity from '../assets/project-covers/img_project_cover_simplicity.webp';
+import coverHomein from '../assets/project-covers/img_project_cover_homein.webp';
+import coverWestpac from '../assets/project-covers/img_project_cover_westpac.webp';
+
+// Homepage "Featured work" covers (separate art from the detail-page covers).
+import featuredTaste from '../assets/images/img_featured_project_cover_taste.webp';
+import featuredUta from '../assets/images/img_featured_project_cover_uta.webp';
+import featuredSimplicity from '../assets/images/img_featured_project_cover_simplicity.webp';
+import featuredHomein from '../assets/images/img_featured_project_cover_homein.webp';
+import featuredWestpac from '../assets/images/img_featured_project_cover_westpac.webp';
 
 // Single source of truth for the Featured Work cards and the project detail
 // pages. To flesh out a case study, add blocks to `sections`:
@@ -15,6 +22,7 @@ export const projects = [
     title: 'Taste.com.au',
     desc: 'Product Design: Web Redesign & Research',
     cover: coverTaste,
+    featuredCover: featuredTaste,
     meta: [
       { label: 'Role', value: 'Lead Product Designer' },
       { label: 'Scope', value: 'Web Redesign, Research' },
@@ -29,6 +37,7 @@ export const projects = [
     title: 'Universal Task Assistant',
     desc: 'Product Design: App & Branding',
     cover: coverUta,
+    featuredCover: featuredUta,
     meta: [
       { label: 'Role', value: 'Product Designer' },
       { label: 'Scope', value: 'App, Branding' },
@@ -43,6 +52,7 @@ export const projects = [
     title: 'Simplicity Accelerator',
     desc: 'Product Design: Responsive Web Design & Platform Redesign',
     cover: coverSimplicity,
+    featuredCover: featuredSimplicity,
     meta: [
       { label: 'Role', value: 'Lead Product Designer' },
       { label: 'Scope', value: 'Platform Redesign' },
@@ -57,6 +67,7 @@ export const projects = [
     title: 'Home-in (CommBank)',
     desc: 'Multi-channel Design Strategy',
     cover: coverHomein,
+    featuredCover: featuredHomein,
     meta: [
       { label: 'Role', value: 'Design Strategy' },
       { label: 'Scope', value: 'Multi-channel Strategy' },
@@ -71,6 +82,7 @@ export const projects = [
     title: 'Westpac Mobile Banking',
     desc: 'Product Design: App, Website, and Branding',
     cover: coverWestpac,
+    featuredCover: featuredWestpac,
     meta: [
       { label: 'Role', value: 'Product Designer' },
       { label: 'Scope', value: 'App, Website, Branding' },
