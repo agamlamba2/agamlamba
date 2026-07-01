@@ -40,12 +40,12 @@ const auroraFlow = keyframes`
 const auroraPulse = keyframes`
   0%,
   100% {
-    filter: blur(56px) saturate(1.2);
-    opacity: 0.85;
+    filter: blur(110px) saturate(1.15);
+    opacity: 0.55;
   }
   50% {
-    filter: blur(66px) saturate(1.35);
-    opacity: 1;
+    filter: blur(128px) saturate(1.25);
+    opacity: 0.72;
   }
 `;
 
@@ -80,24 +80,23 @@ export const Aurora = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 780px;
-    height: 860px;
-    transform: translate3d(calc(var(--x, 50%) - 390px), calc(var(--y, 50%) - 430px), 0);
+    width: 1500px;
+    height: 1200px;
+    transform: translate3d(calc(var(--x, 50%) - 750px), calc(var(--y, 50%) - 600px), 0);
     background:
-      radial-gradient(38% 50% at 50% 44%, rgba(255, 72, 120, 0.55), transparent 70%),
-      radial-gradient(28% 60% at 50% 40%, rgba(226, 25, 73, 0.5), transparent 72%),
-      radial-gradient(24% 40% at 52% 56%, rgba(255, 140, 80, 0.34), transparent 72%);
+      radial-gradient(50% 55% at 50% 46%, rgba(255, 80, 125, 0.16), transparent 78%),
+      radial-gradient(62% 66% at 50% 42%, rgba(226, 25, 73, 0.14), transparent 80%);
     mix-blend-mode: screen;
-    filter: blur(56px) saturate(1.2);
+    filter: blur(110px) saturate(1.15);
     will-change: transform, filter, opacity;
-    animation: ${auroraPulse} 7s ease-in-out infinite;
+    animation: ${auroraPulse} 8s ease-in-out infinite;
   }
 
   @media (max-width: 768px) {
     &::after {
-      width: 560px;
-      height: 620px;
-      transform: translate3d(calc(var(--x, 50%) - 280px), calc(var(--y, 50%) - 310px), 0);
+      width: 1000px;
+      height: 900px;
+      transform: translate3d(calc(var(--x, 50%) - 500px), calc(var(--y, 50%) - 450px), 0);
     }
   }
 `;
