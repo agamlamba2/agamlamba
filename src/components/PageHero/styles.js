@@ -8,7 +8,8 @@ const slideIn = keyframes`
 
 export const HeroSection = styled.section`
   position: relative;
-  height: 100vh;
+  height: 62vh;
+  min-height: 460px;
   width: 100%;
   background: ${colors.bg};
   border-top: 1px solid #4f4f4f;
@@ -21,21 +22,21 @@ export const HeroContent = styled.div`
   z-index: 2;
   height: 100%;
   width: 100%;
-  padding: 48px 48px 150px;
+  padding: 48px 48px 128px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   @media (max-width: 768px) {
-    padding: 40px 20px 130px;
+    padding: 40px 20px 120px;
   }
 `;
 
 export const HeroHeading = styled.h1`
-  font-size: clamp(3.5rem, 8vw, 115px);
+  font-size: clamp(2.5rem, 5.5vw, 76px);
   font-weight: 800;
   line-height: 1;
-  letter-spacing: -3px;
+  letter-spacing: -2px;
   color: ${colors.white};
   text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.48);
   animation: ${slideIn} 0.8s ease forwards;
@@ -76,8 +77,8 @@ export const HeroBottomSpacer = styled.div`
 export const HeroParagraph = styled.p`
   flex: 1;
   min-width: 0;
-  font-size: 26px;
-  line-height: 40px;
+  font-size: 20px;
+  line-height: 30px;
   font-weight: 600;
   color: ${colors.white};
   text-align: left;
@@ -86,7 +87,7 @@ export const HeroParagraph = styled.p`
   opacity: 0;
 
   @media (max-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 1.5;
   }
 `;
