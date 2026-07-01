@@ -24,9 +24,9 @@ const easeOutBack = (t) => {
   return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 };
 
-// Pagination: at most 8 full-size pills; extras shrink (medium, then small) like
+// Pagination: at most 5 full-size pills; extras shrink (medium, then small) like
 // an Instagram image carousel, and the window slides to keep the active one in view.
-const MAX_FULL = 8;
+const MAX_FULL = 5;
 const dotSize = (i, active, count) => {
   if (count <= MAX_FULL) return 'full';
   const half = Math.floor(MAX_FULL / 2);
