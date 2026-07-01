@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import InfoPage from './pages/InfoPage';
+import SuccessStories from './pages/SuccessStories';
 
 export default function App() {
   return (
@@ -34,15 +35,7 @@ export default function App() {
             />
           }
         />
-        <Route
-          path="/success-stories"
-          element={
-            <InfoPage
-              title="Success stories"
-              intro="Hear from a few clients and colleagues I've worked with in the past."
-            />
-          }
-        />
+        <Route path="/success-stories" element={<SuccessStories />} />
         <Route path="/:slug" element={<ProjectDetail />} />
       </Routes>
     </>
