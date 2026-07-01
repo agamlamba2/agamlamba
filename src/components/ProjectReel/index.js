@@ -3,22 +3,21 @@ import { FiArrowRight } from 'react-icons/fi';
 import {
   Section,
   Pin,
-  Slide,
-  SlideBg,
-  SlideOverlay,
-  SlideContent,
-  SlideTitle,
-  SlideDesc,
+  TextCol,
+  TextItem,
+  Title,
+  Desc,
   CaseLink,
-  Index,
-  IndexItem,
-  IndexFill,
+  Stage,
+  Card,
+  Rail,
+  Dot,
 } from './styles';
 import { projects } from '../../data/projects';
 
 export default function ProjectReel() {
   const sectionRef = useRef(null);
-  const fillRefs = useRef([]);
+  const cardRefs = useRef([]);
   const tickingRef = useRef(false);
   const [active, setActive] = useState(0);
   const N = projects.length;
@@ -30,13 +29,24 @@ export default function ProjectReel() {
     const total = section.offsetHeight - window.innerHeight;
     const progress = Math.max(0, Math.min(-rect.top / total, 1));
     const activeFloat = progress * (N - 1);
-    const next = Math.round(activeFloat);
 
-    setActive((prev) => (prev === next ? prev : next));
-    fillRefs.current.forEach((el, i) => {
+    setActive((prev) => {
+      const next = Math.round(activeFloat);
+      return prev === next ? prev : next;
+    });
+
+    cardRefs.current.forEach((el, i) => {
       if (!el) return;
-      const w = Math.max(0, 1 - Math.abs(activeFloat - i)) * 100;
-      el.style.width = `${w}%`;
+      const offset = i - activeFloat; // 0 = centred, <0 above, >0 below
+      const y = offset * 76; // vh — cards scroll up through the centre frame
+      const rotateX = offset * -10; // 3D curve as cards enter/leave
+      const scale = Math.max(0.72, 1 - Math.abs(offset) * 0.12);
+      const opacity = Math.max(0, 1.15 - Math.abs(offset) * 0.62);
+      el.style.transform =
+        `translate(-50%, -50%) translateY(${y.toFixed(2)}vh) ` +
+        `rotateX(${rotateX.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      el.style.opacity = opacity.toFixed(3);
+      el.style.zIndex = String(100 - Math.round(Math.abs(offset) * 10));
     });
     tickingRef.current = false;
   }, [N]);
@@ -67,32 +77,40 @@ export default function ProjectReel() {
   return (
     <Section ref={sectionRef} style={{ height: `${N * 100}vh` }} aria-label="Project reel">
       <Pin>
-        {projects.map((project, i) => (
-          <Slide key={project.slug} $active={i === active}>
-            <SlideBg $src={project.cover} $active={i === active} />
-            <SlideOverlay />
-            <SlideContent>
-              <SlideTitle>{project.title}</SlideTitle>
-              <SlideDesc>{project.overview || project.desc}</SlideDesc>
+        <TextCol>
+          {projects.map((project, i) => (
+            <TextItem key={project.slug} $active={i === active}>
+              <Title>{project.title}</Title>
+              <Desc>{project.overview || project.desc}</Desc>
               <CaseLink to={`/${project.slug}`}>
                 Open case study <FiArrowRight />
               </CaseLink>
-            </SlideContent>
-          </Slide>
-        ))}
-
-        <Index>
-          {projects.map((project, i) => (
-            <IndexItem key={project.slug} $active={i === active} onClick={() => jumpTo(i)}>
-              {project.title}
-              <IndexFill
-                ref={(el) => {
-                  fillRefs.current[i] = el;
-                }}
-              />
-            </IndexItem>
+            </TextItem>
           ))}
-        </Index>
+        </TextCol>
+
+        <Stage>
+          {projects.map((project, i) => (
+            <Card
+              key={project.slug}
+              $src={project.cover}
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
+            />
+          ))}
+        </Stage>
+
+        <Rail>
+          {projects.map((project, i) => (
+            <Dot
+              key={project.slug}
+              $active={i === active}
+              onClick={() => jumpTo(i)}
+              aria-label={project.title}
+            />
+          ))}
+        </Rail>
       </Pin>
     </Section>
   );
