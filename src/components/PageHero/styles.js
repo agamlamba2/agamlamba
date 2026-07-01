@@ -77,9 +77,10 @@ export const HeroBottomSpacer = styled.div`
 export const HeroParagraph = styled.p`
   flex: 1;
   min-width: 0;
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 26px;
+  line-height: 40px;
   font-weight: 600;
+  letter-spacing: 0;
   color: ${colors.white};
   text-align: left;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.64);
