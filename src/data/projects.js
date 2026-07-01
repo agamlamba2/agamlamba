@@ -1,8 +1,20 @@
+// Detail-page / reel covers (uploaded to src/assets/project-covers/).
 import coverTaste from '../assets/project-covers/img_project_cover_taste.webp';
 import coverUta from '../assets/project-covers/img_project_cover_uta.webp';
 import coverSimplicity from '../assets/project-covers/img_project_cover_simplicity.webp';
 import coverHomein from '../assets/project-covers/img_project_cover_homein.webp';
 import coverWestpac from '../assets/project-covers/img_project_cover_westpac.webp';
+import coverCbaHbh from '../assets/project-covers/img_project_cover_cba_hbh.webp';
+import coverDehancer from '../assets/project-covers/img_project_cover_dehancer.webp';
+import coverDla from '../assets/project-covers/img_project_cover_dla.webp';
+import coverJxt from '../assets/project-covers/img_project_cover_jxt.webp';
+import coverKincircle from '../assets/project-covers/img_project_cover_kincircle.webp';
+import coverMybeepr from '../assets/project-covers/img_project_cover_mybeepr.webp';
+import coverQuesteMoney from '../assets/project-covers/img_project_cover_questemoney.webp';
+import coverRewards from '../assets/project-covers/img_project_cover_rewards.webp';
+import coverTravelAssist from '../assets/project-covers/img_project_cover_travel_assist.webp';
+import coverWorksmart from '../assets/project-covers/img_project_cover_worksmart.webp';
+import coverYudu from '../assets/project-covers/img_project_cover_yudu.webp';
 
 // Homepage "Featured work" covers (separate art from the detail-page covers).
 import featuredTaste from '../assets/images/img_featured_project_cover_taste.webp';
@@ -11,8 +23,14 @@ import featuredSimplicity from '../assets/images/img_featured_project_cover_simp
 import featuredHomein from '../assets/images/img_featured_project_cover_homein.webp';
 import featuredWestpac from '../assets/images/img_featured_project_cover_westpac.webp';
 
-// Single source of truth for the Featured Work cards and the project detail
-// pages. To flesh out a case study, add blocks to `sections`:
+// Single source of truth for the reel (/project), the project detail pages
+// (/:slug) and the homepage "Featured work" section (featured: true only).
+//
+// NOTE: titles/subtitles for the newly-added projects are inferred from the
+// cover filenames and the order below is a placeholder — both need Agam's
+// confirmation against agamlamba.com (which can't be read from this environment).
+//
+// To flesh out a case study, add blocks to `sections`:
 //   { type: 'text', heading?: '…', body: '…' }
 //   { type: 'image', src: importedImage, caption?: '…', fullBleed?: true }
 //   { type: 'duo', src: [imgA, imgB] }   // two images side by side
@@ -22,6 +40,7 @@ export const projects = [
     title: 'Taste.com.au',
     desc: 'Product Design: Web Redesign & Research',
     cover: coverTaste,
+    featured: true,
     featuredCover: featuredTaste,
     meta: [
       { label: 'Role', value: 'Lead Product Designer' },
@@ -37,6 +56,7 @@ export const projects = [
     title: 'Universal Task Assistant',
     desc: 'Product Design: App & Branding',
     cover: coverUta,
+    featured: true,
     featuredCover: featuredUta,
     meta: [
       { label: 'Role', value: 'Product Designer' },
@@ -52,6 +72,7 @@ export const projects = [
     title: 'Simplicity Accelerator',
     desc: 'Product Design: Responsive Web Design & Platform Redesign',
     cover: coverSimplicity,
+    featured: true,
     featuredCover: featuredSimplicity,
     meta: [
       { label: 'Role', value: 'Lead Product Designer' },
@@ -67,6 +88,7 @@ export const projects = [
     title: 'Home-in (CommBank)',
     desc: 'Multi-channel Design Strategy',
     cover: coverHomein,
+    featured: true,
     featuredCover: featuredHomein,
     meta: [
       { label: 'Role', value: 'Design Strategy' },
@@ -82,6 +104,7 @@ export const projects = [
     title: 'Westpac Mobile Banking',
     desc: 'Product Design: App, Website, and Branding',
     cover: coverWestpac,
+    featured: true,
     featuredCover: featuredWestpac,
     meta: [
       { label: 'Role', value: 'Product Designer' },
@@ -92,6 +115,108 @@ export const projects = [
       'Rethinking everyday banking — a refreshed mobile experience spanning app, web, and brand.',
     sections: [],
   },
+  // --- Newly added (inferred titles — please confirm) ---
+  {
+    slug: 'cba-hbh',
+    title: 'CommBank Home Buying Hub',
+    desc: 'Product Design',
+    cover: coverCbaHbh,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'dehancer',
+    title: 'Dehancer',
+    desc: 'Product Design',
+    cover: coverDehancer,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'dla',
+    title: 'DLA',
+    desc: 'Product Design',
+    cover: coverDla,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'jxt',
+    title: 'JXT',
+    desc: 'Product Design',
+    cover: coverJxt,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'kincircle',
+    title: 'Kincircle',
+    desc: 'Platform Design',
+    cover: coverKincircle,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'mybeepr',
+    title: 'MyBeepr',
+    desc: 'Product Design',
+    cover: coverMybeepr,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'queste-money',
+    title: 'Queste Money',
+    desc: 'Product Design',
+    cover: coverQuesteMoney,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'rewards',
+    title: 'Rewards',
+    desc: 'Product Design',
+    cover: coverRewards,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'travel-assist',
+    title: 'Travel Assist',
+    desc: 'Product Design',
+    cover: coverTravelAssist,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'worksmart',
+    title: 'WorkSmart',
+    desc: 'Product Design',
+    cover: coverWorksmart,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'yudu',
+    title: 'YUDU',
+    desc: 'Product Design',
+    cover: coverYudu,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
 ];
+
+export const featuredProjects = projects.filter((p) => p.featured);
 
 export const getProject = (slug) => projects.find((p) => p.slug === slug);

@@ -14,15 +14,6 @@ import {
   Dot,
 } from './styles';
 import { projects } from '../../data/projects';
-import ph1 from '../../assets/reel-placeholders/p1.svg';
-import ph2 from '../../assets/reel-placeholders/p2.svg';
-import ph3 from '../../assets/reel-placeholders/p3.svg';
-import ph4 from '../../assets/reel-placeholders/p4.svg';
-import ph5 from '../../assets/reel-placeholders/p5.svg';
-import ph6 from '../../assets/reel-placeholders/p6.svg';
-
-// Placeholder card art (not the real project screenshots) — one per project.
-const placeholders = [ph1, ph2, ph3, ph4, ph5, ph6];
 
 const clamp = (v, min = 0, max = 1) => Math.max(min, Math.min(v, max));
 const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
@@ -249,7 +240,7 @@ export default function ProjectReel() {
           {projects.map((project, i) => (
             <Card
               key={project.slug}
-              $src={placeholders[i % placeholders.length]}
+              $src={project.cover}
               ref={(el) => {
                 cardRefs.current[i] = el;
               }}

@@ -14,7 +14,7 @@ import {
   Desc,
 } from './styles';
 
-import { projects } from '../../data/projects';
+import { featuredProjects } from '../../data/projects';
 
 function ProjectCard({ project }) {
   const ref = useRef(null);
@@ -60,7 +60,7 @@ export default function FeaturedWork() {
     <Section id="projects">
       <Heading>Featured work</Heading>
       <List>
-        {projects.map((project, index) => (
+        {featuredProjects.map((project, index) => (
           <ProjectCard key={index} project={project} />
         ))}
       </List>
