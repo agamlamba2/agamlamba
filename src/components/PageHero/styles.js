@@ -11,13 +11,56 @@ export const HeroSection = styled.section`
   height: calc(62vh + 64px);
   min-height: 524px;
   width: 100%;
-  background:
-    radial-gradient(90% 130% at 8% 6%, rgba(226, 25, 73, 0.22), rgba(0, 0, 0, 0) 52%),
-    radial-gradient(80% 120% at 100% 100%, rgba(226, 25, 73, 0.12), rgba(0, 0, 0, 0) 50%),
-    ${colors.bg};
+  background: ${colors.bg};
   border-top: 1px solid #4f4f4f;
   border-bottom: 1px solid #4f4f4f;
   overflow: hidden;
+`;
+
+// Aurora-borealis glow that follows the cursor (position driven by --x/--y set
+// in JS). A soft continuous hue/blur drift makes it flow like northern lights.
+const auroraDrift = keyframes`
+  0%,
+  100% {
+    filter: blur(64px) hue-rotate(0deg) saturate(1.1);
+  }
+  50% {
+    filter: blur(78px) hue-rotate(26deg) saturate(1.25);
+  }
+`;
+
+export const Aurora = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1100px;
+    height: 900px;
+    transform: translate3d(calc(var(--x, 50%) - 550px), calc(var(--y, 50%) - 450px), 0);
+    background:
+      radial-gradient(38% 44% at 40% 38%, rgba(45, 255, 150, 0.55), transparent 72%),
+      radial-gradient(40% 46% at 62% 50%, rgba(34, 211, 238, 0.5), transparent 72%),
+      radial-gradient(44% 48% at 38% 64%, rgba(139, 92, 246, 0.5), transparent 74%),
+      radial-gradient(36% 42% at 60% 40%, rgba(236, 72, 153, 0.45), transparent 72%);
+    filter: blur(64px) saturate(1.1);
+    will-change: transform, filter;
+    animation: ${auroraDrift} 16s ease-in-out infinite;
+  }
+
+  @media (max-width: 768px) {
+    &::before {
+      width: 760px;
+      height: 640px;
+      transform: translate3d(calc(var(--x, 50%) - 380px), calc(var(--y, 50%) - 320px), 0);
+    }
+  }
 `;
 
 export const HeroContent = styled.div`
