@@ -16,6 +16,12 @@ import coverTravelAssist from '../assets/project-covers/img_project_cover_travel
 import coverWorksmart from '../assets/project-covers/img_project_cover_worksmart.webp';
 import coverYudu from '../assets/project-covers/img_project_cover_yudu.webp';
 
+// Temporary placeholder art for projects whose real cover hasn't been uploaded yet.
+import phInvocare from '../assets/reel-placeholders/p1.svg';
+import phHandsAcrossTime from '../assets/reel-placeholders/p2.svg';
+import phPawmates from '../assets/reel-placeholders/p3.svg';
+import phQuietGrowth from '../assets/reel-placeholders/p4.svg';
+
 // Homepage "Featured work" covers (separate art from the detail-page covers).
 import featuredTaste from '../assets/images/img_featured_project_cover_taste.webp';
 import featuredUta from '../assets/images/img_featured_project_cover_uta.webp';
@@ -25,16 +31,22 @@ import featuredWestpac from '../assets/images/img_featured_project_cover_westpac
 
 // Single source of truth for the reel (/project), the project detail pages
 // (/:slug) and the homepage "Featured work" section (featured: true only).
-//
-// NOTE: titles/subtitles for the newly-added projects are inferred from the
-// cover filenames and the order below is a placeholder — both need Agam's
-// confirmation against agamlamba.com (which can't be read from this environment).
+// Order below matches the app order on agamlamba.com.
 //
 // To flesh out a case study, add blocks to `sections`:
 //   { type: 'text', heading?: '…', body: '…' }
 //   { type: 'image', src: importedImage, caption?: '…', fullBleed?: true }
 //   { type: 'duo', src: [imgA, imgB] }   // two images side by side
 export const projects = [
+  {
+    slug: 'dehancer',
+    title: 'Dehancer',
+    desc: 'Product Design',
+    cover: coverDehancer,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
   {
     slug: 'taste',
     title: 'Taste.com.au',
@@ -115,39 +127,11 @@ export const projects = [
       'Rethinking everyday banking — a refreshed mobile experience spanning app, web, and brand.',
     sections: [],
   },
-  // --- Newly added (inferred titles — please confirm) ---
   {
     slug: 'cba-hbh',
-    title: 'CommBank Home Buying Hub',
+    title: 'CBA HBH',
     desc: 'Product Design',
     cover: coverCbaHbh,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'dehancer',
-    title: 'Dehancer',
-    desc: 'Product Design',
-    cover: coverDehancer,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'dla',
-    title: 'DLA',
-    desc: 'Product Design',
-    cover: coverDla,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'jxt',
-    title: 'JXT',
-    desc: 'Product Design',
-    cover: coverJxt,
     meta: [],
     overview: '',
     sections: [],
@@ -162,28 +146,20 @@ export const projects = [
     sections: [],
   },
   {
-    slug: 'mybeepr',
-    title: 'MyBeepr',
-    desc: 'Product Design',
-    cover: coverMybeepr,
+    slug: 'invocare',
+    title: 'InvoCare Design System',
+    desc: 'Design System',
+    cover: phInvocare,
+    coverPlaceholder: true,
     meta: [],
     overview: '',
     sections: [],
   },
   {
-    slug: 'queste-money',
-    title: 'Queste Money',
+    slug: 'questemoney',
+    title: 'QuesteMoney',
     desc: 'Product Design',
     cover: coverQuesteMoney,
-    meta: [],
-    overview: '',
-    sections: [],
-  },
-  {
-    slug: 'rewards',
-    title: 'Rewards',
-    desc: 'Product Design',
-    cover: coverRewards,
     meta: [],
     overview: '',
     sections: [],
@@ -198,8 +174,37 @@ export const projects = [
     sections: [],
   },
   {
+    slug: 'hands-across-time',
+    title: 'Hands Across Time',
+    desc: 'Product Design',
+    cover: phHandsAcrossTime,
+    coverPlaceholder: true,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'pawmates',
+    title: 'Pawmates',
+    desc: 'Product Design',
+    cover: phPawmates,
+    coverPlaceholder: true,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'dla',
+    title: 'DLA',
+    desc: 'Product Design',
+    cover: coverDla,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
     slug: 'worksmart',
-    title: 'WorkSmart',
+    title: 'Worksmart',
     desc: 'Product Design',
     cover: coverWorksmart,
     meta: [],
@@ -207,10 +212,47 @@ export const projects = [
     sections: [],
   },
   {
+    slug: 'mybeepr',
+    title: 'myBeepr',
+    desc: 'Product Design',
+    cover: coverMybeepr,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'westpac-altitude-rewards',
+    title: 'Westpac Altitude Rewards',
+    desc: 'Product Design',
+    cover: coverRewards,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'jxt',
+    title: 'JXT',
+    desc: 'Product Design',
+    cover: coverJxt,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
     slug: 'yudu',
-    title: 'YUDU',
+    title: 'Yudu',
     desc: 'Product Design',
     cover: coverYudu,
+    meta: [],
+    overview: '',
+    sections: [],
+  },
+  {
+    slug: 'quietgrowth',
+    title: 'QuietGrowth',
+    desc: 'Product Design',
+    cover: phQuietGrowth,
+    coverPlaceholder: true,
     meta: [],
     overview: '',
     sections: [],
