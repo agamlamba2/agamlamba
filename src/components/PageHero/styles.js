@@ -67,13 +67,13 @@ export const HeroContent = styled.div`
   z-index: 2;
   height: 100%;
   width: 100%;
-  padding: 48px 48px 128px;
+  padding: 48px 48px 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   @media (max-width: 768px) {
-    padding: 40px 20px 120px;
+    padding: 40px 20px 130px;
   }
 `;
 
