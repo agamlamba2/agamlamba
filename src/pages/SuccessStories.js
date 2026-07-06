@@ -130,7 +130,12 @@ const Quote = styled.blockquote`
   font-weight: 400;
   line-height: 26px;
   color: #f2f2f2;
-  white-space: pre-line;
+`;
+
+const QuoteP = styled.p`
+  & + & {
+    margin-top: 26px;
+  }
 `;
 
 function useReveal() {
@@ -176,7 +181,11 @@ function TestimonialCard({ item }) {
           <Company>{item.company}</Company>
         </Details>
       </Header>
-      <Quote>{item.quote}</Quote>
+      <Quote>
+        {item.quote.split('\n').map((para, i) => (
+          <QuoteP key={i}>{para}</QuoteP>
+        ))}
+      </Quote>
     </Story>
   );
 }
