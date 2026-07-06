@@ -19,29 +19,20 @@ const Section = styled.section`
   }
 `;
 
-/* Two independent columns (not a uniform grid) — even entries left, odd right. */
-const Columns = styled.div`
-  display: flex;
-  gap: 64px;
-  align-items: flex-start;
+/* Two-column grid with top-aligned rows — each left/right pair shares a row and
+   the next row starts below the taller card (matches the Figma sequencing). */
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 64px;
+  row-gap: 80px;
+  align-items: start;
   max-width: 1184px;
   margin: 0 auto;
 
   @media (max-width: 1000px) {
-    flex-direction: column;
-    gap: 80px;
-  }
-`;
-
-const Column = styled.div`
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-
-  @media (max-width: 1000px) {
-    width: 100%;
+    grid-template-columns: 1fr;
+    row-gap: 64px;
   }
 `;
 
@@ -195,9 +186,6 @@ export default function SuccessStories() {
     window.scrollTo(0, 0);
   }, []);
 
-  const left = testimonials.filter((_, i) => i % 2 === 0);
-  const right = testimonials.filter((_, i) => i % 2 === 1);
-
   return (
     <>
       <PageHero
@@ -207,18 +195,11 @@ export default function SuccessStories() {
       <Navbar />
 
       <Section>
-        <Columns>
-          <Column>
-            {left.map((t) => (
-              <TestimonialCard key={t.name} item={t} />
-            ))}
-          </Column>
-          <Column>
-            {right.map((t) => (
-              <TestimonialCard key={t.name} item={t} />
-            ))}
-          </Column>
-        </Columns>
+        <Grid>
+          {testimonials.map((t) => (
+            <TestimonialCard key={t.name} item={t} />
+          ))}
+        </Grid>
       </Section>
 
       <Contact />
