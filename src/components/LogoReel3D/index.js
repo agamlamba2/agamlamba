@@ -9,8 +9,10 @@ import { logos } from '../Companies';
    it travels up the viewport. */
 
 const SPIN_SPEED = 4.5; // deg per second the ring turns (slow rolodex)
-const TILT_BASE = 10; // deg of downward tilt when the ring is viewport-centred
-const TILT_RANGE = 48; // extra deg of tilt as the ring moves toward the top
+// Scroll sweeps the camera from a top-down view (entering, low in the viewport)
+// through edge-on to the bottom-up view (scrolled up, high in the viewport).
+const TILT_TOP = -46; // deg — top-view when the section first enters
+const TILT_BOTTOM = 52; // deg — bottom-view once scrolled through
 const CARD_GAP = 12; // px between neighbouring cards on the ring
 
 const Section = styled.section`
@@ -123,12 +125,11 @@ export default function LogoReel3D({ label = 'Companies I’ve start up' }) {
     const render = () => {
       const rect = viewport.getBoundingClientRect();
       const vh = window.innerHeight;
-      // How far the ring sits above the viewport centre (0 = centred).
-      const norm = Math.max(
-        -0.12,
-        Math.min((vh / 2 - (rect.top + rect.height / 2)) / (vh * 0.75), 1)
-      );
-      const tilt = TILT_BASE + norm * TILT_RANGE;
+      // Top-view while the ring sits in the lower third of the viewport, edge-on
+      // through the middle, bottom-view up in the top third.
+      const center = rect.top + rect.height / 2;
+      const p = Math.max(0, Math.min((vh * 0.75 - center) / (vh * 0.5), 1));
+      const tilt = TILT_TOP + p * (TILT_BOTTOM - TILT_TOP);
       if (tiltRef.current) {
         tiltRef.current.style.transform = `rotateX(${tilt.toFixed(2)}deg)`;
       }
