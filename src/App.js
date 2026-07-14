@@ -6,9 +6,9 @@ import GlobalStyles from './assets/styles/global';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
-import InfoPage from './pages/InfoPage';
 import SuccessStories from './pages/SuccessStories';
 import WorkWithMe from './pages/WorkWithMe';
+import MyApproach from './pages/MyApproach';
 
 export default function App() {
   return (
@@ -19,15 +19,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/project" element={<Projects />} />
         <Route path="/work-with-me" element={<WorkWithMe />} />
-        <Route
-          path="/my-approach"
-          element={
-            <InfoPage
-              title="My approach"
-              intro="How I think about design — from first principles to shipping outcomes that matter."
-            />
-          }
-        />
+        <Route path="/my-approach" element={<MyApproach />} />
         <Route path="/success-stories" element={<SuccessStories />} />
         <Route path="/:slug" element={<ProjectDetail />} />
       </Routes>
