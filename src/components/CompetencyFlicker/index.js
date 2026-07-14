@@ -30,7 +30,7 @@ const competencies = [
 ];
 
 const GAP = 120; // px between slots on the wheel
-const CYCLES = 1.5; // how many full passes of the list one scroll-through makes
+const CYCLES = 1; // how many full passes of the list one scroll-through makes
 const TILT = -30; // final stage rotation (deg)
 const TILT_IN = 0.12; // fraction of scroll used to ease the tilt in
 const SMOOTH = 0.14; // per-frame (60fps) glide toward the scroll target
