@@ -119,15 +119,16 @@ export default function LogoPlayground() {
       const ctx = canvas.getContext('2d');
       ctx.scale(dpr, dpr);
 
-      engine = Engine.create({ enableSleeping: true });
-      engine.gravity.y = 1;
+      // Endless "community loop": no floor — chips fall through the column and
+      // recycle back to the top, so the rain never stops.
+      engine = Engine.create({ enableSleeping: false });
+      engine.gravity.y = 0.32;
 
-      // Container walls (floor + sides + a ceiling high above the spawn point).
-      const wallOpts = { isStatic: true, friction: 0.3, restitution: 0.2 };
+      // Side walls only, tall enough to cover the off-screen spawn zone.
+      const wallOpts = { isStatic: true, friction: 0.1, restitution: 0.4 };
       Composite.add(engine.world, [
-        Bodies.rectangle(W / 2, H + 60, W + 240, 120, wallOpts),
-        Bodies.rectangle(-60, H / 2 - 600, 120, H + 1400, wallOpts),
-        Bodies.rectangle(W + 60, H / 2 - 600, 120, H + 1400, wallOpts),
+        Bodies.rectangle(-60, 0, 120, H * 4, wallOpts),
+        Bodies.rectangle(W + 60, 0, 120, H * 4, wallOpts),
       ]);
 
       // One chip per logo, spawned staggered above the canvas so they rain in.
@@ -140,13 +141,15 @@ export default function LogoPlayground() {
         const w = logoW + CHIP_PAD_X * 2;
         const h = logoH + CHIP_PAD_Y * 2;
         const x = 60 + Math.random() * Math.max(1, W - 120);
-        const y = -h - i * 90 - Math.random() * 60;
+        // Scatter through the whole column (and above it) so the loop starts full.
+        const y = H - ((i + Math.random()) / logos.length) * H * 2.2;
         const body = Bodies.rectangle(x, y, w, h, {
           chamfer: { radius: Math.min(h / 2, 24) },
-          friction: 0.3,
-          frictionAir: 0.008,
-          restitution: 0.25,
+          friction: 0.1,
+          frictionAir: 0.03,
+          restitution: 0.4,
           angle: (Math.random() - 0.5) * 0.6,
+          angularVelocity: (Math.random() - 0.5) * 0.02,
           density: 0.0015,
         });
         chips.push({ body, img, w, h, logoW, logoH });
@@ -208,13 +211,16 @@ export default function LogoPlayground() {
       };
       raf = requestAnimationFrame(draw);
 
-      // Keep chips inside if the tab was backgrounded and physics exploded.
+      // The loop: once a chip clears the bottom edge, respawn it above the top.
       Matter.Events.on(engine, 'afterUpdate', () => {
-        chips.forEach(({ body }) => {
-          if (body.position.y > H + 400) {
-            Body.setPosition(body, { x: W / 2, y: -100 });
-            Body.setVelocity(body, { x: 0, y: 0 });
-            Matter.Sleeping.set(body, false);
+        chips.forEach(({ body, h }) => {
+          if (body.position.y - h / 2 > H + 40) {
+            Body.setPosition(body, {
+              x: 60 + Math.random() * Math.max(1, W - 120),
+              y: -h - Math.random() * 160,
+            });
+            Body.setVelocity(body, { x: 0, y: 0.5 + Math.random() });
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.02);
           }
         });
       });
