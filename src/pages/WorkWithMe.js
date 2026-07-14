@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Navbar from '../components/Navbar';
 import PageHero from '../components/PageHero';
-import Companies from '../components/Companies';
+import LogoReel3D from '../components/LogoReel3D';
 import Contact from '../components/Contact';
 import colors from '../assets/styles/variables/colors';
 
@@ -278,7 +278,7 @@ export default function WorkWithMe() {
         </Inner>
       </Section>
 
-      <Companies label="Companies I’ve start up" />
+      <LogoReel3D label="Companies I’ve start up" />
 
       <Contact />
     </>
