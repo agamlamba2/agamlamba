@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import Matter from 'matter-js';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import colors from '../../assets/styles/variables/colors';
 import { logos } from '../Companies';
 
-/* Interactive "logo playground" (liminalrecruitment.com-style): the company
-   logos drift down into the tank as physical chips and settle at the bottom,
-   as if submerged in water — draggable and tossable with the mouse. */
+/* Interactive "logo playground": the company logos fall into the container as
+   physical chips, stack up, and can be dragged and tossed around. A white
+   outline water surface — like a glass container filled ~70% — splashes and
+   ripples as chips crash through it. No fills, outlines only. */
 
 const Section = styled.section`
   background: ${colors.bg};
@@ -20,17 +21,6 @@ const Section = styled.section`
   @media (max-width: 768px) {
     padding: 32px 20px 64px;
   }
-`;
-
-const causticsDrift = keyframes`
-  0% { transform: translate3d(-4%, -2%, 0) scale(1.1); }
-  50% { transform: translate3d(4%, 3%, 0) scale(1.25); }
-  100% { transform: translate3d(-4%, -2%, 0) scale(1.1); }
-`;
-
-const surfaceShift = keyframes`
-  0% { background-position: 0 0; }
-  100% { background-position: 200px 0; }
 `;
 
 const Label = styled.p`
@@ -53,8 +43,7 @@ const CanvasWrap = styled.div`
   height: 560px;
   border-radius: 24px;
   overflow: hidden;
-  /* Deep-water body + soft 5% primary-red glow (no border). */
-  background: linear-gradient(180deg, #05171f 0%, #030c12 55%, #02080c 100%);
+  /* no border — just a soft 5% primary-red glow */
   box-shadow: 0 26px 80px rgba(226, 25, 73, 0.05), 0 4px 24px rgba(226, 25, 73, 0.05);
 
   @media (max-width: 768px) {
@@ -63,14 +52,10 @@ const CanvasWrap = styled.div`
   }
 
   canvas {
-    position: relative;
-    z-index: 1;
     display: block;
     width: 100%;
     height: 100%;
     cursor: grab;
-    /* subtle refraction so the submerged chips ripple */
-    filter: url(#waterWobble);
   }
 
   canvas:active {
@@ -78,52 +63,15 @@ const CanvasWrap = styled.div`
   }
 `;
 
-/* Rippling light on the "floor" of the tank. */
-const Caustics = styled.div`
-  position: absolute;
-  inset: -20%;
-  z-index: 2;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0.5;
-  background:
-    radial-gradient(38% 30% at 30% 40%, rgba(120, 220, 255, 0.16), transparent 60%),
-    radial-gradient(30% 26% at 70% 60%, rgba(90, 190, 235, 0.14), transparent 60%),
-    radial-gradient(44% 34% at 55% 25%, rgba(150, 235, 255, 0.12), transparent 60%);
-  filter: blur(24px);
-  animation: ${causticsDrift} 14s ease-in-out infinite;
-`;
-
-/* Cool depth tint + a shimmering surface line near the top. */
-const WaterTint = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(24, 130, 170, 0.16) 0%, rgba(6, 40, 66, 0.1) 45%, rgba(2, 12, 20, 0) 100%);
-`;
-
-const Surface = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  z-index: 4;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(160, 235, 255, 0),
-    rgba(160, 235, 255, 0.5) 40px,
-    rgba(160, 235, 255, 0) 80px
-  );
-  opacity: 0.55;
-  animation: ${surfaceShift} 6s linear infinite;
-`;
-
 const CHIP_PAD_X = 28; // horizontal padding inside each chip
 const CHIP_PAD_Y = 18; // vertical padding inside each chip
 const LOGO_SCALE = 1.35; // enlarge the grid logo heights for the canvas
+
+const WATER_LEVEL = 0.3; // surface sits 30% from the top => container 70% full
+const WATER_COLUMNS = 130; // heightfield resolution
+const SPRING = 0.02; // pull of each column back to rest
+const DAMPING = 0.965; // energy loss per frame
+const SPREAD = 0.24; // how strongly neighbours drag each other
 
 export default function LogoPlayground() {
   const wrapRef = useRef(null);
@@ -141,7 +89,7 @@ export default function LogoPlayground() {
     let runner;
     let raf = 0;
     let disposed = false;
-    const chips = []; // { body, img, w, h, logoW, logoH }
+    const chips = []; // { body, img, w, h, logoW, logoH, wasAbove }
 
     // Preload logo images (CRA-inlined SVG urls are same-origin / data URIs).
     const images = logos.map((l) => {
@@ -180,7 +128,7 @@ export default function LogoPlayground() {
       ctx.scale(dpr, dpr);
 
       engine = Engine.create({ enableSleeping: true });
-      engine.gravity.y = 0.5; // gentle "sinking through water" pull
+      engine.gravity.y = 1;
 
       // Container walls (floor + sides + a ceiling high above the spawn point).
       const wallOpts = { isStatic: true, friction: 0.3, restitution: 0.2 };
@@ -200,17 +148,16 @@ export default function LogoPlayground() {
         const w = logoW + CHIP_PAD_X * 2;
         const h = logoH + CHIP_PAD_Y * 2;
         const x = 60 + Math.random() * Math.max(1, W - 120);
-        const y = -h - i * 42 - Math.random() * 50;
+        const y = -h - i * 90 - Math.random() * 60;
         const body = Bodies.rectangle(x, y, w, h, {
           chamfer: { radius: Math.min(h / 2, 24) },
-          friction: 0.2,
-          frictionAir: 0.055, // water drag — chips descend slowly
-          restitution: 0.2,
+          friction: 0.3,
+          frictionAir: 0.008,
+          restitution: 0.25,
           angle: (Math.random() - 0.5) * 0.6,
-          angularVelocity: (Math.random() - 0.5) * 0.01,
-          density: 0.0012,
+          density: 0.0015,
         });
-        chips.push({ body, img, w, h, logoW, logoH });
+        chips.push({ body, img, w, h, logoW, logoH, wasAbove: true });
         Composite.add(engine.world, body);
       });
 
@@ -237,6 +184,104 @@ export default function LogoPlayground() {
       runner = Runner.create();
       Runner.run(runner, engine);
 
+      /* --- white-outline water simulation (1D spring heightfield) --- */
+      const surfaceY = H * WATER_LEVEL;
+      const colW = W / (WATER_COLUMNS - 1);
+      const heights = new Float32Array(WATER_COLUMNS);
+      const vels = new Float32Array(WATER_COLUMNS);
+      const drops = []; // splash droplets: {x, y, vx, vy, r, life}
+
+      const disturb = (x, power) => {
+        const idx = Math.round(x / colW);
+        for (let o = -2; o <= 2; o += 1) {
+          const i = idx + o;
+          if (i >= 0 && i < WATER_COLUMNS) vels[i] += power * (1 - Math.abs(o) * 0.3);
+        }
+      };
+
+      const splashDrops = (x, power) => {
+        const n = Math.min(Math.round(Math.abs(power) / 2), 7);
+        for (let i = 0; i < n && drops.length < 40; i += 1) {
+          drops.push({
+            x: x + (Math.random() - 0.5) * 30,
+            y: surfaceY,
+            vx: (Math.random() - 0.5) * 3,
+            vy: -Math.abs(power) * (0.35 + Math.random() * 0.5),
+            r: 1.5 + Math.random() * 2.5,
+            life: 1,
+          });
+        }
+      };
+
+      const stepWater = () => {
+        // springs
+        for (let i = 0; i < WATER_COLUMNS; i += 1) {
+          vels[i] += -SPRING * heights[i];
+          vels[i] *= DAMPING;
+          heights[i] += vels[i];
+        }
+        // neighbour spread (two passes for smoothness)
+        for (let pass = 0; pass < 2; pass += 1) {
+          for (let i = 0; i < WATER_COLUMNS; i += 1) {
+            const l = i > 0 ? heights[i - 1] : heights[i];
+            const r = i < WATER_COLUMNS - 1 ? heights[i + 1] : heights[i];
+            vels[i] += SPREAD * ((l + r) / 2 - heights[i]) * 0.5;
+          }
+        }
+        // chips punching through the surface make splashes
+        chips.forEach((c) => {
+          const above = c.body.position.y < surfaceY;
+          if (c.wasAbove && !above) {
+            const vy = c.body.velocity.y;
+            if (vy > 1.2) {
+              disturb(c.body.position.x, Math.min(vy * 1.6, 16));
+              splashDrops(c.body.position.x, Math.min(vy * 1.4, 14));
+            }
+          } else if (!c.wasAbove && above && c.body.velocity.y < -1.2) {
+            disturb(c.body.position.x, Math.max(c.body.velocity.y * 1.2, -12));
+          }
+          c.wasAbove = above;
+        });
+        // droplets fly, fall and fade
+        for (let i = drops.length - 1; i >= 0; i -= 1) {
+          const d = drops[i];
+          d.vy += 0.35;
+          d.x += d.vx;
+          d.y += d.vy;
+          d.life -= 0.03;
+          if (d.life <= 0 || d.y > surfaceY + 20) drops.splice(i, 1);
+        }
+      };
+
+      const drawWater = () => {
+        // main surface line
+        ctx.beginPath();
+        ctx.moveTo(0, surfaceY + heights[0]);
+        for (let i = 1; i < WATER_COLUMNS; i += 1) {
+          ctx.lineTo(i * colW, surfaceY + heights[i]);
+        }
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+        // faint echo line just below, for a glassy double-refraction hint
+        ctx.beginPath();
+        ctx.moveTo(0, surfaceY + 7 + heights[0] * 0.6);
+        for (let i = 1; i < WATER_COLUMNS; i += 1) {
+          ctx.lineTo(i * colW, surfaceY + 7 + heights[i] * 0.6);
+        }
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        // splash droplets — outline circles only
+        drops.forEach((d) => {
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(0.8 * d.life).toFixed(3)})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        });
+      };
+
       const roundRect = (c, x, y, w, h, r) => {
         c.beginPath();
         c.moveTo(x + r, y);
@@ -249,6 +294,7 @@ export default function LogoPlayground() {
 
       const draw = () => {
         if (disposed) return;
+        stepWater();
         ctx.clearRect(0, 0, W, H);
         chips.forEach(({ body, img, w, h, logoW, logoH }) => {
           ctx.save();
@@ -265,6 +311,7 @@ export default function LogoPlayground() {
           }
           ctx.restore();
         });
+        drawWater();
         raf = requestAnimationFrame(draw);
       };
       raf = requestAnimationFrame(draw);
@@ -310,43 +357,7 @@ export default function LogoPlayground() {
       <Label>Companies I&rsquo;ve worked with</Label>
       <CanvasWrap ref={wrapRef}>
         <canvas ref={canvasRef} />
-        <Caustics />
-        <WaterTint />
-        <Surface />
       </CanvasWrap>
-
-      {/* Gentle animated refraction so the submerged chips ripple like water. */}
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        style={{ position: 'absolute', width: 0, height: 0 }}
-      >
-        <defs>
-          <filter id="waterWobble" x="-4%" y="-4%" width="108%" height="108%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.008 0.014"
-              numOctaves="2"
-              seed="4"
-              result="noise"
-            >
-              <animate
-                attributeName="baseFrequency"
-                dur="18s"
-                values="0.008 0.014;0.013 0.010;0.008 0.014"
-                repeatCount="indefinite"
-              />
-            </feTurbulence>
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="10"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
     </Section>
   );
 }
