@@ -253,24 +253,18 @@ export default function LogoPlayground() {
         }
       };
 
-      const drawWater = () => {
-        // main surface line
+      // Calm ambient swell so the surface always waves gently, like the ocean.
+      const swell = (i, t) =>
+        Math.sin(i * 0.09 + t * 0.0011) * 2.6 + Math.sin(i * 0.023 - t * 0.0007) * 3.4;
+
+      const drawWater = (t) => {
         ctx.beginPath();
-        ctx.moveTo(0, surfaceY + heights[0]);
+        ctx.moveTo(0, surfaceY + heights[0] + swell(0, t));
         for (let i = 1; i < WATER_COLUMNS; i += 1) {
-          ctx.lineTo(i * colW, surfaceY + heights[i]);
+          ctx.lineTo(i * colW, surfaceY + heights[i] + swell(i, t));
         }
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
         ctx.lineWidth = 1.6;
-        ctx.stroke();
-        // faint echo line just below, for a glassy double-refraction hint
-        ctx.beginPath();
-        ctx.moveTo(0, surfaceY + 7 + heights[0] * 0.6);
-        for (let i = 1; i < WATER_COLUMNS; i += 1) {
-          ctx.lineTo(i * colW, surfaceY + 7 + heights[i] * 0.6);
-        }
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
-        ctx.lineWidth = 1;
         ctx.stroke();
         // splash droplets — outline circles only
         drops.forEach((d) => {
@@ -292,7 +286,7 @@ export default function LogoPlayground() {
         c.closePath();
       };
 
-      const draw = () => {
+      const draw = (now) => {
         if (disposed) return;
         stepWater();
         ctx.clearRect(0, 0, W, H);
@@ -311,7 +305,7 @@ export default function LogoPlayground() {
           }
           ctx.restore();
         });
-        drawWater();
+        drawWater(now || 0);
         raf = requestAnimationFrame(draw);
       };
       raf = requestAnimationFrame(draw);
