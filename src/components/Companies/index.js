@@ -25,7 +25,7 @@ import logoAvant from '../../assets/company-logos/Logo-AvantMutual-White.svg';
 import logoPhysioInq from '../../assets/company-logos/Logo-PhysioInq-white.svg';
 import logoLesMills from '../../assets/company-logos/Logo-LesMills-White.svg';
 
-const logos = [
+export const logos = [
   { src: logoCBA, alt: 'Commonwealth Bank', height: 40 },
   { src: logoWestpac, alt: 'Westpac', height: 24 },
   { src: logoUbank, alt: 'uBank', height: 24 },
