@@ -40,7 +40,7 @@ const Label = styled.p`
 const CanvasWrap = styled.div`
   position: relative;
   width: 100%;
-  height: 560px;
+  height: 680px;
   border-radius: 24px;
   overflow: hidden;
   /* no border — just a soft 5% primary-red glow */
