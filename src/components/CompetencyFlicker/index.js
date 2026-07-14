@@ -8,20 +8,25 @@ import colors from '../../assets/styles/variables/colors';
    The tilt eases from flat to -30deg as the section is entered. */
 
 const competencies = [
-  'Product Design',
-  'Product Management',
-  'Service Design',
-  'UI Design',
-  'User Research',
   'Product Leadership',
-  'UX Design',
-  'Design Systems',
-  'Design Leadership',
+  'Product Ownership',
   'Design Engineering',
-  'Brand Design',
   'Design Ops',
-  'Content Design',
-  'CX Design',
+  'Product Design',
+  'Strategic Execution',
+  'Market Research & Testing',
+  'Native Apps',
+  'Responsive Web Design',
+  'Design Systems',
+  'Accessibility',
+  'UI Design',
+  'UX Design',
+  'AI & Conversation Design',
+  'Rapid Prototyping',
+  'Motion and Interactions',
+  'Brand Design Strategy',
+  'UX Writing',
+  'Stakeholder Relationships',
 ];
 
 const GAP = 120; // px between slots on the wheel
@@ -90,7 +95,7 @@ const Item = styled.div`
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 const clamp01 = (v) => Math.max(0, Math.min(v, 1));
 
-export default function CompetencyFlicker({ label = 'My design competencies include' }) {
+export default function CompetencyFlicker({ label = 'Competencies  include' }) {
   const sectionRef = useRef(null);
   const rotorRef = useRef(null);
   const itemRefs = useRef([]);
