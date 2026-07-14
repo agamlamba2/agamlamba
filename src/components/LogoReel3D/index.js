@@ -8,10 +8,10 @@ import { logos } from '../Companies';
    auto-spins, while scroll tilts the camera so you look down into the ring as
    it travels up the viewport. */
 
-const SPIN_SPEED = 9; // deg per second the ring turns
-const TILT_BASE = 8; // deg of downward tilt when the ring is viewport-centred
-const TILT_RANGE = 42; // extra deg of tilt as the ring moves toward the top
-const CARD_GAP = 18; // px between neighbouring cards on the ring
+const SPIN_SPEED = 4.5; // deg per second the ring turns (slow rolodex)
+const TILT_BASE = 10; // deg of downward tilt when the ring is viewport-centred
+const TILT_RANGE = 48; // extra deg of tilt as the ring moves toward the top
+const CARD_GAP = 12; // px between neighbouring cards on the ring
 
 const Section = styled.section`
   background: ${colors.bg};
@@ -41,12 +41,12 @@ const Label = styled.p`
 const Viewport = styled.div`
   position: relative;
   width: 100%;
-  height: 480px;
-  perspective: 2000px;
+  height: 420px;
+  perspective: 2400px;
   perspective-origin: 50% 50%;
 
   @media (max-width: 768px) {
-    height: 380px;
+    height: 320px;
   }
 `;
 
@@ -104,8 +104,8 @@ export default function LogoReel3D({ label = 'Companies I’ve start up' }) {
     // Size the cards and ring radius to the viewport.
     const layout = () => {
       const mobile = window.innerWidth <= 768;
-      const cardW = mobile ? 150 : 220;
-      const cardH = mobile ? 100 : 148;
+      const cardW = mobile ? 92 : 124;
+      const cardH = mobile ? 62 : 84;
       const radius = ((cardW + CARD_GAP) * N) / (2 * Math.PI);
       slotRefs.current.forEach((slot, i) => {
         if (!slot) return;
@@ -125,7 +125,7 @@ export default function LogoReel3D({ label = 'Companies I’ve start up' }) {
       const vh = window.innerHeight;
       // How far the ring sits above the viewport centre (0 = centred).
       const norm = Math.max(
-        -1,
+        -0.12,
         Math.min((vh / 2 - (rect.top + rect.height / 2)) / (vh * 0.75), 1)
       );
       const tilt = TILT_BASE + norm * TILT_RANGE;
@@ -193,10 +193,10 @@ export default function LogoReel3D({ label = 'Companies I’ve start up' }) {
               >
                 {/* Double-sided card so the logo reads correctly from both sides. */}
                 <Face>
-                  <img src={l.src} alt={l.alt} style={{ height: l.height * 1.2 }} />
+                  <img src={l.src} alt={l.alt} style={{ height: l.height * 0.8 }} />
                 </Face>
                 <Face style={{ transform: 'rotateY(180deg)' }}>
-                  <img src={l.src} alt="" aria-hidden="true" style={{ height: l.height * 1.2 }} />
+                  <img src={l.src} alt="" aria-hidden="true" style={{ height: l.height * 0.8 }} />
                 </Face>
               </CardSlot>
             ))}
