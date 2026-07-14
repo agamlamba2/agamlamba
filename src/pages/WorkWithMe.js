@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Navbar from '../components/Navbar';
 import PageHero from '../components/PageHero';
+import Companies from '../components/Companies';
 import Contact from '../components/Contact';
 import colors from '../assets/styles/variables/colors';
 
@@ -276,6 +277,8 @@ export default function WorkWithMe() {
           </RevealBlock>
         </Inner>
       </Section>
+
+      <Companies label="Companies I’ve start up" />
 
       <Contact />
     </>

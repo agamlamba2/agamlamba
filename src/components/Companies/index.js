@@ -51,7 +51,7 @@ const STAGGER = 0.045; // scroll-progress gap between consecutive logos
 const WINDOW = 0.28; // scroll-progress span of each logo's slide
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
-export default function Companies() {
+export default function Companies({ label = 'Companies I’ve worked with' }) {
   const gridRef = useRef(null);
   const imgRefs = useRef([]);
   const tickingRef = useRef(false);
@@ -96,7 +96,7 @@ export default function Companies() {
   return (
     <CompaniesSection id="companies">
       <CompaniesContainer>
-        <CompaniesLabel>Companies I&rsquo;ve worked with</CompaniesLabel>
+        <CompaniesLabel>{label}</CompaniesLabel>
         <LogoGrid ref={gridRef}>
           {logos.map((logo, index) => (
             <LogoCell key={index}>
