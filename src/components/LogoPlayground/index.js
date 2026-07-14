@@ -133,7 +133,7 @@ export default function LogoPlayground() {
       // Container walls (floor + sides + a ceiling high above the spawn point).
       const wallOpts = { isStatic: true, friction: 0.3, restitution: 0.2 };
       Composite.add(engine.world, [
-        Bodies.rectangle(W / 2, H + 60, W + 240, 120, wallOpts),
+        Bodies.rectangle(W / 2, H + 56, W + 240, 120, wallOpts),
         Bodies.rectangle(-60, H / 2 - 600, 120, H + 1400, wallOpts),
         Bodies.rectangle(W + 60, H / 2 - 600, 120, H + 1400, wallOpts),
       ]);
