@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import Matter from 'matter-js';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import colors from '../../assets/styles/variables/colors';
 import { logos } from '../Companies';
 
 /* Interactive "logo playground" (liminalrecruitment.com-style): the company
-   logos fall into the canvas as physical chips, stack up, and can be dragged
-   and tossed around with the mouse. */
+   logos drift down into the tank as physical chips and settle at the bottom,
+   as if submerged in water — draggable and tossable with the mouse. */
 
 const Section = styled.section`
   background: ${colors.bg};
@@ -20,6 +20,17 @@ const Section = styled.section`
   @media (max-width: 768px) {
     padding: 32px 20px 64px;
   }
+`;
+
+const causticsDrift = keyframes`
+  0% { transform: translate3d(-4%, -2%, 0) scale(1.1); }
+  50% { transform: translate3d(4%, 3%, 0) scale(1.25); }
+  100% { transform: translate3d(-4%, -2%, 0) scale(1.1); }
+`;
+
+const surfaceShift = keyframes`
+  0% { background-position: 0 0; }
+  100% { background-position: 200px 0; }
 `;
 
 const Label = styled.p`
@@ -40,9 +51,11 @@ const CanvasWrap = styled.div`
   position: relative;
   width: 100%;
   height: 560px;
-  border: 1px solid #2a2a2a;
   border-radius: 24px;
   overflow: hidden;
+  /* Deep-water body + soft 5% primary-red glow (no border). */
+  background: linear-gradient(180deg, #05171f 0%, #030c12 55%, #02080c 100%);
+  box-shadow: 0 26px 80px rgba(226, 25, 73, 0.05), 0 4px 24px rgba(226, 25, 73, 0.05);
 
   @media (max-width: 768px) {
     height: 440px;
@@ -50,15 +63,62 @@ const CanvasWrap = styled.div`
   }
 
   canvas {
+    position: relative;
+    z-index: 1;
     display: block;
     width: 100%;
     height: 100%;
     cursor: grab;
+    /* subtle refraction so the submerged chips ripple */
+    filter: url(#waterWobble);
   }
 
   canvas:active {
     cursor: grabbing;
   }
+`;
+
+/* Rippling light on the "floor" of the tank. */
+const Caustics = styled.div`
+  position: absolute;
+  inset: -20%;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  background:
+    radial-gradient(38% 30% at 30% 40%, rgba(120, 220, 255, 0.16), transparent 60%),
+    radial-gradient(30% 26% at 70% 60%, rgba(90, 190, 235, 0.14), transparent 60%),
+    radial-gradient(44% 34% at 55% 25%, rgba(150, 235, 255, 0.12), transparent 60%);
+  filter: blur(24px);
+  animation: ${causticsDrift} 14s ease-in-out infinite;
+`;
+
+/* Cool depth tint + a shimmering surface line near the top. */
+const WaterTint = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(24, 130, 170, 0.16) 0%, rgba(6, 40, 66, 0.1) 45%, rgba(2, 12, 20, 0) 100%);
+`;
+
+const Surface = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 4;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(160, 235, 255, 0),
+    rgba(160, 235, 255, 0.5) 40px,
+    rgba(160, 235, 255, 0) 80px
+  );
+  opacity: 0.55;
+  animation: ${surfaceShift} 6s linear infinite;
 `;
 
 const CHIP_PAD_X = 28; // horizontal padding inside each chip
@@ -120,7 +180,7 @@ export default function LogoPlayground() {
       ctx.scale(dpr, dpr);
 
       engine = Engine.create({ enableSleeping: true });
-      engine.gravity.y = 1;
+      engine.gravity.y = 0.5; // gentle "sinking through water" pull
 
       // Container walls (floor + sides + a ceiling high above the spawn point).
       const wallOpts = { isStatic: true, friction: 0.3, restitution: 0.2 };
@@ -140,14 +200,15 @@ export default function LogoPlayground() {
         const w = logoW + CHIP_PAD_X * 2;
         const h = logoH + CHIP_PAD_Y * 2;
         const x = 60 + Math.random() * Math.max(1, W - 120);
-        const y = -h - i * 90 - Math.random() * 60;
+        const y = -h - i * 42 - Math.random() * 50;
         const body = Bodies.rectangle(x, y, w, h, {
           chamfer: { radius: Math.min(h / 2, 24) },
-          friction: 0.3,
-          frictionAir: 0.008,
-          restitution: 0.25,
+          friction: 0.2,
+          frictionAir: 0.055, // water drag — chips descend slowly
+          restitution: 0.2,
           angle: (Math.random() - 0.5) * 0.6,
-          density: 0.0015,
+          angularVelocity: (Math.random() - 0.5) * 0.01,
+          density: 0.0012,
         });
         chips.push({ body, img, w, h, logoW, logoH });
         Composite.add(engine.world, body);
@@ -249,7 +310,43 @@ export default function LogoPlayground() {
       <Label>Companies I&rsquo;ve worked with</Label>
       <CanvasWrap ref={wrapRef}>
         <canvas ref={canvasRef} />
+        <Caustics />
+        <WaterTint />
+        <Surface />
       </CanvasWrap>
+
+      {/* Gentle animated refraction so the submerged chips ripple like water. */}
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        style={{ position: 'absolute', width: 0, height: 0 }}
+      >
+        <defs>
+          <filter id="waterWobble" x="-4%" y="-4%" width="108%" height="108%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.008 0.014"
+              numOctaves="2"
+              seed="4"
+              result="noise"
+            >
+              <animate
+                attributeName="baseFrequency"
+                dur="18s"
+                values="0.008 0.014;0.013 0.010;0.008 0.014"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="10"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
     </Section>
   );
 }
