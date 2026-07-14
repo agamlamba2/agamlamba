@@ -24,6 +24,20 @@ import logoLawlab from '../../assets/company-logos/Logo-lawlab-white.svg';
 import logoAvant from '../../assets/company-logos/Logo-AvantMutual-White.svg';
 import logoPhysioInq from '../../assets/company-logos/Logo-PhysioInq-white.svg';
 import logoLesMills from '../../assets/company-logos/Logo-LesMills-White.svg';
+import logoBakersDelight from "../../assets/company-logos/Logo-Baker'sDelight-white.svg";
+import logoClover from '../../assets/company-logos/Logo-Clover-White.svg';
+import logoCohortGlobal from '../../assets/company-logos/Logo-Cohort-Global-white.svg';
+import logoConcentrix from '../../assets/company-logos/Logo-Concentrix-white.svg';
+import logoHomeIn from '../../assets/company-logos/Logo-Home-in-White.svg';
+import logoJXT from '../../assets/company-logos/Logo-JXT-White.svg';
+import logoKelly from '../../assets/company-logos/Logo-Kelly-White.svg';
+import logoSydneyWater from '../../assets/company-logos/Logo-Logo-Sydney-Water-white.svg';
+import logoMestudent from '../../assets/company-logos/Logo-Mestudent-white.svg';
+import logoSemco from '../../assets/company-logos/Logo-Semco-white.svg';
+import logoStar from '../../assets/company-logos/Logo-Star-white.svg';
+import logoWoolworths from '../../assets/company-logos/Logo-Woolworths-white.svg';
+import logoMyBeepr from '../../assets/company-logos/Logo-myBeepr-White.svg';
+import logoXtend from '../../assets/company-logos/Logo-xtend-white.svg';
 
 export const logos = [
   { src: logoCBA, alt: 'Commonwealth Bank', height: 40 },
@@ -42,6 +56,20 @@ export const logos = [
   { src: logoAvant, alt: 'Avant Mutual', height: 32 },
   { src: logoPhysioInq, alt: 'Physio Inq', height: 28 },
   { src: logoLesMills, alt: 'Les Mills', height: 20 },
+  { src: logoBakersDelight, alt: "Baker's Delight", height: 24 },
+  { src: logoClover, alt: 'Clover', height: 24 },
+  { src: logoCohortGlobal, alt: 'Cohort Global', height: 25 },
+  { src: logoConcentrix, alt: 'Concentrix', height: 24 },
+  { src: logoHomeIn, alt: 'Home-in', height: 24 },
+  { src: logoJXT, alt: 'JXT', height: 24 },
+  { src: logoKelly, alt: 'Kelly', height: 24 },
+  { src: logoSydneyWater, alt: 'Sydney Water', height: 24 },
+  { src: logoMestudent, alt: 'Mestudent', height: 24 },
+  { src: logoSemco, alt: 'Semco', height: 24 },
+  { src: logoStar, alt: 'Star', height: 24 },
+  { src: logoWoolworths, alt: 'Woolworths', height: 24 },
+  { src: logoMyBeepr, alt: 'myBeepr', height: 24 },
+  { src: logoXtend, alt: 'xtend', height: 24 },
 ];
 
 // Each logo slides up into its frame, revealed one at a time bottom-row-first
